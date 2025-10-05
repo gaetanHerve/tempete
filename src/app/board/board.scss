@@ -1,0 +1,51 @@
+@use '../../styles.scss' ;
+
+.board {
+  display: grid;
+  grid-template-areas:
+  "toolbar toolbar toolbar"
+    "stack play-area discard"
+    "hand hand hand";
+  grid-template-rows: 1fr 3fr 3fr;
+  gap: 1rem;
+  width: 90vw;
+  height: 90vh;
+  margin: 0 auto;
+
+  .stack, .discard, .hand, .play-area, .toolbar {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+  }
+
+  .toolbar {
+    grid-area: toolbar;
+    max-height: 10vh;
+    min-height: 2rem;
+    border: 2px dashed black;
+  }
+
+  .stack {
+    grid-area: stack;
+    border: 2px dashed blue;
+  }
+
+  .discard {
+    grid-area: discard;
+    border: 2px dashed red;
+  }
+
+  .play-area {
+    grid-area: play-area;
+    border: 2px dashed green;
+  }
+
+  .hand {
+    grid-area: hand;
+    border: 2px dashed purple;
+  }
+}
+
+
+
