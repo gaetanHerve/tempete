@@ -1,8 +1,20 @@
-<h2>HAND</h2>
-<div>
+<h2>HAND ({{ cards.length }})</h2>
+
+<div class="cards-container">
   @for (card of cards; track card.id) {
-    <div>
-      {{ card.title }} (id: {{ card.id }})
+    <div class="card">
+
+      <img class="card-img-top" src="..." alt="Card image cap">
+
+      <div class="card-body">
+        <h5 class="card-title">{{ card.title }} (id: {{ card.id }})</h5>
+        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+        <div class="actions">
+          <button type="button" class="play-btn btn btn-outline-success m-1" (click)="playCard(card.id)">Play</button>
+          <button type="button" class="discard-btn btn btn-outline-danger m-1" (click)="discard(card.id)">Discard</button>
+        </div>
+      </div>
+
     </div>
   }
 </div>

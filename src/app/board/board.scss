@@ -21,9 +21,9 @@
 
   .toolbar {
     grid-area: toolbar;
-    max-height: 10vh;
-    min-height: 2rem;
+    height: fit-content;
     border: 2px dashed black;
+    padding: 0.5rem;
   }
 
   .stack {

@@ -1,4 +1,4 @@
-<h2>DISCARD ({{ cards.length }})</h2>
+<h2>PLAY AREA ({{ cards.length }})</h2>
 
 <div class="cards-container">
   <div class="card">
@@ -8,11 +8,12 @@
       <div class="card-body">
         <h5 class="card-title">{{ cards[cards.length - 1].title }} (id: {{ cards[cards.length - 1].id }})</h5>
         <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-      </div>
-    } @else {
-      <div class="no-card-bg">
-        <p class="no-card">No cards in discard pile.</p>
+        <div class="actions">
+          <button type="button" class="play-btn btn btn-outline-success m-1" (click)="confirm(cards[cards.length - 1].id)">Confirm</button>
+          <button type="button" class="discard-btn btn btn-outline-danger m-1" (click)="takeBack(cards[cards.length - 1].id)">Take Back</button>
+        </div>
       </div>
     }
   </div>
 </div>
+

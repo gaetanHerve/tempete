@@ -8,5 +8,10 @@ import { Zone } from '../zone/zone';
   styleUrl: './discard.scss'
 })
 export class Discard extends Zone {
+  
+  constructor() {
+    super();
+    this.zoneName = 'discard';
+  }
 
 }

@@ -42,6 +42,13 @@ export class GameService {
 
   initHand()  {
     for (let i = 0; i < this.cardsPerHand; i++) {
+      this.drawCard();
+    }
+  }
+
+  drawCard(numberOfCards: number = 1) {
+    for (let i = 0; i < numberOfCards; i++) {
+
       if (this.stack().length === 0) {
         if (this.discard().length > 0) {
           // Mélange la défausse dans la pile stack
@@ -53,16 +60,7 @@ export class GameService {
           return;
         }
       }
-      this.drawCard();
-    }
-  }
 
-  drawCard(numberOfCards: number = 1) {
-    for (let i = 0; i < numberOfCards; i++) {
-      if (this.stack().length === 0) {
-        console.log('Stack is empty, cannot draw more cards.');
-        return;
-      }
       this.moveToHand(this.stack()[0].id);
     }
   }
@@ -72,12 +70,8 @@ export class GameService {
   }
 
   moveToPlayArea(cardId: string) {
-    const stackPile = this.stack();
-    const idx = stackPile.findIndex(c => c.id === cardId);
-    if (idx !== -1) {
-      const card = stackPile[idx];
-      const newStack = [...stackPile.slice(0, idx), ...stackPile.slice(idx + 1)];
-      this.stack.update(() => (newStack));
+    let card = this.removeCardFromAnyPile(cardId);
+    if (card) {
       this.playArea.update(pile => [...pile, card]);
     }
   }

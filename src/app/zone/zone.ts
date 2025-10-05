@@ -17,7 +17,6 @@ export class Zone {
 
   constructor() {
     effect(() => {
-      console.log(`The ${this.zoneName} is composed of ${this.gameService.stack().length} cards`);
       if (this.zoneName != undefined) this.cards = this.gameService[this.zoneName]();
     });
   }

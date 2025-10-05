@@ -14,4 +14,13 @@ export class Hand extends Zone {
     super();
     this.zoneName = 'hand';
   }
+
+  protected playCard(cardId: string) {
+    this.gameService.moveToPlayArea(cardId);
+  }
+
+  protected discard(cardId: string) {
+    this.gameService.moveToDiscard(cardId);
+    this.gameService.drawCard();
+  }
 }
