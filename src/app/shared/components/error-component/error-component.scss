@@ -1,0 +1,12 @@
+@use '../../../../styles.scss';
+
+
+.alert {
+    height: 2rem;
+    width: 100%;
+    margin: 0;
+    padding: 0.25rem;
+    text-align: center;
+    font-size: 0.75rem;
+    cursor: pointer;
+}

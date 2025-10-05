@@ -1,0 +1,5 @@
+@for (error of errorsToDisplay; track error) {
+  <div class="alert alert-info" role="alert" (click)="dismissError()">
+      <p>{{ error.message }}</p>
+  </div>
+}

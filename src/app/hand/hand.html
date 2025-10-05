@@ -4,7 +4,9 @@
   @for (card of cards; track card.id) {
     <div class="card">
 
-      <img class="card-img-top" src="..." alt="Card image cap">
+      <div class="card-header">
+        <img class="card-img-top" src={{card.imageUrl}} alt="Card image cap">
+      </div>
 
       <div class="card-body">
         <h5 class="card-title">{{ card.title }} (id: {{ card.id }})</h5>

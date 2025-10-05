@@ -1,9 +1,10 @@
 import { Component, inject } from '@angular/core';
 import { GameService } from '../shared/services/game-service';
+import { ErrorComponent } from '../shared/components/error-component/error-component';
 
 @Component({
   selector: 'app-toolbar',
-  imports: [],
+  imports: [ErrorComponent],
   templateUrl: './toolbar.html',
   styleUrl: './toolbar.scss'
 })

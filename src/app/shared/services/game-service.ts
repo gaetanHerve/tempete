@@ -1,6 +1,7 @@
-import { Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { Card } from '../models/card';
 import { CardTitle } from '../models/cardTitle';
+import { ErrorService } from './error-service';
 
 export interface Pile {
   cards: Card[];
@@ -10,6 +11,9 @@ export interface Pile {
   providedIn: 'root'
 })
 export class GameService {
+
+  private readonly errorService = inject(ErrorService);
+
   stack = signal<Card[]>([]);
   playArea = signal<Card[]>([]);
   discard = signal<Card[]>([]);
@@ -25,7 +29,7 @@ export class GameService {
     const allCards: Card[] = [];
     Object.keys(CardTitle).forEach((key, index) => {
       const title = CardTitle[key as keyof typeof CardTitle];
-      allCards.push(new Card(`${index}`, title, `Content for ${title}`, `assets/images/${title}.png`, `https://example.com/${title}`));
+      allCards.push(new Card(`${index}`, title, `Content for ${title}`, `assets/cards/card-default.jpg`,`https://example.com/${title}`));
     });
     this.stack.set(allCards);
     this.shufflePile('stack');
@@ -54,13 +58,15 @@ export class GameService {
           // Mélange la défausse dans la pile stack
           this.stack.set(this.shuffleArray(this.discard()));
           this.discard.set([]);
-          console.log('Reshuffled discard into stack.');
         } else {
-          console.log('Stack and discard are empty, cannot draw more cards.');
+          this.errorService.addError('Stack and discard are empty, cannot draw more cards.');
           return;
         }
       }
-
+      if (this.hand().length >= this.cardsPerHand) {
+        this.errorService.addError('Hand is full, cannot draw more cards.');
+        return;
+      }
       this.moveToHand(this.stack()[0].id);
     }
   }
@@ -85,15 +91,12 @@ export class GameService {
 
   moveToHand(cardId: string) {
     let card = this.removeCardFromAnyPile(cardId);
-    // console.log('cardToMove', card)
-
     if (card) {
       this.hand.update(pile => [...pile, card]);
     }
   }
 
   removeCardFromAnyPile(cardId: string): Card | undefined {
-    // console.log('removing card from any pile:', cardId);
     const piles = [this.stack, this.playArea, this.discard, this.hand];
     for (const pileSignal of piles) {
       const pile = pileSignal();

@@ -3,13 +3,13 @@
 .board {
   display: grid;
   grid-template-areas:
-  "toolbar toolbar toolbar"
+    "logo toolbar toolbar"
     "stack play-area discard"
     "hand hand hand";
   grid-template-rows: 1fr 3fr 3fr;
   gap: 1rem;
   width: 90vw;
-  height: 90vh;
+  height: 85vh;
   margin: 0 auto;
 
   .stack, .discard, .hand, .play-area, .toolbar {
@@ -19,31 +19,46 @@
     gap: 1rem;
   }
 
+  .logo {
+    grid-area: logo;
+    height: 6.125rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    img.logo {
+      height: 100%;
+      width: auto;
+      max-width: 100%;
+      object-fit: contain;
+    }
+  }
+
   .toolbar {
     grid-area: toolbar;
-    height: fit-content;
-    border: 2px dashed black;
+    height: 6.125rem;
+    // border: 2px dashed black;
     padding: 0.5rem;
   }
 
   .stack {
     grid-area: stack;
-    border: 2px dashed blue;
+    // border: 2px dashed blue;
   }
 
   .discard {
     grid-area: discard;
-    border: 2px dashed red;
+    // border: 2px dashed red;
   }
 
   .play-area {
     grid-area: play-area;
-    border: 2px dashed green;
+    // border: 2px dashed green;
   }
 
   .hand {
     grid-area: hand;
-    border: 2px dashed purple;
+    // border: 2px dashed purple;
   }
 }
 

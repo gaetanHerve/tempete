@@ -1,3 +1,6 @@
+/* Importing Bootstrap SCSS file. */
+@use 'bootstrap/scss/bootstrap';
+
 :host {
   --bright-blue: oklch(51.01% 0.274 263.83);
   --electric-violet: oklch(53.18% 0.28 296.97);
@@ -62,10 +65,6 @@ main {
   position: relative;
 }
 
-.angular-logo {
-  max-width: 9.2rem;
-}
-
 .content {
   display: flex;
   justify-content: space-around;
@@ -102,7 +101,8 @@ main {
 }
 
 
-// Styles for card containers (hand, stack, discard, play area)
+// // Styles for card containers (hand, stack, discard, play area)
+
 .cards-container {
   display: flex;
   flex-direction: row;
@@ -126,6 +126,21 @@ main {
     &:hover {
       transform: scale(1.05);
       box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.3);
+    }
+
+    .card-header {
+      height: 30%;
+      width: 100%;
+      overflow: hidden;
+      border: none!important;
+      img {
+        width: 50%;
+        object-fit: cover;
+      }
+    }
+
+    .card-body {
+      font-size: 0.75rem;
     }
 
     .actions {
@@ -166,8 +181,3 @@ main {
   }
 }
 
-
-
-
-/* Importing Bootstrap SCSS file. */
-@import 'bootstrap/scss/bootstrap';
