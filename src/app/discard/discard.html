@@ -1,7 +1,11 @@
 <h2>DISCARD ({{ cards.length }})</h2>
 
 <div class="cards-container">
-  <div class="card">
+  <div class="card"
+    cdkDropList
+    id="discardDropList"
+    [cdkDropListConnectedTo]="['handDropList']"
+    (cdkDropListDropped)="drop($event)">
     @if (cards.length > 0) {
       <img class="card-img-top" src="..." alt="Card image cap">
 

@@ -9,4 +9,8 @@
     text-align: center;
     font-size: 0.75rem;
     cursor: pointer;
+    &:hover {
+        transform: scale(1.05);
+        box-shadow: 4px 4px 12px rgba(0, 0, 0, 0.3);
+    }
 }

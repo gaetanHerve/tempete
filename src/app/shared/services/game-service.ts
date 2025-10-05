@@ -71,11 +71,23 @@ export class GameService {
     }
   }
 
+  discardAction(cardId: string) {
+    this.moveToDiscard(cardId);
+    // add timeout for UX
+    setTimeout(() => {
+      this.drawCard();
+    }, 500);
+  }
+
   addToStack(card: Card) {
     this.stack.update(pile => [...pile, card]);
   }
 
   moveToPlayArea(cardId: string) {
+    if (this.playArea().length >= 1) {
+      this.errorService.addError('Play area can only contain one card at a time.');
+      return;
+    }
     let card = this.removeCardFromAnyPile(cardId);
     if (card) {
       this.playArea.update(pile => [...pile, card]);
@@ -132,4 +144,5 @@ export class GameService {
     }
     return arr;
   }
+
 }

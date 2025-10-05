@@ -1,9 +1,18 @@
 <h2>PLAY AREA ({{ cards.length }})</h2>
 
 <div class="cards-container">
-  <div class="card">
+
+  <div class="card"
+    cdkDropList
+    id="playAreaDropList"
+    [cdkDropListConnectedTo]="['handDropList']"
+    (cdkDropListDropped)="drop($event)">
+    
     @if (cards.length > 0) {
-      <img class="card-img-top" src="..." alt="Card image cap">
+
+      <div class="card-header">
+        <!-- <img class="card-img-top" src={{ cards[cards.length - 1].imageUrl }} alt="Card image cap"> -->
+      </div>
 
       <div class="card-body">
         <h5 class="card-title">{{ cards[cards.length - 1].title }} (id: {{ cards[cards.length - 1].id }})</h5>
@@ -13,6 +22,8 @@
           <button type="button" class="discard-btn btn btn-outline-danger m-1" (click)="takeBack(cards[cards.length - 1].id)">Take Back</button>
         </div>
       </div>
+    } @else {
+      <p class="no-card">No card in play area.</p>
     }
   </div>
 </div>

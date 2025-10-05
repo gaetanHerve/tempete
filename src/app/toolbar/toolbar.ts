@@ -1,6 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { GameService } from '../shared/services/game-service';
 import { ErrorComponent } from '../shared/components/error-component/error-component';
+import { ErrorService } from '../shared/services/error-service';
 
 @Component({
   selector: 'app-toolbar',
@@ -11,6 +12,7 @@ import { ErrorComponent } from '../shared/components/error-component/error-compo
 export class Toolbar {
 
   private readonly gameService = inject(GameService);
+  private readonly errorService = inject(ErrorService);
 
 
   protected startGame() {
@@ -19,9 +21,8 @@ export class Toolbar {
       this.gameService.initHand();
       this.gameService.gameStarted = true;
       console.log("Game started");
-      console.log('cards in hand', this.gameService.hand());
     } else {
-      console.log("Game already started");
+      this.errorService.addError("Game already started");
     }
   }
 
@@ -32,8 +33,6 @@ export class Toolbar {
 
   protected drawCard() {
     this.gameService.drawCard(1);
-    console.log('nb cards in hand', this.gameService.hand().length);
-    console.log('nb cards in stack', this.gameService.stack().length);
   }
 
 }

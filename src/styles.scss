@@ -110,8 +110,9 @@ main {
   padding: 10px;
   border-radius: 8px;
   overflow-x: auto;
+}
 
-  .card {
+.card {
     width: 15rem;
     height: 22.5rem;
     border: 1px solid grey;
@@ -179,5 +180,8 @@ main {
     }
 
   }
+
+.cdk-drag-animating {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
 }
 

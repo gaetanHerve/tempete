@@ -1,8 +1,13 @@
 <h2>HAND ({{ cards.length }})</h2>
 
-<div class="cards-container">
+<div class="cards-container"
+  id="handDropList"
+  [cdkDropListConnectedTo]="['playAreaDropList', 'discardDropList']"
+  cdkDropList
+  (cdkDropListDropped)="drop($event)">
+
   @for (card of cards; track card.id) {
-    <div class="card">
+    <div class="card" cdkDrag [cdkDragData]="card">
 
       <div class="card-header">
         <img class="card-img-top" src={{card.imageUrl}} alt="Card image cap">
@@ -19,4 +24,5 @@
 
     </div>
   }
+
 </div>
