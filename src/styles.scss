@@ -130,10 +130,11 @@ main {
     }
 
     .card-header {
-      height: 30%;
+      height: 40%;
       width: 100%;
       overflow: hidden;
       border: none!important;
+      font-family: SuperComic;
       img {
         width: 50%;
         object-fit: cover;
@@ -142,6 +143,15 @@ main {
 
     .card-body {
       font-size: 0.75rem;
+    }
+
+    .card-footer {
+      font-size: 0.65rem;
+      color: lightseagreen;
+      position: absolute;
+      bottom: 5px;
+      width: 100%;
+      text-align: center;
     }
 
     .actions {

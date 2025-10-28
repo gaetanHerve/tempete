@@ -9,10 +9,23 @@
     (cdkDropListDropped)="drop($event)">
     
     @if (cards.length > 0) {
-
+      @let card = cards[cards.length - 1];
       <div class="card-header">
-        <!-- <img class="card-img-top" src={{ cards[cards.length - 1].imageUrl }} alt="Card image cap"> -->
+        <h5 class="card-title mt-2">{{ card.title }}</h5>
+        <img class="card-img-top" src={{card.imageUrl}} alt="Card image cap">
       </div>
+
+      <div class="card-body">
+        <p class="card-text">{{ card.description }}</p>
+      </div>
+
+      <div class="card-footer">
+        <small>{{ card.moment }}</small>
+      </div>
+
+      <!-- <div class="card-header"> -->
+        <!-- <img class="card-img-top" src={{ cards[cards.length - 1].imageUrl }} alt="Card image cap"> -->
+      <!-- </div>
 
       <div class="card-body">
         <h5 class="card-title">{{ cards[cards.length - 1].title }} (id: {{ cards[cards.length - 1].id }})</h5>
@@ -21,7 +34,7 @@
           <button type="button" class="play-btn btn btn-outline-success m-1" (click)="confirm(cards[cards.length - 1].id)">Confirm</button>
           <button type="button" class="discard-btn btn btn-outline-danger m-1" (click)="takeBack(cards[cards.length - 1].id)">Take Back</button>
         </div>
-      </div>
+      </div> -->
     } @else {
       <p class="no-card">No card in play area.</p>
     }

@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { Zone } from '../zone/zone';
 import {CdkDrag, CdkDropList, moveItemInArray} from '@angular/cdk/drag-drop';
+import { CardComponent } from "../shared/components/card-component/card-component";
 
 @Component({
   selector: 'app-hand',
@@ -16,11 +17,11 @@ export class Hand extends Zone {
     this.zoneName = 'hand';
   }
 
-  protected playCard(cardId: string) {
+  protected playCard(cardId: number) {
     this.gameService.moveToPlayArea(cardId);
   }
 
-  protected discard(cardId: string) {
+  protected discard(cardId: number) {
     this.gameService.discardAction(cardId);
   }
 

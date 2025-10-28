@@ -1,7 +1,8 @@
 import { inject, Injectable, signal } from '@angular/core';
 import { Card } from '../models/card';
-import { CardTitle } from '../models/cardTitle';
 import { ErrorService } from './error-service';
+import cardListData from '../card-list.json';
+
 
 export interface Pile {
   cards: Card[];
@@ -26,11 +27,7 @@ export class GameService {
 
   initStack() {
     // Initialize the stack with a standard set of cards
-    const allCards: Card[] = [];
-    Object.keys(CardTitle).forEach((key, index) => {
-      const title = CardTitle[key as keyof typeof CardTitle];
-      allCards.push(new Card(`${index}`, title, `Content for ${title}`, `assets/cards/card-default.jpg`,`https://example.com/${title}`));
-    });
+    let allCards: Card[] = this.createCardsFromJson();
     this.stack.set(allCards);
     this.shufflePile('stack');
   }
@@ -71,7 +68,7 @@ export class GameService {
     }
   }
 
-  discardAction(cardId: string) {
+  discardAction(cardId: number) {
     this.moveToDiscard(cardId);
     // add timeout for UX
     setTimeout(() => {
@@ -83,7 +80,7 @@ export class GameService {
     this.stack.update(pile => [...pile, card]);
   }
 
-  moveToPlayArea(cardId: string) {
+  moveToPlayArea(cardId: number) {
     if (this.playArea().length >= 1) {
       this.errorService.addError('Play area can only contain one card at a time.');
       return;
@@ -94,21 +91,21 @@ export class GameService {
     }
   }
 
-  moveToDiscard(cardId: string) {
+  moveToDiscard(cardId: number) {
     let card = this.removeCardFromAnyPile(cardId);
     if (card) {
       this.discard.update(pile => [...pile, card]);
     }
   }
 
-  moveToHand(cardId: string) {
+  moveToHand(cardId: number) {
     let card = this.removeCardFromAnyPile(cardId);
     if (card) {
       this.hand.update(pile => [...pile, card]);
     }
   }
 
-  removeCardFromAnyPile(cardId: string): Card | undefined {
+  removeCardFromAnyPile(cardId: number): Card | undefined {
     const piles = [this.stack, this.playArea, this.discard, this.hand];
     for (const pileSignal of piles) {
       const pile = pileSignal();
@@ -143,6 +140,24 @@ export class GameService {
       [arr[i], arr[j]] = [arr[j], arr[i]];
     }
     return arr;
+  }
+
+  private createCardsFromJson(): Card[] {
+    console.log(cardListData)
+    const cards: Card[] = [];
+    const cardList = cardListData.cardList;
+    console.log(cardList);
+    Object.entries(cardList).forEach(([key, value]: [string, any], index) => {
+      cards.push(new Card(
+        index,
+        value.title ?? key,
+        value.description ?? '',
+        value.moment ?? '',
+        value.permanent ?? false,
+        `assets/cards/card-default.jpg`
+      ));
+    });
+    return cards;
   }
 
 }

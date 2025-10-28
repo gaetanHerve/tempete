@@ -1,9 +1,10 @@
 export class Card {
   constructor(
-    public id: string,
+    public id: number,
     public title: string,
-    public content: string,
+    public description: string,
+    public moment: string,
+    public permanent: boolean,
     public imageUrl: string,
-    public linkUrl: string
   ) {}
 }
