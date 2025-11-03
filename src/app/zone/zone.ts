@@ -14,11 +14,24 @@ export class Zone {
 
   protected zoneName: 'stack' | 'playArea' | 'discard' | 'hand' | undefined = undefined;
   protected cards: Card[] = [];
+  protected nbCards: number = 0;
 
   constructor() {
     effect(() => {
-      if (this.zoneName != undefined) this.cards = this.gameService[this.zoneName]();
+      if (this.zoneName != undefined) {
+        this.cards = this.gameService[this.zoneName]();
+        this.nbCards = this.cards.length;
+      }
     });
   }
+
+  protected discard(cardId: number) {
+    this.gameService.discardAction(cardId);
+  }
+
+  protected playCard(cardId: number) {
+    this.gameService.playCard(cardId);
+  }
+  
 
 }

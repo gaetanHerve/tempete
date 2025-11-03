@@ -1,11 +1,7 @@
 <h2>DISCARD ({{ cards.length }})</h2>
 
 <div class="cards-container">
-  <div class="card"
-    cdkDropList
-    id="discardDropList"
-    [cdkDropListConnectedTo]="['handDropList']"
-    (cdkDropListDropped)="drop($event)">
+  <div class="card" id="discardDropList">
 
     @if (cards.length > 0) {
 

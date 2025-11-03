@@ -1,10 +1,9 @@
 import { Component } from '@angular/core';
 import { Zone } from '../zone/zone';
-import { CdkDropList } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-discard',
-  imports: [CdkDropList],
+  imports: [],
   templateUrl: './discard.html',
   styleUrl: './discard.scss'
 })

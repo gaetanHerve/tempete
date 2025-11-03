@@ -47,6 +47,20 @@ export class GameService {
     }
   }
 
+  playCard(cardId: number) {
+    const card: Card = this.getPile('hand').find(c => c.id === cardId)!;
+    if (!card) {
+      this.errorService.addError('Card not found in hand.');
+      return;
+    }
+    if (card.permanent) {
+      this.moveToPlayArea(cardId);
+    } else {
+      this.moveToDiscard(cardId);
+    }
+    this.drawCard();
+  }
+
   drawCard(numberOfCards: number = 1) {
     for (let i = 0; i < numberOfCards; i++) {
 
@@ -64,16 +78,16 @@ export class GameService {
         this.errorService.addError('Hand is full, cannot draw more cards.');
         return;
       }
-      this.moveToHand(this.stack()[0].id);
+      setTimeout(() => {
+        // add timeout for UX
+        this.moveToHand(this.stack()[0].id);
+      }, 250);
     }
   }
 
   discardAction(cardId: number) {
     this.moveToDiscard(cardId);
-    // add timeout for UX
-    setTimeout(() => {
-      this.drawCard();
-    }, 500);
+    this.drawCard();
   }
 
   addToStack(card: Card) {
@@ -81,10 +95,6 @@ export class GameService {
   }
 
   moveToPlayArea(cardId: number) {
-    if (this.playArea().length >= 1) {
-      this.errorService.addError('Play area can only contain one card at a time.');
-      return;
-    }
     let card = this.removeCardFromAnyPile(cardId);
     if (card) {
       this.playArea.update(pile => [...pile, card]);
@@ -143,10 +153,8 @@ export class GameService {
   }
 
   private createCardsFromJson(): Card[] {
-    console.log(cardListData)
     const cards: Card[] = [];
     const cardList = cardListData.cardList;
-    console.log(cardList);
     Object.entries(cardList).forEach(([key, value]: [string, any], index) => {
       cards.push(new Card(
         index,
@@ -154,7 +162,7 @@ export class GameService {
         value.description ?? '',
         value.moment ?? '',
         value.permanent ?? false,
-        `assets/cards/card-default.jpg`
+        value.imageUrl ?? `assets/cards/card-default.jpg`
       ));
     });
     return cards;

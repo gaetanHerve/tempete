@@ -103,8 +103,8 @@
       "permanent": false
     },
     "droitsDAuteur": {
-      "title": "Droits'd'Auteur",
-      "description": "A partier du moment où cette carte est jouée, tout joueur faisant une remarque désobligeante au sujet du jeu Tempête sur l'échiquier devra perdre un pion, choisi par son adversaire.",
+      "title": "Droits d'Auteur",
+      "description": "A partir du moment où cette carte est jouée, tout joueur faisant une remarque désobligeante au sujet du jeu Tempête sur l'échiquier devra perdre un pion, choisi par son adversaire.",
       "moment": "Jouez cette carte après votre coup.",
       "permanent": true
     },
@@ -266,7 +266,7 @@
     },
     "pasDeDeux": {
       "title": "pas de deux",
-      "description": "Vous poufvez déplaceer n'importe laquelle de vos pièces en lui faisnat effectuer, à partir de la case où elle se trouve, exactement le même mouvement que la pièce que vous venez de jouer (même direction, même distance) à condition qu'elle ne soit pas gênée par une autre pièce pour le faire. Cette seconde pièce déplacée peut prendre.",
+      "description": "Vous pouvez déplacer n'importe laquelle de vos pièces en lui faisant effectuer, à partir de la case où elle se trouve, exactement le même mouvement que la pièce que vous venez de jouer (même direction, même distance) à condition qu'elle ne soit pas gênée par une autre pièce pour le faire. Cette seconde pièce déplacée peut prendre.",
       "moment": "Jouez cette carte après votre coup.",
       "permanent": false
     },

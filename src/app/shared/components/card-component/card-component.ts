@@ -1,5 +1,6 @@
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { Card } from '../../models/card';
+import { Action } from '../../models/action';
 
 @Component({
   selector: 'app-card-component',
@@ -9,7 +10,23 @@ import { Card } from '../../models/card';
 })
 export class CardComponent {
 
-  // TODO: use that in zones
-  public readonly card = input<Card>();
+  public readonly card = input.required<Card>();
+  public readonly actions = input<Action[]>();
+  public readonly action = Action;
+  readonly play = output<number>();
+  readonly discard = output<number>();
+  readonly browse = output<number>();
+
+  protected onPlay(id: number) {
+    this.play.emit(id);
+  }
+
+  protected onDiscard(id: number) {
+    this.discard.emit(id);    
+  }
+
+  onBrowse(dir: number) {
+    this.browse.emit(dir);
+  }
 
 }
