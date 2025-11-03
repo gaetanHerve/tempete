@@ -1,4 +1,4 @@
-import { Component, effect, inject } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { GameService } from '../shared/services/game-service';
 import { Card } from '../shared/models/card';
 
@@ -13,14 +13,12 @@ export class Zone {
   protected readonly gameService = inject(GameService);
 
   protected zoneName: 'stack' | 'playArea' | 'discard' | 'hand' | undefined = undefined;
-  protected cards: Card[] = [];
-  protected nbCards: number = 0;
+  protected cards = signal<Card[]>([]);
 
   constructor() {
     effect(() => {
       if (this.zoneName != undefined) {
-        this.cards = this.gameService[this.zoneName]();
-        this.nbCards = this.cards.length;
+        this.cards.set(this.gameService[this.zoneName]());
       }
     });
   }

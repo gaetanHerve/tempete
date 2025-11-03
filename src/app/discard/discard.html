@@ -1,29 +1,11 @@
-<h2>DISCARD ({{ cards.length }})</h2>
+<h2>DISCARD ({{ cards().length }})</h2>
 
 <div class="cards-container">
   <div class="card" id="discardDropList">
 
-    @if (cards.length > 0) {
-
-      @let card = cards[cards.length - 1];
-      <div class="card-header">
-        <h5 class="card-title mt-2">{{ card.title }}</h5>
-        <img class="card-img-top" src={{card.imageUrl}} alt="Card image cap">
-      </div>
-
-      <div class="card-body">
-        <p class="card-text">{{ card.description }}</p>
-      </div>
-
-      <div class="card-footer">
-        <small>{{ card.moment }}</small>
-      </div>
-      <!-- <img class="card-img-top" src="..." alt="Card image cap">
-
-      <div class="card-body">
-        <h5 class="card-title">{{ cards[cards.length - 1].title }} (id: {{ cards[cards.length - 1].id }})</h5>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-      </div> -->
+    @if (cards().length > 0) {
+      @let card = cards()[cards().length - 1];
+      <app-card-component [card]="card"></app-card-component>
     } @else {
       <div class="no-card-bg">
         <p class="no-card">No cards in discard pile.</p>

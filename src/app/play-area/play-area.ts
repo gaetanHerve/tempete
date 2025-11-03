@@ -2,6 +2,7 @@ import { Component, effect, signal } from '@angular/core';
 import { Zone } from '../zone/zone';
 import { CardComponent } from '../shared/components/card-component/card-component';
 import { Action } from '../shared/models/action';
+import { Card } from '../shared/models/card';
 
 @Component({
   selector: 'app-play-area',
@@ -15,29 +16,34 @@ import { Action } from '../shared/models/action';
 export class PlayArea extends Zone {
 
   protected cardIndexModifier = signal<number>(0)
-  protected cardIndex = signal<number>(0);
-  protected actions = [Action.Discard, Action.Previous, Action.Next];
+  protected cardIndex: number = 0;
+  protected actions = signal<Array<Action>>([Action.Discard]);
+  protected card = signal<Card | undefined>(undefined);
 
   constructor() {
     super();
     this.zoneName = 'playArea';
+
     effect(() => {
-      if (this.cards.length > 1) {
-        this.cardIndex.set(this.cards.length - 1);
-        // this.actions = [Action.Discard];
-        // if (this.cardIndex() < this.cards.length - 1) this.actions.push(Action.Next);
-        // if (this.cardIndex() > 0) this.actions.push(Action.Previous);
+      this.cardIndex = 0;
+      if (this.cards().length > 1) {
+        this.card.set(this.cards()[this.cards().length - 1]);
+        this.actions.set([Action.Discard, Action.Previous, Action.Next]);
+      } else {
+        this.card.set(this.cards()[0]) ?? undefined;
+        this.actions.set([Action.Discard]);
       }
     });
   }
 
   protected browse(dir: number) {
-    console.log('in browse')
-    const newIndex = this.cardIndex() + dir;
-    // if (newIndex >= 0 && newIndex < this.cards.length) {
-      this.cardIndex.set(newIndex%this.cards.length);
-      console.log('new cardIndexModifier', this.cardIndex());
-    // }
+    this.cardIndex += dir;
+    this.card.set(this.cards()[this.cardIndex%this.cards().length]);
+  }
+
+
+  protected override discard(cardId: number) {
+    this.gameService.discardAction(cardId, false);
   }
 
 }

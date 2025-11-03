@@ -1,12 +1,15 @@
-<h2>PLAY AREA ({{ cards.length }})</h2>
+<h2>PLAY AREA ({{ cards().length }})</h2>
 
 <div class="cards-container">
 
   <div class="card" id="playAreaDropList">
     
-    @if (cards.length > 0) {
-        @let card = cards[cardIndex()];
-        <app-card-component [card]="card" [actions]="actions" (discard)="discard($event)" (browse)="browse($event)"></app-card-component>
+    @if (cards().length > 0 && card() != undefined) {
+      <app-card-component [card]="card()!"
+        [actions]="actions()"
+        (discard)="discard($event)"
+        (browse)="browse($event)">
+      </app-card-component>
     } @else {
       <p class="no-card">No card in play area.</p>
     }

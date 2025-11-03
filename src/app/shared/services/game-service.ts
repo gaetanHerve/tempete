@@ -78,16 +78,16 @@ export class GameService {
         this.errorService.addError('Hand is full, cannot draw more cards.');
         return;
       }
-      setTimeout(() => {
+      // setTimeout(() => {
         // add timeout for UX
         this.moveToHand(this.stack()[0].id);
-      }, 250);
+      // }, 250);
     }
   }
 
-  discardAction(cardId: number) {
+  discardAction(cardId: number, drawCard = true) {
     this.moveToDiscard(cardId);
-    this.drawCard();
+    if (drawCard) this.drawCard();
   }
 
   addToStack(card: Card) {
