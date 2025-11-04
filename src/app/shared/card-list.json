@@ -8,7 +8,7 @@
     },
     "angeGardien": {
       "title": "Ange Gardien",
-      "description": "Jouez cette carte losrque vous êtes en échec, même mat. Vous reprenez alors l'une des pièces que vous a pris votre adversaire, pour l'intercaler sur une case libre entre votre Roi et la pièce qui le menace.",
+      "description": "Jouez cette carte lorsque vous êtes en échec, même mat. Vous reprenez alors l'une des pièces que vous a pris votre adversaire, pour l'intercaler sur une case libre entre votre Roi et la pièce qui le menace.",
       "moment": "Jouez cette carte à votre tour de jeu. Ce coup remplace votre déplacement normal.",
       "permanent": false
     },
