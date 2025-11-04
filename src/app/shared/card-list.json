@@ -85,7 +85,7 @@
       "permanent": false
     },
     "crabe": {
-      "title": "Ctabe",
+      "title": "Crabe",
       "description": "Transformez l'un de vos pions en Crabe, et cela définitivement. Le Crabe sé déplace en diagonale, comme un Fou, mais d'une case seulement. Parvenu sur la dernière rangée, il est promu comme un pion ordinaire.",
       "moment": "Jouez cette carte après votre coup.",
       "permanent": true

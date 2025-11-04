@@ -11,7 +11,7 @@ export class Stack extends Zone {
 
   constructor() {
     super();
-    this.zoneName = 'stack';
+    this.zoneName.set('stack');
   }
 
 }

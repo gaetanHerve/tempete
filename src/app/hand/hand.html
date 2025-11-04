@@ -1,4 +1,4 @@
-<h2>HAND ({{ cards().length }})</h2>
+<h2>{{ player() }} ({{ cards().length }})</h2>
 
 <div class="cards-container" id="handDropList">
 
@@ -6,7 +6,7 @@
     <app-card-component
       [card]="card"
       [actions]="actions"
-      (play)="playCard($event)"
+      (play)="playCard($event, player()!)"
       (discard)="discard($event)">
     </app-card-component>
   }

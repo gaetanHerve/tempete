@@ -12,7 +12,7 @@ export class Discard extends Zone {
   
   constructor() {
     super();
-    this.zoneName = 'discard';
+    this.zoneName.set('discard');
   }
 
 }

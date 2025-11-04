@@ -18,7 +18,8 @@ export class GameService {
   stack = signal<Card[]>([]);
   playArea = signal<Card[]>([]);
   discard = signal<Card[]>([]);
-  hand = signal<Card[]>([]);
+  player1 = signal<Card[]>([]);
+  player2 = signal<Card[]>([]);
 
   public cardsPerHand = 5;
   public gameStarted = false;
@@ -32,23 +33,25 @@ export class GameService {
     this.shufflePile('stack');
   }
 
-  shufflePile(zone: 'stack' | 'playArea' | 'discard' | 'hand') {
+  shufflePile(zone: 'stack' | 'playArea' | 'discard' | 'player1' | 'player2') {
     let shuffled = zone === 'stack' ? this.stack() :
                    zone === 'playArea' ? this.playArea() :
                    zone === 'discard' ? this.discard() :
-                   this.hand();
+                   zone === 'player1' ? this.player1() :
+                   this.player2();
     if (shuffled.length <= 1) return;
     else this[zone].set(this.shuffleArray(shuffled));
   }
 
-  initHand()  {
+  initHands()  {
     for (let i = 0; i < this.cardsPerHand; i++) {
-      this.drawCard();
+      this.drawCard('player1');
+      this.drawCard('player2');
     }
   }
 
-  playCard(cardId: number) {
-    const card: Card = this.getPile('hand').find(c => c.id === cardId)!;
+  playCard(cardId: number, player: 'player1' | 'player2') {
+    const card: Card = this.getPile(player).find(c => c.id === cardId)!;
     if (!card) {
       this.errorService.addError('Card not found in hand.');
       return;
@@ -58,10 +61,10 @@ export class GameService {
     } else {
       this.moveToDiscard(cardId);
     }
-    this.drawCard();
+    this.drawCard(player);
   }
 
-  drawCard(numberOfCards: number = 1) {
+  drawCard(player: 'player1' | 'player2', numberOfCards: number = 1) {
     for (let i = 0; i < numberOfCards; i++) {
 
       if (this.stack().length === 0) {
@@ -74,20 +77,18 @@ export class GameService {
           return;
         }
       }
-      if (this.hand().length >= this.cardsPerHand) {
+      const hand = player === 'player1' ? this.player1() : this.player2();
+      if (hand.length >= this.cardsPerHand) {
         this.errorService.addError('Hand is full, cannot draw more cards.');
         return;
       }
-      // setTimeout(() => {
-        // add timeout for UX
-        this.moveToHand(this.stack()[0].id);
-      // }, 250);
+      this.moveToHand(this.stack()[0].id, player);
     }
   }
 
-  discardAction(cardId: number, drawCard = true) {
+  discardAction(cardId: number, drawCard = true, player?: 'player1' | 'player2') {
     this.moveToDiscard(cardId);
-    if (drawCard) this.drawCard();
+    if (drawCard && player) this.drawCard(player);
   }
 
   addToStack(card: Card) {
@@ -108,15 +109,20 @@ export class GameService {
     }
   }
 
-  moveToHand(cardId: number) {
+  moveToHand(cardId: number, player: 'player1' | 'player2') {
+    console.log('in movetohand', player, cardId)
     let card = this.removeCardFromAnyPile(cardId);
     if (card) {
-      this.hand.update(pile => [...pile, card]);
+      player === 'player1'
+        ? this.player1.update(pile => [...pile, card])
+        : this.player2.update(pile => [...pile, card]);
+        console.log('player1', this.player1())
+        console.log('player2()', this.player2())
     }
   }
 
   removeCardFromAnyPile(cardId: number): Card | undefined {
-    const piles = [this.stack, this.playArea, this.discard, this.hand];
+    const piles = [this.stack, this.playArea, this.discard, this.player1, this.player2];
     for (const pileSignal of piles) {
       const pile = pileSignal();
       const idx = pile.findIndex(c => c.id === cardId);
@@ -130,7 +136,7 @@ export class GameService {
     return undefined;
   }
 
-  getPile(zone: 'stack' | 'playArea' | 'discard' | 'hand'): Card[] {
+  getPile(zone: 'stack' | 'playArea' | 'discard' | 'player1' | 'player2'): Card[] {
     return this[zone]();
   }
 
@@ -138,7 +144,8 @@ export class GameService {
     this.stack.set([]);
     this.playArea.set([]);
     this.discard.set([]);
-    this.hand.set([]);
+    this.player1.set([]);
+    this.player2.set([]);
     this.gameStarted = false;
   }
 

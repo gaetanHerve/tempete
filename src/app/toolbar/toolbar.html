@@ -1,9 +1,17 @@
 <div class="game-actions">
-  <button type="button" class="btn btn-outline-primary m-1" (click)="startGame()">START GAME</button>
-  <!-- <button type="button" class="btn btn-outline-success m-1" (click)="drawCard()">DRAW 1 CARD</button> -->
-  <button type="button" class="btn btn-outline-danger m-1" (click)="resetGame()">RESET GAME</button>
+  <button type="button"
+    class="btn btn-outline-primary m-1"
+    (click)="startGame()"
+    [disabled]="gameStarted()">
+    START GAME
+  </button>
+  <button type="button"
+    class="btn btn-outline-danger m-1"
+    (click)="resetGame()"
+    [disabled]="!gameStarted()">
+    RESET GAME
+  </button>
 </div>
-
 
 <div class="error-section">
     <app-error></app-error>

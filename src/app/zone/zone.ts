@@ -12,13 +12,16 @@ export class Zone {
 
   protected readonly gameService = inject(GameService);
 
-  protected zoneName: 'stack' | 'playArea' | 'discard' | 'hand' | undefined = undefined;
+  protected zoneName = signal<'stack' | 'playArea' | 'discard' | 'player1' | 'player2' | undefined>(undefined);
   protected cards = signal<Card[]>([]);
 
   constructor() {
     effect(() => {
       if (this.zoneName != undefined) {
-        this.cards.set(this.gameService[this.zoneName]());
+        if (this.zoneName()) {
+          this.cards.set(this.gameService[this.zoneName()!]());
+        }
+        
       }
     });
   }
@@ -27,8 +30,8 @@ export class Zone {
     this.gameService.discardAction(cardId);
   }
 
-  protected playCard(cardId: number) {
-    this.gameService.playCard(cardId);
+  protected playCard(cardId: number, player: 'player1' | 'player2') {
+    this.gameService.playCard(cardId, player);
   }
   
 

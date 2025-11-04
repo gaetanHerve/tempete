@@ -22,7 +22,7 @@ export class PlayArea extends Zone {
 
   constructor() {
     super();
-    this.zoneName = 'playArea';
+    this.zoneName.set('playArea');
 
     effect(() => {
       this.cardIndex = 0;
