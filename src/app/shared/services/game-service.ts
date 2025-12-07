@@ -2,6 +2,8 @@ import { inject, Injectable, signal } from '@angular/core';
 import { Card } from '../models/card';
 import { ErrorService } from './error-service';
 import cardListData from '../card-list.json';
+import { GameAPIService } from './game-apiservice';
+import { Game } from '../models/game';
 
 
 export interface Pile {
@@ -14,6 +16,7 @@ export interface Pile {
 export class GameService {
 
   private readonly errorService = inject(ErrorService);
+  private readonly gameAPI = inject(GameAPIService);
 
   stack = signal<Card[]>([]);
   playArea = signal<Card[]>([]);
@@ -27,7 +30,26 @@ export class GameService {
   // TODO: store the cards in local storage to persist between sessions
 
   initStack() {
-    // Initialize the stack with a standard set of cards
+    // Initialize the stack with a standard set of cardsw
+    const id = crypto.randomUUID();
+    const newGame: Partial<Game> = {
+      player1: 'player1',
+      player2: 'player2',
+      player1Hand: ['crabe'],
+      player2Hand: ['crabe'],
+      playArea: ['crabe'],
+      discard: ['crabe'],
+      stack: ['crabe']
+    }
+
+    this.gameAPI.saveGame(newGame).subscribe({
+      next: (res) => {
+        console.log('game created backend with id', res.insertedId)
+        // TODO: add insertedId in session storage
+      },
+      error: (error) => console.log('got this error from backend', error)
+    });
+
     let allCards: Card[] = this.createCardsFromJson();
     this.stack.set(allCards);
     this.shufflePile('stack');
@@ -50,8 +72,8 @@ export class GameService {
     }
   }
 
-  playCard(cardId: number, player: 'player1' | 'player2') {
-    const card: Card = this.getPile(player).find(c => c.id === cardId)!;
+  playCard(cardId: string, player: 'player1' | 'player2') {
+    const card: Card = this.getPile(player).find(c => c._id === cardId)!;
     if (!card) {
       this.errorService.addError('Card not found in hand.');
       return;
@@ -82,11 +104,11 @@ export class GameService {
         this.errorService.addError('Hand is full, cannot draw more cards.');
         return;
       }
-      this.moveToHand(this.stack()[0].id, player);
+      this.moveToHand(this.stack()[0]._id, player);
     }
   }
 
-  discardAction(cardId: number, drawCard = true, player?: 'player1' | 'player2') {
+  discardAction(cardId: string, drawCard = true, player?: 'player1' | 'player2') {
     this.moveToDiscard(cardId);
     if (drawCard && player) this.drawCard(player);
   }
@@ -95,37 +117,34 @@ export class GameService {
     this.stack.update(pile => [...pile, card]);
   }
 
-  moveToPlayArea(cardId: number) {
+  moveToPlayArea(cardId: string) {
     let card = this.removeCardFromAnyPile(cardId);
     if (card) {
       this.playArea.update(pile => [...pile, card]);
     }
   }
 
-  moveToDiscard(cardId: number) {
+  moveToDiscard(cardId: string) {
     let card = this.removeCardFromAnyPile(cardId);
     if (card) {
       this.discard.update(pile => [...pile, card]);
     }
   }
 
-  moveToHand(cardId: number, player: 'player1' | 'player2') {
-    console.log('in movetohand', player, cardId)
+  moveToHand(cardId: string, player: 'player1' | 'player2') {
     let card = this.removeCardFromAnyPile(cardId);
     if (card) {
       player === 'player1'
         ? this.player1.update(pile => [...pile, card])
         : this.player2.update(pile => [...pile, card]);
-        console.log('player1', this.player1())
-        console.log('player2()', this.player2())
     }
   }
 
-  removeCardFromAnyPile(cardId: number): Card | undefined {
+  removeCardFromAnyPile(cardId: string): Card | undefined {
     const piles = [this.stack, this.playArea, this.discard, this.player1, this.player2];
     for (const pileSignal of piles) {
       const pile = pileSignal();
-      const idx = pile.findIndex(c => c.id === cardId);
+      const idx = pile.findIndex(c => c._id === cardId);
       if (idx !== -1) {
         const card = pile[idx];
         const newCards = [...pile.slice(0, idx), ...pile.slice(idx + 1)];
@@ -162,14 +181,14 @@ export class GameService {
   private createCardsFromJson(): Card[] {
     const cards: Card[] = [];
     const cardList = cardListData.cardList;
-    Object.entries(cardList).forEach(([key, value]: [string, any], index) => {
+    Object.entries(cardList).forEach(([key, value]: [string, any]) => {
       cards.push(new Card(
-        index,
+        key,
         value.title ?? key,
         value.description ?? '',
         value.moment ?? '',
         value.permanent ?? false,
-        value.imageUrl ?? `assets/cards/card-default.jpg`
+        `${key}.png`
       ));
     });
     return cards;

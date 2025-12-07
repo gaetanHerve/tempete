@@ -1,7 +1,10 @@
 <div class="card">
   <div class="card-header">
-    <h5 class="card-title mt-2">{{ card().title }}</h5>
-    <img class="card-img-top" [src]="card().imageUrl" alt="Card image cap">
+    <h5 class="card-title mt-1">{{ card().title }}</h5>
+    <img class="card-img-top"
+         [src]="getImageSrc()"
+         (error)="onImgError($event)"
+         [alt]="card().title || 'card image'">
   </div>
 
   <div class="card-body">
@@ -18,10 +21,10 @@
       </button>
     }
     @if(actions()?.includes(action.Play)) {
-      <button type="button" class="play-btn btn btn-success m-1" (click)="onPlay(card().id)">Play</button>
+      <button type="button" class="play-btn btn btn-success m-1" (click)="onPlay(card()._id)">Play</button>
     }
     @if(actions()?.includes(action.Discard)) {
-      <button type="button" class="discard-btn btn btn-danger m-1" (click)="onDiscard(card().id)">Discard</button>
+      <button type="button" class="discard-btn btn btn-danger m-1" (click)="onDiscard(card()._id)">Discard</button>
     }
     @if(actions()?.includes(action.Next)) {
       <button type="button" class="icon-btn next" aria-label="next" (click)="onBrowse(1)">

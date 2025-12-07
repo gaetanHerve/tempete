@@ -1,0 +1,61 @@
+@use '../../../../styles.scss';
+
+.card {
+  position: relative;
+  overflow: hidden; /* clip oversize image */
+  min-height: 260px; /* increase if image covers too much */
+  border-radius: 8px;
+}
+
+/* make the image use the full width of the card and taller */
+.card .card-img-top {
+  position: absolute;
+  top: 0;                 /* align with top of card/header */
+  left: 0;
+  min-width: 15rem;
+  min-height: 10rem;
+  width: 200%;            /* full card width */
+  height: 78%;            /* increase height if needed */
+  object-fit: cover;
+  z-index: 2;             /* above body but below title/header */
+  pointer-events: none;
+  filter: brightness(0.85); /* dim a bit to improve text readability */
+  transition: transform .25s ease;
+}
+
+/* make sure header/title is in front of the image */
+.card .card-header {
+  position: relative;
+  z-index: 4;
+  background: transparent; /* keep header transparent to let image show through */
+  padding-top: 0.6rem;
+}
+
+.card .card-title {
+  position: relative;
+  z-index: 5; /* ensure title is above image */
+  color: rgb(230,230,230,1);
+  text-shadow: 0 1px 2px rgba(0,0,0,0.7);
+}
+
+/* keep the body below the image; tweak padding so text isn't totally covered (optional) */
+.card .card-body {
+  position: relative;
+  z-index: 1;
+  padding-top: 1.25rem; /* increase if you want body pushed lower */
+  color: #222;
+}
+
+/* subtle hover zoom */
+.card:hover .card-img-top {
+  transform: scale(1.03);
+}
+
+/* responsive: reduce image height on small screens */
+@media (max-width: 600px) {
+  .card .card-img-top {
+    width: 100%;
+    height: 60%;
+  }
+  .card { min-height: 220px; }
+}

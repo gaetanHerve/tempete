@@ -2,10 +2,14 @@
 
 <div class="cards-container">
   <div class="card">
-    <div [class]="cards().length > 0 ? 'card-back-bg' : 'no-card-bg'">
-      @if (cards().length === 0) {
-          <p class="no-card">No cards in Stack.</p>
-      }
-    </div>
+    @if (cards().length === 0) {
+      <div class="no-card-bg">
+            <p class="no-card">No cards in Stack.</p>
+      </div>
+    } @else {
+      <img class="card-img-top"
+         src="assets/cards/card-back.png"
+         alt="card-back cap">
+    }
   </div>
 </div>

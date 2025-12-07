@@ -26,11 +26,11 @@ export class Zone {
     });
   }
 
-  protected discard(cardId: number) {
+  protected discard(cardId: string) {
     this.gameService.discardAction(cardId);
   }
 
-  protected playCard(cardId: number, player: 'player1' | 'player2') {
+  protected playCard(cardId: string, player: 'player1' | 'player2') {
     this.gameService.playCard(cardId, player);
   }
   
