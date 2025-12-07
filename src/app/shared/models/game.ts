@@ -1,13 +1,14 @@
+import { Card } from "./card";
 
 export class Game {
   constructor(
     public _id: string,
     public player1: string,
     public player2: string,
-    public player1Hand: string[],
-    public player2Hand: string[],
-    public playArea: string[],
-    public discard: string[],
-    public stack: string[]
+    public player1Hand: Card[],
+    public player2Hand: Card[],
+    public playArea: Card[],
+    public discard: Card[],
+    public stack: Card[]
   ) {}
 }

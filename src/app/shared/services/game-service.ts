@@ -2,8 +2,10 @@ import { inject, Injectable, signal } from '@angular/core';
 import { Card } from '../models/card';
 import { ErrorService } from './error-service';
 import cardListData from '../card-list.json';
-import { GameAPIService } from './game-apiservice';
+import { GameAPIService } from './game-api-service';
 import { Game } from '../models/game';
+import { GameSocketService } from './gameSocket-service';
+import { toSignal } from '@angular/core/rxjs-interop';
 
 
 export interface Pile {
@@ -17,6 +19,9 @@ export class GameService {
 
   private readonly errorService = inject(ErrorService);
   private readonly gameAPI = inject(GameAPIService);
+  gameSocketService = inject(GameSocketService);
+  isConnected = toSignal(this.gameSocketService.onConnect());
+  error = toSignal(this.gameSocketService.onError());
 
   stack = signal<Card[]>([]);
   playArea = signal<Card[]>([]);
@@ -27,29 +32,10 @@ export class GameService {
   public cardsPerHand = 5;
   public gameStarted = false;
 
-  // TODO: store the cards in local storage to persist between sessions
+  // TODO: store the cards in local storage to persist between sessions?
 
   initStack() {
-    // Initialize the stack with a standard set of cardsw
-    const id = crypto.randomUUID();
-    const newGame: Partial<Game> = {
-      player1: 'player1',
-      player2: 'player2',
-      player1Hand: ['crabe'],
-      player2Hand: ['crabe'],
-      playArea: ['crabe'],
-      discard: ['crabe'],
-      stack: ['crabe']
-    }
-
-    this.gameAPI.saveGame(newGame).subscribe({
-      next: (res) => {
-        console.log('game created backend with id', res.insertedId)
-        // TODO: add insertedId in session storage
-      },
-      error: (error) => console.log('got this error from backend', error)
-    });
-
+    // Initialize the stack with a standard set of cards
     let allCards: Card[] = this.createCardsFromJson();
     this.stack.set(allCards);
     this.shufflePile('stack');
@@ -63,6 +49,30 @@ export class GameService {
                    this.player2();
     if (shuffled.length <= 1) return;
     else this[zone].set(this.shuffleArray(shuffled));
+
+    const id = crypto.randomUUID();
+    const newGame: Game = {
+      _id: id,
+      player1: 'player1',
+      player2: 'player2',
+      player1Hand: this.player1(),
+      player2Hand: this.player2(),
+      playArea: this.playArea(),
+      discard: this.discard(),
+      stack: this.stack()
+    }
+
+    this.gameAPI.saveGame(newGame).subscribe({
+      next: (res) => {
+        console.log('game created backend with id', res.insertedId)
+        // TODO: add insertedId in session storage?
+      },
+      error: (error) => console.log('got this error from backend', error)
+    });
+
+    this.gameSocketService.sendMessage(newGame);
+    // TODO: return invitation link
+
   }
 
   initHands()  {

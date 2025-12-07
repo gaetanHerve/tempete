@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 
-import { GameAPIService } from './game-apiservice';
+import { GameAPIService } from './game-api-service';
 
 describe('GameAPIService', () => {
   let service: GameAPIService;
