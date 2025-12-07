@@ -2,7 +2,7 @@
 
 <div class="cards-container" id="handDropList">
 
-  @for (card of cards(); track card.id) {
+  @for (card of cards(); track card._id) {
     <app-card-component
       [card]="card"
       [actions]="actions"
