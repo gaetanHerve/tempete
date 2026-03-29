@@ -31,7 +31,7 @@ export class Zone {
   }
 
   protected playCard(cardId: string, player: 'player1' | 'player2') {
-    this.gameService.playCard(cardId, player);
+    this.gameService.previewHandAction(cardId, player, 'play');
   }
   
 

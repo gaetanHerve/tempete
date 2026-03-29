@@ -1,4 +1,5 @@
 import { inject, Injectable, signal } from '@angular/core';
+import { take } from 'rxjs/operators';
 import { Card } from '../models/card';
 import { ErrorService } from './error-service';
 import cardListData from '../card-list.json';
@@ -9,6 +10,21 @@ import { Player } from '../models/player';
 
 export interface Pile {
   cards: Card[];
+}
+
+interface GameSnapshot {
+  stack: Card[];
+  playArea: Card[];
+  discard: Card[];
+  player1: Card[];
+  player2: Card[];
+  player1PlayedThisTurn: boolean;
+  player2PlayedThisTurn: boolean;
+}
+
+interface PendingAction {
+  player: 'player1' | 'player2';
+  snapshot: GameSnapshot; // état AVANT le preview, pour pouvoir annuler
 }
 
 @Injectable({
@@ -27,6 +43,15 @@ export class GameService {
   discard = signal<Card[]>([]);
   player1 = signal<Card[]>([]);
   player2 = signal<Card[]>([]);
+  currentTurn = signal<'player1' | 'player2'>('player1');
+  player1PlayedThisTurn = signal<boolean>(false);
+  player2PlayedThisTurn = signal<boolean>(false);
+  canUndoPlayer1 = signal<boolean>(false);
+  canUndoPlayer2 = signal<boolean>(false);
+  pendingAction = signal<PendingAction | null>(null);
+
+  private snapshotPlayer1: GameSnapshot | null = null;
+  private snapshotPlayer2: GameSnapshot | null = null;
 
   public cardsPerHand = 5;
   public gameStarted = false;
@@ -45,6 +70,9 @@ export class GameService {
       this.discard.set(game.discard ?? []);
       this.player1.set(game.player1Hand ?? []);
       this.player2.set(game.player2Hand ?? []);
+      this.currentTurn.set(game.currentTurn ?? 'player1');
+      this.player1PlayedThisTurn.set(game.player1PlayedThisTurn ?? false);
+      this.player2PlayedThisTurn.set(game.player2PlayedThisTurn ?? false);
       this.gameStarted = true;
     });
   }
@@ -57,6 +85,10 @@ export class GameService {
       this.initHands();
       this.gameStarted = true;
       onSuccess?.();
+
+      this.gameSocketService.onOpponentJoined().pipe(take(1)).subscribe(() => {
+        this.syncGameState();
+      });
     });
   }
 
@@ -67,64 +99,134 @@ export class GameService {
     });
   }
 
+  endTurn(): void {
+    this.currentTurn.set(this.currentTurn() === 'player1' ? 'player2' : 'player1');
+    this.player1PlayedThisTurn.set(false);
+    this.player2PlayedThisTurn.set(false);
+    this.clearSnapshots();
+    this.syncGameState();
+  }
+
+  // --- Actions de la main avec confirmation ---
+
+  /**
+   * Phase 1 : déplace la carte localement sans piocher ni synchroniser.
+   * L'adversaire ne voit rien tant que le joueur n'a pas confirmé.
+   */
+  previewHandAction(cardId: string, player: 'player1' | 'player2', type: 'play' | 'discard'): void {
+    if (this.pendingAction()) return;
+
+    const alreadyPlayed = player === 'player1' ? this.player1PlayedThisTurn() : this.player2PlayedThisTurn();
+    if (alreadyPlayed) {
+      this.errorService.addError('Vous avez déjà joué une carte ce tour.');
+      return;
+    }
+
+    const snapshot = this.takeSnapshot();
+
+    if (type === 'play') {
+      const card = this.getPile(player).find(c => c._id === cardId);
+      if (!card) {
+        this.errorService.addError('Carte introuvable dans la main.');
+        return;
+      }
+      if (card.permanent) {
+        this.moveToPlayArea(cardId);
+      } else {
+        this.moveToDiscard(cardId);
+      }
+    } else {
+      this.moveToDiscard(cardId);
+    }
+
+    this.pendingAction.set({ player, snapshot });
+  }
+
+  /**
+   * Phase 2a : confirme l'action → pioche, marque le tour, synchronise.
+   */
+  confirmPendingAction(): void {
+    const pending = this.pendingAction();
+    if (!pending) return;
+
+    const { player, snapshot } = pending;
+
+    // Enregistre le snapshot pour l'undo post-confirmation
+    this.setUndoSnapshot(player, snapshot);
+
+    this.drawCard(player);
+
+    if (player === 'player1') this.player1PlayedThisTurn.set(true);
+    else this.player2PlayedThisTurn.set(true);
+
+    this.pendingAction.set(null);
+    this.syncGameState();
+  }
+
+  /**
+   * Phase 2b : annule l'action → restaure silencieusement l'état local, sans sync.
+   */
+  cancelPendingAction(): void {
+    const pending = this.pendingAction();
+    if (!pending) return;
+    this.restoreSnapshot(pending.snapshot);
+    this.pendingAction.set(null);
+  }
+
+  // --- Undo post-confirmation ---
+
+  undoLastAction(player: 'player1' | 'player2'): void {
+    const snapshot = player === 'player1' ? this.snapshotPlayer1 : this.snapshotPlayer2;
+    if (!snapshot) return;
+
+    this.restoreSnapshot(snapshot);
+
+    if (player === 'player1') {
+      // L'annulation de player1 invalide aussi la réaction de player2
+      this.clearSnapshots();
+    } else {
+      this.snapshotPlayer2 = null;
+      this.canUndoPlayer2.set(false);
+    }
+
+    this.syncGameState();
+  }
+
+  // --- Défausse depuis la zone de jeu (sans pioche, sans confirmation) ---
+
+  discardAction(cardId: string): void {
+    this.moveToDiscard(cardId);
+    this.syncGameState();
+  }
+
+  // --- Initialisation ---
+
   initStack() {
-    let allCards: Card[] = this.createCardsFromJson();
+    const allCards: Card[] = this.createCardsFromJson();
     this.stack.set(allCards);
     this.shufflePile('stack');
   }
 
-  shufflePile(zone: 'stack' | 'playArea' | 'discard' | 'player1' | 'player2') {
-    let shuffled = zone === 'stack' ? this.stack() :
-                   zone === 'playArea' ? this.playArea() :
-                   zone === 'discard' ? this.discard() :
-                   zone === 'player1' ? this.player1() :
-                   this.player2();
-    if (shuffled.length <= 1) return;
-    else this[zone].set(this.shuffleArray(shuffled));
-    this.syncGameState();
-  }
-
-  private syncGameState(): void {
-    const code = this.roomCode();
-    if (!code) return;
-
-    const game: Game = {
-      _id: crypto.randomUUID(),
-      player1: 'player1',
-      player2: 'player2',
-      player1Hand: this.player1(),
-      player2Hand: this.player2(),
-      playArea: this.playArea(),
-      discard: this.discard(),
-      stack: this.stack()
-    };
-    this.gameSocketService.sendGameState(code, game);
-  }
-
-  initHands()  {
+  initHands() {
     for (let i = 0; i < this.cardsPerHand; i++) {
       this.drawCard('player1');
       this.drawCard('player2');
     }
   }
 
-  playCard(cardId: string, player: 'player1' | 'player2') {
-    const card: Card = this.getPile(player).find(c => c._id === cardId)!;
-    if (!card) {
-      this.errorService.addError('Card not found in hand.');
-      return;
-    }
-    if (card.permanent) {
-      this.moveToPlayArea(cardId);
-    } else {
-      this.moveToDiscard(cardId);
-    }
-    this.drawCard(player);
+  shufflePile(zone: 'stack' | 'playArea' | 'discard' | 'player1' | 'player2') {
+    const pile = zone === 'stack' ? this.stack() :
+                 zone === 'playArea' ? this.playArea() :
+                 zone === 'discard' ? this.discard() :
+                 zone === 'player1' ? this.player1() :
+                 this.player2();
+    if (pile.length <= 1) return;
+    this[zone].set(this.shuffleArray(pile));
+    this.syncGameState();
   }
 
   drawCard(player: 'player1' | 'player2', numberOfCards: number = 1) {
     for (let i = 0; i < numberOfCards; i++) {
-
       if (this.stack().length === 0) {
         if (this.discard().length > 0) {
           this.stack.set(this.shuffleArray(this.discard()));
@@ -143,31 +245,22 @@ export class GameService {
     }
   }
 
-  discardAction(cardId: string, drawCard = true, player?: 'player1' | 'player2') {
-    this.moveToDiscard(cardId);
-    if (drawCard && player) this.drawCard(player);
-  }
-
   addToStack(card: Card) {
     this.stack.update(pile => [...pile, card]);
   }
 
   moveToPlayArea(cardId: string) {
-    let card = this.removeCardFromAnyPile(cardId);
-    if (card) {
-      this.playArea.update(pile => [...pile, card]);
-    }
+    const card = this.removeCardFromAnyPile(cardId);
+    if (card) this.playArea.update(pile => [...pile, card]);
   }
 
   moveToDiscard(cardId: string) {
-    let card = this.removeCardFromAnyPile(cardId);
-    if (card) {
-      this.discard.update(pile => [...pile, card]);
-    }
+    const card = this.removeCardFromAnyPile(cardId);
+    if (card) this.discard.update(pile => [...pile, card]);
   }
 
   moveToHand(cardId: string, player: 'player1' | 'player2') {
-    let card = this.removeCardFromAnyPile(cardId);
+    const card = this.removeCardFromAnyPile(cardId);
     if (card) {
       player === 'player1'
         ? this.player1.update(pile => [...pile, card])
@@ -182,8 +275,7 @@ export class GameService {
       const idx = pile.findIndex(c => c._id === cardId);
       if (idx !== -1) {
         const card = pile[idx];
-        const newCards = [...pile.slice(0, idx), ...pile.slice(idx + 1)];
-        pileSignal.update(() => newCards );
+        pileSignal.update(() => [...pile.slice(0, idx), ...pile.slice(idx + 1)]);
         return card;
       }
     }
@@ -201,10 +293,77 @@ export class GameService {
     this.player1.set([]);
     this.player2.set([]);
     this.roomCode.set(null);
+    this.currentTurn.set('player1');
+    this.player1PlayedThisTurn.set(false);
+    this.player2PlayedThisTurn.set(false);
+    this.pendingAction.set(null);
+    this.clearSnapshots();
     this.gameStarted = false;
   }
 
-  // Utils
+  // --- Snapshot helpers ---
+
+  private takeSnapshot(): GameSnapshot {
+    return {
+      stack: [...this.stack()],
+      playArea: [...this.playArea()],
+      discard: [...this.discard()],
+      player1: [...this.player1()],
+      player2: [...this.player2()],
+      player1PlayedThisTurn: this.player1PlayedThisTurn(),
+      player2PlayedThisTurn: this.player2PlayedThisTurn()
+    };
+  }
+
+  private restoreSnapshot(snapshot: GameSnapshot): void {
+    this.stack.set(snapshot.stack);
+    this.playArea.set(snapshot.playArea);
+    this.discard.set(snapshot.discard);
+    this.player1.set(snapshot.player1);
+    this.player2.set(snapshot.player2);
+    this.player1PlayedThisTurn.set(snapshot.player1PlayedThisTurn);
+    this.player2PlayedThisTurn.set(snapshot.player2PlayedThisTurn);
+  }
+
+  private setUndoSnapshot(player: 'player1' | 'player2', snapshot: GameSnapshot): void {
+    if (player === 'player1') {
+      this.snapshotPlayer1 = snapshot;
+      this.canUndoPlayer1.set(true);
+    } else {
+      this.snapshotPlayer2 = snapshot;
+      this.canUndoPlayer2.set(true);
+    }
+  }
+
+  private clearSnapshots(): void {
+    this.snapshotPlayer1 = null;
+    this.snapshotPlayer2 = null;
+    this.canUndoPlayer1.set(false);
+    this.canUndoPlayer2.set(false);
+  }
+
+  // --- Sync & utils ---
+
+  private syncGameState(): void {
+    const code = this.roomCode();
+    if (!code) return;
+
+    const game: Game = {
+      _id: crypto.randomUUID(),
+      player1: 'player1',
+      player2: 'player2',
+      player1Hand: this.player1(),
+      player2Hand: this.player2(),
+      playArea: this.playArea(),
+      discard: this.discard(),
+      stack: this.stack(),
+      currentTurn: this.currentTurn(),
+      player1PlayedThisTurn: this.player1PlayedThisTurn(),
+      player2PlayedThisTurn: this.player2PlayedThisTurn()
+    };
+    this.gameSocketService.sendGameState(code, game);
+  }
+
   private shuffleArray(array: Card[]): Card[] {
     const arr = [...array];
     for (let i = arr.length - 1; i > 0; i--) {

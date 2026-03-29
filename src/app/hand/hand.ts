@@ -1,4 +1,4 @@
-import { Component, effect, input } from '@angular/core';
+import { Component, computed, effect, input } from '@angular/core';
 import { Zone } from '../zone/zone';
 import { CardComponent } from "../shared/components/card-component/card-component";
 import { Action } from '../shared/models/action';
@@ -12,11 +12,34 @@ import { Action } from '../shared/models/action';
 export class Hand extends Zone {
 
   public player = input<'player1' | 'player2'>()
-  protected actions = [Action.Play, Action.Discard]
+
+  protected actions = computed(() => {
+    // Aucune action disponible si une action est en attente de confirmation
+    if (this.gameService.pendingAction()) return [];
+
+    const player = this.player();
+    const currentTurn = this.gameService.currentTurn();
+    const alreadyPlayed = player === 'player1'
+      ? this.gameService.player1PlayedThisTurn()
+      : this.gameService.player2PlayedThisTurn();
+
+    const actions: Action[] = [];
+    if (!alreadyPlayed) actions.push(Action.Play);
+    if (currentTurn === player && !alreadyPlayed) actions.push(Action.Discard);
+    return actions;
+  });
 
   constructor() {
     super();
     effect(() => this.zoneName.set(this.player()))
+  }
+
+  protected override playCard(cardId: string, player: 'player1' | 'player2') {
+    this.gameService.previewHandAction(cardId, player, 'play');
+  }
+
+  protected override discard(cardId: string) {
+    this.gameService.previewHandAction(cardId, this.player()!, 'discard');
   }
 
 }

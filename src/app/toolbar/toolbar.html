@@ -1,44 +1,82 @@
-<div class="game-actions">
-  <button type="button"
-    class="btn btn-outline-primary m-1"
-    (click)="startGame()"
-    [disabled]="gameStarted()">
-    CRÉER UNE PARTIE
-  </button>
+@if (gameStarted()) {
+  <div class="turn-indicator mb-2">
+    @if (currentTurn() === localPlayer().number) {
+      <span class="badge bg-success fs-6">C'est votre tour</span>
+    } @else {
+      <span class="badge bg-secondary fs-6">Tour de l'adversaire</span>
+    }
+  </div>
+}
 
-  @if (!showJoinInput()) {
+<div class="game-actions">
+  @if (pendingAction()) {
+    <span class="text-muted me-2">Confirmer ce coup ?</span>
     <button type="button"
-      class="btn btn-outline-primary m-1"
-      (click)="showJoinForm()"
-      [disabled]="gameStarted()">
-      REJOINDRE UNE PARTIE
+      class="btn btn-success m-1"
+      (click)="confirmAction()">
+      CONFIRMER
+    </button>
+    <button type="button"
+      class="btn btn-warning m-1"
+      (click)="cancelAction()">
+      ANNULER
     </button>
   } @else {
-    <input
-      class="form-control d-inline-block w-auto m-1"
-      type="text"
-      placeholder="Code de la partie"
-      [(ngModel)]="joinCodeInput"
-      maxlength="6" />
+    <button type="button"
+      class="btn btn-outline-primary m-1"
+      (click)="startGame()"
+      [disabled]="gameStarted()">
+      CRÉER UNE PARTIE
+    </button>
+
+    @if (!showJoinInput()) {
+      <button type="button"
+        class="btn btn-outline-primary m-1"
+        (click)="showJoinForm()"
+        [disabled]="gameStarted()">
+        REJOINDRE UNE PARTIE
+      </button>
+    } @else {
+      <input
+        class="form-control d-inline-block w-auto m-1"
+        type="text"
+        placeholder="Code de la partie"
+        [(ngModel)]="joinCodeInput"
+        maxlength="6" />
+      <button type="button"
+        class="btn btn-outline-success m-1"
+        (click)="confirmJoin()">
+        REJOINDRE
+      </button>
+    }
+
+    <button type="button"
+      class="btn btn-outline-warning m-1"
+      (click)="undoLastAction()"
+      [disabled]="!canUndo()">
+      ANNULER DERNIER COUP
+    </button>
+
     <button type="button"
       class="btn btn-outline-success m-1"
-      (click)="confirmJoin()">
-      REJOINDRE
+      (click)="endTurn()"
+      [disabled]="!gameStarted() || currentTurn() !== localPlayer().number">
+      FIN DE MON TOUR
+    </button>
+
+    <button type="button"
+      class="btn btn-outline-danger m-1"
+      (click)="resetGame()"
+      [disabled]="!gameStarted()">
+      RESET GAME
+    </button>
+
+    <button type="button"
+      class="btn btn-outline-secondary m-1"
+      (click)="shufflePile()">
+      SHUFFLE PILE
     </button>
   }
-
-  <button type="button"
-    class="btn btn-outline-danger m-1"
-    (click)="resetGame()"
-    [disabled]="!gameStarted()">
-    RESET GAME
-  </button>
-
-  <button type="button"
-    class="btn btn-outline-secondary m-1"
-    (click)="shufflePile()">
-    SHUFFLE PILE
-  </button>
 </div>
 
 @if (roomCode()) {

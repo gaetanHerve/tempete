@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { GameService } from '../shared/services/game-service';
 import { ErrorComponent } from '../shared/components/error-component/error-component';
@@ -17,6 +17,15 @@ export class Toolbar {
   protected roomCode = this.gameService.roomCode;
   protected showJoinInput = signal<boolean>(false);
   protected joinCodeInput = '';
+  protected currentTurn = this.gameService.currentTurn;
+  protected localPlayer = this.gameService.player;
+  protected pendingAction = this.gameService.pendingAction;
+  protected canUndo = computed(() => {
+    const player = this.localPlayer().number;
+    return player === 'player1'
+      ? this.gameService.canUndoPlayer1()
+      : this.gameService.canUndoPlayer2();
+  });
 
   protected startGame() {
     if (!this.gameService.gameStarted) {
@@ -42,6 +51,22 @@ export class Toolbar {
     this.gameStarted.set(false);
     this.showJoinInput.set(false);
     this.joinCodeInput = '';
+  }
+
+  protected confirmAction() {
+    this.gameService.confirmPendingAction();
+  }
+
+  protected cancelAction() {
+    this.gameService.cancelPendingAction();
+  }
+
+  protected endTurn() {
+    this.gameService.endTurn();
+  }
+
+  protected undoLastAction() {
+    this.gameService.undoLastAction(this.localPlayer().number);
   }
 
   protected shufflePile() {

@@ -9,6 +9,9 @@ export class Game {
     public player2Hand: Card[],
     public playArea: Card[],
     public discard: Card[],
-    public stack: Card[]
+    public stack: Card[],
+    public currentTurn: 'player1' | 'player2' = 'player1',
+    public player1PlayedThisTurn: boolean = false,
+    public player2PlayedThisTurn: boolean = false
   ) {}
 }
