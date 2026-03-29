@@ -6,10 +6,21 @@
     START GAME
   </button>
   <button type="button"
+    class="btn btn-outline-primary m-1"
+    (click)="joinGame()"
+    [disabled]="gameStarted()">
+    JOIN GAME
+  </button>
+  <button type="button"
     class="btn btn-outline-danger m-1"
     (click)="resetGame()"
     [disabled]="!gameStarted()">
     RESET GAME
+  </button>
+  <button type="button"
+    class="btn btn-outline-danger m-1"
+    (click)="shufflePile()">
+    SHUFFLE PILE
   </button>
 </div>
 

@@ -1,11 +1,10 @@
-import { inject, Injectable, signal } from '@angular/core';
+import { effect, inject, Injectable, signal } from '@angular/core';
 import { Card } from '../models/card';
 import { ErrorService } from './error-service';
 import cardListData from '../card-list.json';
-import { GameAPIService } from './game-api-service';
 import { Game } from '../models/game';
 import { GameSocketService } from './gameSocket-service';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { Player } from '../models/player';
 
 
 export interface Pile {
@@ -18,11 +17,13 @@ export interface Pile {
 export class GameService {
 
   private readonly errorService = inject(ErrorService);
-  private readonly gameAPI = inject(GameAPIService);
-  gameSocketService = inject(GameSocketService);
-  isConnected = toSignal(this.gameSocketService.onConnect());
-  error = toSignal(this.gameSocketService.onError());
+  // private readonly gameAPI = inject(GameAPIService);
+  
 
+  player = signal<Player>(new Player('Player 1', 'player1'));
+  gameSocketService: GameSocketService | undefined;
+  isConnected!: ReturnType<typeof signal>;
+  error!: ReturnType<typeof signal>;
   stack = signal<Card[]>([]);
   playArea = signal<Card[]>([]);
   discard = signal<Card[]>([]);
@@ -32,6 +33,45 @@ export class GameService {
   public cardsPerHand = 5;
   public gameStarted = false;
 
+
+  constructor() {
+    effect(() => {
+      if (this.player()) {
+        this.gameSocketService = new GameSocketService(this.player());
+        this.isConnected = signal(false);
+        this.error = signal<Error | undefined>(undefined);
+
+        // Connect to socket
+        this.gameSocketService.onConnect().subscribe({
+          next: () => {
+            this.isConnected.set(true);
+          },
+          error: () => {
+            this.isConnected.set(false);
+          }
+        });
+
+        // Listen for errors
+        this.gameSocketService.onError().subscribe({
+          next: (err) => {
+            this.error.set(err);
+          }
+        });
+
+        // Listen for incoming game state from opponent
+        this.gameSocketService.onNewGame().subscribe({
+          next: (game) => {
+            this.stack.set(game.stack ?? []);
+            this.playArea.set(game.playArea ?? []);
+            this.discard.set(game.discard ?? []);
+            this.player1.set(game.player1Hand ?? []);
+            this.player2.set(game.player2Hand ?? []);
+            this.gameStarted = true;
+          }
+        });
+      }
+    });
+  }
   // TODO: store the cards in local storage to persist between sessions?
 
   initStack() {
@@ -62,15 +102,10 @@ export class GameService {
       stack: this.stack()
     }
 
-    this.gameAPI.saveGame(newGame).subscribe({
-      next: (res) => {
-        console.log('game created backend with id', res.insertedId)
-        // TODO: add insertedId in session storage?
-      },
-      error: (error) => console.log('got this error from backend', error)
-    });
 
-    this.gameSocketService.sendMessage(newGame);
+    if (this.gameSocketService) {
+      this.gameSocketService.sendMessage(newGame);
+    }
     // TODO: return invitation link
 
   }

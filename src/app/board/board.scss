@@ -5,9 +5,8 @@
   grid-template-areas:
     "logo toolbar toolbar"
     "stack play-area discard"
-    "player1 player1 player1"
-    "player2 player2 player2";
-  grid-template-rows: 1fr 3fr 3fr 3fr;
+    "player player player";
+  grid-template-rows: 1fr 3fr 3fr;
   gap: 1rem;
   width: 90vw;
   height: 85vh;
@@ -61,16 +60,9 @@
     // border: 2px dashed green;
   }
 
-  .player1 {
-    grid-area: player1;
+  .player {
+    grid-area: player;
     // border: 2px dashed purple;
   }
 
-  .player2 {
-    grid-area: player2;
-    // border: 2px dashed purple;
-  }
 }
-
-
-

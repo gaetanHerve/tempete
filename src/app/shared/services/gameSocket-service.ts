@@ -1,30 +1,54 @@
 import { Injectable, signal } from '@angular/core';
 import { Socket, io } from 'socket.io-client';
-import { Observable, fromEvent } from 'rxjs';
+import { Observable, fromEvent, Subject } from 'rxjs';
 import { Game } from '../models/game';
+import { Player } from '../models/player';
+import { socket_URL } from '../../env.json';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GameSocketService {
-  private socket: Socket;
-  
+  private socketPlayer1: Socket;
+  private socketPlayer2: Socket;
+  private opponentSocket: Socket; 
+  protected player = signal<Player>(new Player('Player 1', 'player1'));
   // Signal pour gérer l'état de la liste des utilisateurs
   private gameSignal = signal<Game[]>([]);
   public games = this.gameSignal.asReadonly();
+  // Subject pour distribuer les messages entrants aux composants
+  private messageSubject = new Subject<any>();
+  public messages$ = this.messageSubject.asObservable();
 
-  constructor() {
+  constructor(player: Player) {
     // Initialise la connexion WebSocket avec des paramètres de reconnexion automatique
     // pour assurer une connexion robuste en cas de perte de connexion
-    this.socket = io('http://localhost:3000', {
+    this.player.set(player);
+    this.socketPlayer1 = io(socket_URL.player1, {
+        reconnection: true,
+        reconnectionDelay: 1000,
+        reconnectionAttempts: 5
+      });
+
+    this.socketPlayer2 = io(socket_URL.player2, {
       reconnection: true,
       reconnectionDelay: 1000,
       reconnectionAttempts: 5
     });
 
+    this.opponentSocket = player.number === 'player1' ? this.socketPlayer2 : this.socketPlayer1;
     // Souscription aux nouveaux utilisateurs directement dans le service
     this.onNewUser().subscribe((game: Game) => {
       this.gameSignal.update(games => [...games, game]);
+    });
+
+    // Réémettre les événements génériques 'message' vers le Subject public
+    fromEvent(this.opponentSocket, 'message').subscribe((payload: any) => {
+      this.messageSubject.next(payload);
+    });
+    // Réémettre les événements 'new-game' vers le Subject public
+    fromEvent(this.opponentSocket, 'new-game').subscribe((game: Game) => {
+      this.messageSubject.next({ event: 'new-game', data: game });
     });
   }
 
@@ -33,7 +57,14 @@ export class GameSocketService {
    * Retourne un Observable qui émet lorsque la connexion est établie
    */
   onConnect(): Observable<void> {
-    return fromEvent(this.socket, 'connect') as Observable<void>;
+    return fromEvent(this.opponentSocket, 'connect') as Observable<void>;
+  }
+
+  /**
+   * Écoute un événement socket arbitraire et retourne un Observable typé
+   */
+  onEvent<T = any>(event: any) /*: Observable<T>*/ {
+    return fromEvent(this.opponentSocket, event) as Observable<T>;
   }
 
   /**
@@ -41,7 +72,7 @@ export class GameSocketService {
    * Retourne un Observable qui émet lorsque la connexion est perdue
    */
   onDisconnect(): Observable<void> {
-    return fromEvent(this.socket, 'disconnect') as Observable<void>;
+    return fromEvent(this.opponentSocket, 'disconnect') as Observable<void>;
   }
 
   /**
@@ -49,7 +80,7 @@ export class GameSocketService {
    * Retourne un Observable qui émet en cas d'erreur de connexion ou de communication
    */
   onError(): Observable<Error> {
-    return fromEvent(this.socket, 'error') as Observable<Error>;
+    return fromEvent(this.opponentSocket, 'error') as Observable<Error>;
   }
 
   /**
@@ -57,7 +88,14 @@ export class GameSocketService {
    * Retourne un Observable qui émet à chaque fois qu'un nouvel utilisateur est ajouté
    */
   onNewUser(): Observable<Game> {
-    return fromEvent(this.socket, 'new-game') as Observable<Game>;
+    return fromEvent(this.opponentSocket, 'new-user') as Observable<Game>;
+  }
+
+  /**
+   * Écoute la réception d'un nouvel état de partie envoyé par l'adversaire
+   */
+  onNewGame(): Observable<Game> {
+    return fromEvent(this.opponentSocket, 'new-game') as Observable<Game>;
   }
 
   /**
@@ -65,6 +103,7 @@ export class GameSocketService {
    * Cette méthode est void car elle ne fait qu'émettre un événement sans attendre de réponse
    */
   sendMessage(game: Game): void {
-    this.socket.emit('new-game', game);
+    console.log('sending new game via socket', game);
+    this.opponentSocket.emit('new-game', game);
   }
 }

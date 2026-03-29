@@ -4,6 +4,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "start:socket": "node server/socket-server.js",
     "build": "ng build",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
@@ -23,6 +24,7 @@
     "rxjs": "~7.8.0",
     "rxjs-interop": "^2.0.0",
     "socket.io-client": "^4.8.1",
+    "socket.io": "^4.8.1",
     "tslib": "^2.3.0",
     "zone.js": "~0.15.0"
   },
