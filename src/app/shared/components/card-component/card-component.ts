@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { Component, input, output, signal } from '@angular/core';
 import { Card } from '../../models/card';
 import { Action } from '../../models/action';
 
@@ -17,6 +17,16 @@ export class CardComponent {
   readonly discard = output<string>();
   readonly browse = output<number>();
   private defaultImage = 'assets/cards/default.png';
+
+  protected expanded = signal(false);
+
+  protected toggleExpanded() {
+    this.expanded.update(v => !v);
+  }
+
+  protected closeExpanded() {
+    this.expanded.set(false);
+  }
 
   protected onPlay(id: string) {
     this.play.emit(id);

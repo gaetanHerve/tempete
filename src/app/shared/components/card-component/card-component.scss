@@ -2,24 +2,22 @@
 
 .card {
   position: relative;
-  overflow: hidden; /* clip oversize image */
-  min-height: 260px; /* increase if image covers too much */
+  overflow: hidden;
+  min-height: 260px;
   border-radius: 8px;
+  cursor: pointer;
 }
 
-/* make the image use the full width of the card and taller */
+/* image plein-cadre : couvre toute la carte sans déformation */
 .card .card-img-top {
   position: absolute;
-  top: 0;                 /* align with top of card/header */
-  left: 0;
-  min-width: 15rem;
-  min-height: 10rem;
-  width: 200%;            /* full card width */
-  height: 78%;            /* increase height if needed */
+  inset: 0;
+  width: 100%;
+  height: 100%;
   object-fit: cover;
-  z-index: 2;             /* above body but below title/header */
+  z-index: 2;
   pointer-events: none;
-  filter: brightness(0.85); /* dim a bit to improve text readability */
+  filter: brightness(0.85);
   transition: transform .25s ease;
 }
 
@@ -27,22 +25,21 @@
 .card .card-header {
   position: relative;
   z-index: 4;
-  background: transparent; /* keep header transparent to let image show through */
+  background: transparent;
   padding-top: 0.6rem;
 }
 
 .card .card-title {
   position: relative;
-  z-index: 5; /* ensure title is above image */
+  z-index: 5;
   color: rgb(230,230,230,1);
   text-shadow: 0 1px 2px rgba(0,0,0,0.7);
 }
 
-/* keep the body below the image; tweak padding so text isn't totally covered (optional) */
 .card .card-body {
   position: relative;
   z-index: 1;
-  padding-top: 1.25rem; /* increase if you want body pushed lower */
+  padding-top: 1.25rem;
   color: #222;
 }
 
@@ -51,11 +48,142 @@
   transform: scale(1.03);
 }
 
-/* responsive: reduce image height on small screens */
-@media (max-width: 600px) {
-  .card .card-img-top {
-    width: 100%;
-    height: 60%;
+// ── Mobile compact card ───────────────────────────────────────────────────────
+@media (max-width: 768px) {
+  .card {
+    min-height: unset;
   }
-  .card { min-height: 220px; }
+
+  .card .card-title {
+    font-size: 16px;
+  }
+
+  // Description : remplit l'espace entre le header (40%) et le footer (~2.2rem)
+  .card .card-body {
+    position: absolute;
+    top: 40%;
+    bottom: 2.2rem;
+    left: 0;
+    right: 0;
+    z-index: 3;
+    padding: 0.2rem 0.35rem;
+    overflow: hidden;
+
+    p.card-text {
+      display: -webkit-box;
+      -webkit-line-clamp: 5;
+      line-clamp: 5;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      font-size: 0.6rem;
+      line-height: 1.3;
+      margin: 0;
+    }
+  }
+
+  // Moment : ligne unique tronquée tout en bas
+  .card .card-footer {
+    z-index: 3;
+    // background: rgba(0, 0, 0, 0.45);
+    padding: 0.1rem 0.35rem;
+
+    small {
+      display: -webkit-box;
+      -webkit-line-clamp: 2;
+      line-clamp: 2;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+      white-space: normal;
+      font-size: 0.55rem;
+    }
+  }
+
+  // Actions only accessible via expanded overlay on touch
+  .card .actions-overlay {
+    display: none;
+  }
+}
+
+// ── Expanded overlay ──────────────────────────────────────────────────────────
+.card-expanded-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.75);
+  z-index: 1050;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+// Proportions fixes 2:3, indépendantes de la longueur du texte
+.card-expanded {
+  position: relative;
+  width: min(20rem, calc(100vw - 2rem));
+  aspect-ratio: 2 / 3;
+  max-height: calc(100vh - 2rem);
+  display: flex;
+  flex-direction: column;
+  background: #fff;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4);
+  overflow: hidden;   // clip au lieu de scroll global
+}
+
+// Header : image + boutons superposés
+.card-expanded-header {
+  flex: 0 0 55%;
+  position: relative;
+  overflow: hidden;
+  border-radius: 12px 12px 0 0;
+}
+
+.card-expanded-close {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  z-index: 1060;
+}
+
+.card-expanded-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+// Boutons positionnés sur l'image, en bas du header
+.card-expanded-actions {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  gap: 0.75rem;
+  justify-content: center;
+  padding: 0.6rem;
+  background: rgba(0, 0, 0, 0.35);
+}
+
+// Texte : zone scrollable si contenu trop long
+.card-expanded-info {
+  flex: 1;
+  overflow-y: auto;
+  padding: 0.75rem 1rem 0.5rem;
+
+  h5 { margin-bottom: 0.4rem; font-size: 1rem; }
+  p { color: #333; margin-bottom: 0.4rem; font-size: 0.85rem; line-height: 1.4; }
+}
+
+.card-expanded-footer {
+  flex: 0 0 auto;
+  padding: 0.4rem 1rem 0.6rem;
+  text-align: center;
+  border-top: 1px solid #eee;
+
+  small {
+    color: #6c757d;
+    font-size: 0.75rem;
+    font-style: italic;
+  }
 }

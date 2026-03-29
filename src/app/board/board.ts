@@ -16,7 +16,6 @@ export class Board {
 
   private readonly gameService = inject(GameService);
   protected player: 'player1' | 'player2' = 'player1';
-
   constructor() {
     effect(() => {
       this.player = this.gameService.player().number;

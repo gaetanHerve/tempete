@@ -10,6 +10,10 @@
 
 .toolbar-game-actions {
   flex: 1;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.25rem;
 }
 
 .toolbar-session {
@@ -17,6 +21,25 @@
   text-align: right;
   border-left: 1px solid #dee2e6;
   padding-left: 1rem;
+}
+
+@media (max-width: 768px) {
+  .toolbar-layout {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .toolbar-session {
+    border-left: none;
+    border-top: 1px solid #dee2e6;
+    padding-left: 0;
+    padding-top: 0.5rem;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    text-align: left;
+  }
 }
 
 .error-section {

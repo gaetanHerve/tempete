@@ -1,42 +1,79 @@
-<div class="card">
-  <div class="card-header">
-    <h5 class="card-title mt-1">{{ card().title }}</h5>
-    <img class="card-img-top"
-         [src]="getImageSrc()"
-         (error)="onImgError($event)"
-         [alt]="card().title || 'card image'">
+<div class="card-wrapper">
+  <div class="card" (click)="toggleExpanded()">
+    <div class="card-header">
+      <h5 class="card-title mt-1">{{ card().title }}</h5>
+      <img class="card-img-top"
+           [src]="getImageSrc()"
+           (error)="onImgError($event)"
+           [alt]="card().title || 'card image'">
+    </div>
+
+    <div class="card-body">
+      <p class="card-text">{{ card().description }}</p>
+    </div>
+
+    <div class="actions-overlay" role="group" aria-label="card actions">
+      @if(actions()?.includes(action.Previous)) {
+        <button type="button" class="icon-btn prev" aria-label="previous"
+                (click)="onBrowse(-1); $event.stopPropagation()">
+          <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+            <path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
+          </svg>
+        </button>
+      }
+      @if(actions()?.includes(action.Play)) {
+        <button type="button" class="play-btn btn btn-success m-1"
+                (click)="onPlay(card()._id); $event.stopPropagation()">Play</button>
+      }
+      @if(actions()?.includes(action.Discard)) {
+        <button type="button" class="discard-btn btn btn-danger m-1"
+                (click)="onDiscard(card()._id); $event.stopPropagation()">Discard</button>
+      }
+      @if(actions()?.includes(action.Next)) {
+        <button type="button" class="icon-btn next" aria-label="next"
+                (click)="onBrowse(1); $event.stopPropagation()">
+          <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
+            <path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6z"/>
+          </svg>
+        </button>
+      }
+    </div>
+
+    <div class="card-footer">
+      <small>{{ card().moment }}</small>
+    </div>
   </div>
 
-  <div class="card-body">
-    <p class="card-text">{{ card().description }}</p>
-  </div>
-  
-  <div class="actions-overlay" role="group" aria-label="card actions">
-    @if(actions()?.includes(action.Previous)) {
-      <button type="button" class="icon-btn prev" aria-label="previous" (click)="onBrowse(-1)">
-        <!-- left arrow SVG -->
-        <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
-          <path d="M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
-        </svg>
-      </button>
-    }
-    @if(actions()?.includes(action.Play)) {
-      <button type="button" class="play-btn btn btn-success m-1" (click)="onPlay(card()._id)">Play</button>
-    }
-    @if(actions()?.includes(action.Discard)) {
-      <button type="button" class="discard-btn btn btn-danger m-1" (click)="onDiscard(card()._id)">Discard</button>
-    }
-    @if(actions()?.includes(action.Next)) {
-      <button type="button" class="icon-btn next" aria-label="next" (click)="onBrowse(1)">
-        <!-- right arrow SVG -->
-        <svg viewBox="0 0 24 24" focusable="false" aria-hidden="true">
-          <path d="M8.59 16.59 13.17 12 8.59 7.41 10 6l6 6-6 6z"/>
-        </svg>
-      </button>
-    }
-  </div>
-
-  <div class="card-footer">
-    <small>{{ card().moment }}</small>
-  </div>
+  @if(expanded()) {
+    <div class="card-expanded-backdrop" (click)="closeExpanded()">
+      <div class="card-expanded" (click)="$event.stopPropagation()">
+        <div class="card-expanded-header">
+          <button class="btn-close card-expanded-close" aria-label="Fermer" (click)="closeExpanded()"></button>
+          <img class="card-expanded-img"
+               [src]="getImageSrc()"
+               (error)="onImgError($event)"
+               [alt]="card().title || 'card image'">
+          @if(actions()?.includes(action.Play) || actions()?.includes(action.Discard)) {
+            <div class="card-expanded-actions">
+              @if(actions()?.includes(action.Play)) {
+                <button type="button" class="btn btn-success btn-sm"
+                        (click)="onPlay(card()._id); closeExpanded()">Play</button>
+              }
+              @if(actions()?.includes(action.Discard)) {
+                <button type="button" class="btn btn-danger btn-sm"
+                        (click)="onDiscard(card()._id); closeExpanded()">Discard</button>
+              }
+            </div>
+          }
+        </div>
+        <div class="card-expanded-info">
+          <h5>{{ card().title }}</h5>
+          <p>{{ card().description }}</p>
+        </div>
+        <div class="card-expanded-footer">
+          <small>{{ card().moment }}</small>
+        </div>
+      </div>
+    </div>
+  }
 </div>
