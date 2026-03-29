@@ -1,24 +1,18 @@
-@use '../../styles.scss' ;
+@use '../../styles.scss';
 
+// ── Desktop layout ────────────────────────────────────────────────────────────
 .board {
   display: grid;
   grid-template-areas:
-    "logo toolbar toolbar"
-    "stack play-area discard"
-    "player1 player1 player1"
-    "player2 player2 player2";
-  grid-template-rows: 1fr 3fr 3fr 3fr;
+    "logo    toolbar"
+    "middle  middle"
+    "player  player";
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto 3fr 3fr;
   gap: 1rem;
   width: 90vw;
   height: 85vh;
   margin: 0 auto;
-
-  .stack, .discard, .hand, .play-area, .toolbar {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 1rem;
-  }
 
   .logo {
     grid-area: logo;
@@ -26,7 +20,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    
+
     img.logo {
       height: 100%;
       width: auto;
@@ -34,43 +28,76 @@
       object-fit: contain;
     }
 
-    &:hover {
-      transform: scale(1.1);
-    }
+    &:hover { transform: scale(1.1); }
   }
 
   .toolbar {
     grid-area: toolbar;
     height: 6.125rem;
-    // border: 2px dashed black;
     padding: 0.5rem;
+    overflow: visible;
   }
 
-  .stack {
-    grid-area: stack;
-    // border: 2px dashed blue;
+  .middle-zone {
+    grid-area: middle;
+    display: flex;
+    gap: 1rem;
+    align-items: stretch;
+
+    .stack     { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+    .play-area { flex: 2; display: flex; flex-direction: column; align-items: center; gap: 1rem; }
+    .discard   { flex: 1; display: flex; flex-direction: column; align-items: center; gap: 1rem; }
   }
 
-  .discard {
-    grid-area: discard;
-    // border: 2px dashed red;
-  }
-
-  .play-area {
-    grid-area: play-area;
-    // border: 2px dashed green;
-  }
-
-  .player1 {
-    grid-area: player1;
-    // border: 2px dashed purple;
-  }
-
-  .player2 {
-    grid-area: player2;
-    // border: 2px dashed purple;
+  .player {
+    grid-area: player;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
   }
 }
 
+// ── Mobile layout ─────────────────────────────────────────────────────────────
+@media (max-width: 768px) {
+  .board {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+    height: auto;
+    min-height: 100dvh;
+    margin: 0;
+    gap: 0.5rem;
+    padding: 0.25rem;
 
+    .logo {
+      display: none;
+    }
 
+    .toolbar {
+      height: auto;
+      width: 100%;
+      padding: 0.5rem;
+    }
+
+    .middle-zone {
+      flex-direction: row;
+      overflow-x: auto;
+      gap: 0.5rem;
+      padding: 0.5rem 0;
+
+      .stack, .play-area, .discard {
+        flex: 0 0 auto;
+        min-width: 0;
+      }
+    }
+
+    .player {
+      width: 100%;
+      min-width: 0;
+      align-items: stretch;
+    }
+  }
+}

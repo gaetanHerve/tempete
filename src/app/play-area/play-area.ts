@@ -42,8 +42,8 @@ export class PlayArea extends Zone {
   }
 
 
-  protected override discard(cardId: number) {
-    this.gameService.discardAction(cardId, false);
+  protected override discard(cardId: string) {
+    this.gameService.discardAction(cardId);
   }
 
 }

@@ -1,19 +1,101 @@
-<div class="game-actions">
-  <button type="button"
-    class="btn btn-outline-primary m-1"
-    (click)="startGame()"
-    [disabled]="gameStarted()">
-    START GAME
-  </button>
-  <button type="button"
-    class="btn btn-outline-danger m-1"
-    (click)="resetGame()"
-    [disabled]="!gameStarted()">
-    RESET GAME
-  </button>
+<div class="toolbar-layout">
+
+  <!-- Zone gauche : actions de jeu -->
+  <div class="toolbar-game-actions">
+
+    @if (gameStarted()) {
+      <div class="mb-2">
+        @if (currentTurn() === localPlayer().number) {
+          <span class="badge bg-success fs-6">C'est votre tour</span>
+        } @else {
+          <span class="badge bg-secondary fs-6">Tour de l'adversaire</span>
+        }
+      </div>
+    }
+
+    @if (pendingAction()) {
+      <span class="text-muted me-2">Confirmer ce coup ?</span>
+      <button type="button" class="btn btn-success m-1" (click)="confirmAction()">CONFIRMER</button>
+      <button type="button" class="btn btn-warning m-1" (click)="cancelAction()">ANNULER</button>
+    } @else {
+      @if (!gameStarted()) {
+        <button type="button" class="btn btn-outline-primary m-1" (click)="startGame()">
+          CRÉER UNE PARTIE
+        </button>
+
+        @if (!showJoinInput()) {
+          <button type="button" class="btn btn-outline-primary m-1" (click)="showJoinForm()">
+            REJOINDRE UNE PARTIE
+          </button>
+        } @else {
+          <input
+            class="form-control d-inline-block w-auto m-1"
+            type="text"
+            placeholder="Code de la partie"
+            [(ngModel)]="joinCodeInput"
+            maxlength="6" />
+          <button type="button" class="btn btn-outline-success m-1" (click)="confirmJoin()">
+            REJOINDRE
+          </button>
+        }
+      }
+
+      @if (gameStarted() && currentTurn() === localPlayer().number) {
+        <button type="button" class="btn btn-outline-success m-1" (click)="endTurn()">
+          FIN DE MON TOUR
+        </button>
+      }
+
+      <!-- <button type="button" class="btn btn-outline-secondary m-1" (click)="shufflePile()">
+        SHUFFLE PILE
+      </button> -->
+    }
+
+  </div>
+
+  <!-- Zone droite : gestion de la partie -->
+  @if (gameStarted() || roomCode()) {
+    <div class="toolbar-session">
+
+      @if (roomCode()) {
+        <div class="mb-2 text-end">
+          <span class="text-muted small">Partie <strong>{{ roomCode() }}</strong></span>
+        </div>
+      }
+
+      @if (gameStarted() && localPlayer().number !== 'player1') {
+        @if (!confirmingLeave()) {
+          <button type="button" class="btn btn-outline-danger btn-sm" (click)="confirmingLeave.set(true)">
+            QUITTER
+          </button>
+        } @else {
+          <div class="text-end">
+            <div class="text-danger small mb-1">Quitter la partie ?</div>
+            <button type="button" class="btn btn-danger btn-sm me-1" (click)="leaveGame()">Oui</button>
+            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="confirmingLeave.set(false)">Non</button>
+          </div>
+        }
+      }
+
+      @if (gameStarted() && localPlayer().number === 'player1') {
+        @if (!confirmingReset()) {
+          <button type="button" class="btn btn-outline-danger btn-sm" (click)="confirmingReset.set(true)">
+            RESET
+          </button>
+        } @else {
+          <div class="text-end">
+            <div class="text-danger small mb-1">Réinitialiser ? Les données seront perdues.</div>
+            <button type="button" class="btn btn-danger btn-sm me-1" (click)="resetGame()">Oui</button>
+            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="confirmingReset.set(false)">Non</button>
+          </div>
+        }
+      }
+
+    </div>
+  }
+
 </div>
 
 <div class="error-section">
-    <app-error></app-error>
+  <app-error></app-error>
 </div>
-
