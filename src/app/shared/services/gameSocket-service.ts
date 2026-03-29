@@ -20,7 +20,8 @@ export class GameSocketService {
     this.socket = io(socket_URL, {
       reconnection: true,
       reconnectionDelay: 1000,
-      reconnectionAttempts: 5
+      reconnectionAttempts: 5,
+      extraHeaders: { 'ngrok-skip-browser-warning': 'true' }
     });
   }
 

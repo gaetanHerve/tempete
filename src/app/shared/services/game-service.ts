@@ -60,6 +60,7 @@ export class GameService {
     });
 
     this.gameSocketService.onGameState().subscribe((game) => {
+      console.log('[onGameState] received game state | player:', this.player().number, '| stack:', game.stack?.length, '| p1hand:', game.player1Hand?.length, '| p2hand:', game.player2Hand?.length);
       this.stack.set(game.stack ?? []);
       this.playArea.set(game.playArea ?? []);
       this.discard.set(game.discard ?? []);
@@ -300,10 +301,11 @@ export class GameService {
 
   private syncGameState(): void {
     const code = this.roomCode();
+    console.log('[syncGameState] roomCode:', code, '| player:', this.player().number);
     if (!code) return;
 
     const game: Game = {
-      _id: crypto.randomUUID(),
+      _id: `${Date.now()}-${Math.random().toString(36).slice(2)}`,
       player1: 'player1',
       player2: 'player2',
       player1Hand: this.player1(),

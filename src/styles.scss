@@ -1,5 +1,4 @@
-/* Importing Bootstrap SCSS file. */
-@use 'bootstrap/scss/bootstrap';
+/* Bootstrap chargé via CDN dans index.html */
 
 :host {
   --bright-blue: oklch(51.01% 0.274 263.83);

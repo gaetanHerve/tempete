@@ -5,9 +5,11 @@ const { Server } = require('socket.io');
 const app = express();
 const server = http.createServer(app);
 
+
+// En prod : définir ALLOWED_ORIGINS="https://mon-domaine.com"
 const ALLOWED_ORIGINS = process.env.ALLOWED_ORIGINS
   ? process.env.ALLOWED_ORIGINS.split(',')
-  : ["http://localhost:4200", "http://localhost:4201"];
+  : ["http://192.168.1.39:4200", "http://localhost:4200","http://localhost:4201", "http://192.168.1.39:4201"];
 
 const io = new Server(server, {
   cors: {
@@ -52,7 +54,8 @@ io.on('connection', (socket) => {
   });
 
   socket.on('new-game', ({ roomCode, game }) => {
-    console.log(`new-game in room ${roomCode} from ${socket.id}`);
+    const socketsInRoom = io.sockets.adapter.rooms.get(roomCode);
+    console.log(`new-game in room ${roomCode} from ${socket.id} | sockets in room:`, [...(socketsInRoom ?? [])]);
     socket.to(roomCode).emit('new-game', game);
   });
 
