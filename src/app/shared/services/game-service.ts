@@ -1,4 +1,4 @@
-import { effect, inject, Injectable, signal } from '@angular/core';
+import { inject, Injectable, signal } from '@angular/core';
 import { Card } from '../models/card';
 import { ErrorService } from './error-service';
 import cardListData from '../card-list.json';
@@ -17,13 +17,11 @@ export interface Pile {
 export class GameService {
 
   private readonly errorService = inject(ErrorService);
-  // private readonly gameAPI = inject(GameAPIService);
-  
+  private readonly gameSocketService = inject(GameSocketService);
 
   player = signal<Player>(new Player('Player 1', 'player1'));
-  gameSocketService: GameSocketService | undefined;
-  isConnected!: ReturnType<typeof signal>;
-  error!: ReturnType<typeof signal>;
+  roomCode = signal<string | null>(null);
+  isConnected = signal<boolean>(false);
   stack = signal<Card[]>([]);
   playArea = signal<Card[]>([]);
   discard = signal<Card[]>([]);
@@ -33,49 +31,43 @@ export class GameService {
   public cardsPerHand = 5;
   public gameStarted = false;
 
-
   constructor() {
-    effect(() => {
-      if (this.player()) {
-        this.gameSocketService = new GameSocketService(this.player());
-        this.isConnected = signal(false);
-        this.error = signal<Error | undefined>(undefined);
+    this.gameSocketService.onConnect().subscribe(() => this.isConnected.set(true));
+    this.gameSocketService.onDisconnect().subscribe(() => this.isConnected.set(false));
 
-        // Connect to socket
-        this.gameSocketService.onConnect().subscribe({
-          next: () => {
-            this.isConnected.set(true);
-          },
-          error: () => {
-            this.isConnected.set(false);
-          }
-        });
+    this.gameSocketService.onJoinError().subscribe(({ message }) => {
+      this.errorService.addError(message);
+    });
 
-        // Listen for errors
-        this.gameSocketService.onError().subscribe({
-          next: (err) => {
-            this.error.set(err);
-          }
-        });
-
-        // Listen for incoming game state from opponent
-        this.gameSocketService.onNewGame().subscribe({
-          next: (game) => {
-            this.stack.set(game.stack ?? []);
-            this.playArea.set(game.playArea ?? []);
-            this.discard.set(game.discard ?? []);
-            this.player1.set(game.player1Hand ?? []);
-            this.player2.set(game.player2Hand ?? []);
-            this.gameStarted = true;
-          }
-        });
-      }
+    this.gameSocketService.onGameState().subscribe((game) => {
+      this.stack.set(game.stack ?? []);
+      this.playArea.set(game.playArea ?? []);
+      this.discard.set(game.discard ?? []);
+      this.player1.set(game.player1Hand ?? []);
+      this.player2.set(game.player2Hand ?? []);
+      this.gameStarted = true;
     });
   }
-  // TODO: store the cards in local storage to persist between sessions?
+
+  createGame(onSuccess?: () => void): void {
+    this.gameSocketService.createGame().subscribe(({ roomCode, playerNumber }) => {
+      this.roomCode.set(roomCode);
+      this.player.set(new Player('Player 1', playerNumber));
+      this.initStack();
+      this.initHands();
+      this.gameStarted = true;
+      onSuccess?.();
+    });
+  }
+
+  joinGame(roomCode: string): void {
+    this.gameSocketService.joinGame(roomCode).subscribe(({ roomCode: code, playerNumber }) => {
+      this.roomCode.set(code);
+      this.player.set(new Player('Player 2', playerNumber));
+    });
+  }
 
   initStack() {
-    // Initialize the stack with a standard set of cards
     let allCards: Card[] = this.createCardsFromJson();
     this.stack.set(allCards);
     this.shufflePile('stack');
@@ -89,10 +81,15 @@ export class GameService {
                    this.player2();
     if (shuffled.length <= 1) return;
     else this[zone].set(this.shuffleArray(shuffled));
+    this.syncGameState();
+  }
 
-    const id = crypto.randomUUID();
-    const newGame: Game = {
-      _id: id,
+  private syncGameState(): void {
+    const code = this.roomCode();
+    if (!code) return;
+
+    const game: Game = {
+      _id: crypto.randomUUID(),
       player1: 'player1',
       player2: 'player2',
       player1Hand: this.player1(),
@@ -100,14 +97,8 @@ export class GameService {
       playArea: this.playArea(),
       discard: this.discard(),
       stack: this.stack()
-    }
-
-
-    if (this.gameSocketService) {
-      this.gameSocketService.sendMessage(newGame);
-    }
-    // TODO: return invitation link
-
+    };
+    this.gameSocketService.sendGameState(code, game);
   }
 
   initHands()  {
@@ -136,7 +127,6 @@ export class GameService {
 
       if (this.stack().length === 0) {
         if (this.discard().length > 0) {
-          // Mélange la défausse dans la pile stack
           this.stack.set(this.shuffleArray(this.discard()));
           this.discard.set([]);
         } else {
@@ -210,6 +200,7 @@ export class GameService {
     this.discard.set([]);
     this.player1.set([]);
     this.player2.set([]);
+    this.roomCode.set(null);
     this.gameStarted = false;
   }
 

@@ -1,47 +1,47 @@
 import { Component, inject, signal } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { GameService } from '../shared/services/game-service';
 import { ErrorComponent } from '../shared/components/error-component/error-component';
-import { ErrorService } from '../shared/services/error-service';
-import { Player } from '../shared/models/player';
 
 @Component({
   selector: 'app-toolbar',
-  imports: [ErrorComponent],
+  imports: [ErrorComponent, FormsModule],
   templateUrl: './toolbar.html',
   styleUrl: './toolbar.scss'
 })
 export class Toolbar {
 
   private readonly gameService = inject(GameService);
-  private readonly errorService = inject(ErrorService);
+
   protected gameStarted = signal<boolean>(false);
+  protected roomCode = this.gameService.roomCode;
+  protected showJoinInput = signal<boolean>(false);
+  protected joinCodeInput = '';
 
   protected startGame() {
     if (!this.gameService.gameStarted) {
-      this.gameService.player.set(new Player('Player 1', 'player1'));
-      this.gameService.initStack();
-      this.gameService.initHands();
-      this.gameService.gameStarted = true;
-      this.gameStarted.set(true);
-      console.log("Game started");
-    } else {
-      this.errorService.addError("Game already started");
+      this.gameService.createGame(() => this.gameStarted.set(true));
     }
   }
 
-  protected joinGame() {
-    console.log("Joining game");
-    this.gameService.player.set(new Player('Player 2', 'player2'));
+  protected showJoinForm() {
+    this.showJoinInput.set(true);
+  }
+
+  protected confirmJoin() {
+    const code = this.joinCodeInput.trim().toUpperCase();
+    if (code) {
+      this.gameService.joinGame(code);
+      this.showJoinInput.set(false);
+      this.gameStarted.set(true);
+    }
   }
 
   protected resetGame() {
-    console.log("Proceeding Game reset");
     this.gameService.resetGame();
     this.gameStarted.set(false);
-  }
-
-  protected drawCard(player: 'player1' | 'player2') {
-    this.gameService.drawCard(player, 1);
+    this.showJoinInput.set(false);
+    this.joinCodeInput = '';
   }
 
   protected shufflePile() {

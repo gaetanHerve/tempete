@@ -12,22 +12,56 @@ const io = new Server(server, {
   }
 });
 
+// roomCode -> { player1: socketId, player2: socketId | null }
+const rooms = new Map();
+
+function generateRoomCode() {
+  return Math.random().toString(36).substring(2, 8).toUpperCase();
+}
+
 io.on('connection', (socket) => {
   console.log('client connected', socket.id);
 
-  socket.on('new-game', (game) => {
-    console.log('new-game received from', socket.id);
-    // Broadcast to all other clients
-    socket.broadcast.emit('new-game', game);
+  socket.on('create-game', () => {
+    const roomCode = generateRoomCode();
+    rooms.set(roomCode, { player1: socket.id, player2: null });
+    socket.join(roomCode);
+    console.log(`Room ${roomCode} created by ${socket.id}`);
+    socket.emit('game-created', { roomCode, playerNumber: 'player1' });
   });
 
-  socket.on('new-user', (user) => {
-    console.log('new-user', user);
-    socket.broadcast.emit('new-user', user);
+  socket.on('join-game', (roomCode) => {
+    const room = rooms.get(roomCode);
+    if (!room) {
+      socket.emit('join-error', { message: 'Partie introuvable.' });
+      return;
+    }
+    if (room.player2) {
+      socket.emit('join-error', { message: 'La partie est déjà complète.' });
+      return;
+    }
+    room.player2 = socket.id;
+    socket.join(roomCode);
+    console.log(`${socket.id} joined room ${roomCode} as player2`);
+    socket.emit('game-joined', { roomCode, playerNumber: 'player2' });
+    socket.to(roomCode).emit('opponent-joined');
+  });
+
+  socket.on('new-game', ({ roomCode, game }) => {
+    console.log(`new-game in room ${roomCode} from ${socket.id}`);
+    socket.to(roomCode).emit('new-game', game);
   });
 
   socket.on('disconnect', (reason) => {
     console.log('client disconnected', socket.id, reason);
+    for (const [code, room] of rooms.entries()) {
+      if (room.player1 === socket.id || room.player2 === socket.id) {
+        socket.to(code).emit('opponent-disconnected');
+        rooms.delete(code);
+        console.log(`Room ${code} deleted`);
+        break;
+      }
+    }
   });
 });
 

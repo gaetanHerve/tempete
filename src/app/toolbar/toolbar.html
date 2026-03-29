@@ -3,28 +3,52 @@
     class="btn btn-outline-primary m-1"
     (click)="startGame()"
     [disabled]="gameStarted()">
-    START GAME
+    CRÉER UNE PARTIE
   </button>
-  <button type="button"
-    class="btn btn-outline-primary m-1"
-    (click)="joinGame()"
-    [disabled]="gameStarted()">
-    JOIN GAME
-  </button>
+
+  @if (!showJoinInput()) {
+    <button type="button"
+      class="btn btn-outline-primary m-1"
+      (click)="showJoinForm()"
+      [disabled]="gameStarted()">
+      REJOINDRE UNE PARTIE
+    </button>
+  } @else {
+    <input
+      class="form-control d-inline-block w-auto m-1"
+      type="text"
+      placeholder="Code de la partie"
+      [(ngModel)]="joinCodeInput"
+      maxlength="6" />
+    <button type="button"
+      class="btn btn-outline-success m-1"
+      (click)="confirmJoin()">
+      REJOINDRE
+    </button>
+  }
+
   <button type="button"
     class="btn btn-outline-danger m-1"
     (click)="resetGame()"
     [disabled]="!gameStarted()">
     RESET GAME
   </button>
+
   <button type="button"
-    class="btn btn-outline-danger m-1"
+    class="btn btn-outline-secondary m-1"
     (click)="shufflePile()">
     SHUFFLE PILE
   </button>
 </div>
 
-<div class="error-section">
-    <app-error></app-error>
-</div>
+@if (roomCode()) {
+  <div class="room-code-section mt-2">
+    <span class="text-muted me-2">Code de la partie :</span>
+    <strong class="fs-5">{{ roomCode() }}</strong>
+    <span class="text-muted ms-2 small">(transmettez ce code à votre adversaire)</span>
+  </div>
+}
 
+<div class="error-section">
+  <app-error></app-error>
+</div>
