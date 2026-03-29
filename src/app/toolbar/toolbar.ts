@@ -20,6 +20,8 @@ export class Toolbar {
   protected currentTurn = this.gameService.currentTurn;
   protected localPlayer = this.gameService.player;
   protected pendingAction = this.gameService.pendingAction;
+  protected confirmingReset = signal<boolean>(false);
+  protected confirmingLeave = signal<boolean>(false);
 
   protected startGame() {
     if (!this.gameService.gameStarted) {
@@ -45,6 +47,13 @@ export class Toolbar {
     this.gameStarted.set(false);
     this.showJoinInput.set(false);
     this.joinCodeInput = '';
+    this.confirmingReset.set(false);
+  }
+
+  protected leaveGame() {
+    this.gameService.resetGame();
+    this.gameStarted.set(false);
+    this.confirmingLeave.set(false);
   }
 
   protected confirmAction() {

@@ -1,5 +1,24 @@
 @use '../../styles.scss';
 
+.toolbar-layout {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 1rem;
+  width: 100%;
+}
+
+.toolbar-game-actions {
+  flex: 1;
+}
+
+.toolbar-session {
+  flex-shrink: 0;
+  text-align: right;
+  border-left: 1px solid #dee2e6;
+  padding-left: 1rem;
+}
+
 .error-section {
   height: fit-content;
   width: 100%;
