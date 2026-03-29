@@ -5,9 +5,13 @@ const { Server } = require('socket.io');
 const app = express();
 const server = http.createServer(app);
 
+const ALLOWED_ORIGINS = process.env.ALLOWED_ORIGINS
+  ? process.env.ALLOWED_ORIGINS.split(',')
+  : ["http://localhost:4200", "http://localhost:4201"];
+
 const io = new Server(server, {
   cors: {
-    origin: ["http://localhost:4200", "http://localhost:4201"],
+    origin: ALLOWED_ORIGINS,
     methods: ["GET", "POST"]
   }
 });
