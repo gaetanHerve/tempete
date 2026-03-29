@@ -1,7 +1,9 @@
-import { Component, computed, effect, input } from '@angular/core';
+import { Component, effect, input } from '@angular/core';
 import { Zone } from '../zone/zone';
 import { CardComponent } from "../shared/components/card-component/card-component";
 import { Action } from '../shared/models/action';
+import { Card } from '../shared/models/card';
+import { getMomentCategory, MomentCategory } from '../shared/models/moment-category';
 
 @Component({
   selector: 'app-hand',
@@ -13,8 +15,7 @@ export class Hand extends Zone {
 
   public player = input<'player1' | 'player2'>()
 
-  protected actions = computed(() => {
-    // Aucune action disponible si une action est en attente de confirmation
+  protected actionsFor(card: Card): Action[] {
     if (this.gameService.pendingAction()) return [];
 
     const player = this.player();
@@ -23,11 +24,21 @@ export class Hand extends Zone {
       ? this.gameService.player1PlayedThisTurn()
       : this.gameService.player2PlayedThisTurn();
 
+    if (alreadyPlayed) return [];
+
+    const isOwnTurn = currentTurn === player;
+    const category = getMomentCategory(card.moment);
+
+    const canPlay =
+      category === MomentCategory.ANY_TIME ||
+      (category === MomentCategory.OWN_TURN && isOwnTurn) ||
+      (category === MomentCategory.OPPONENT_TURN && !isOwnTurn);
+
     const actions: Action[] = [];
-    if (!alreadyPlayed) actions.push(Action.Play);
-    if (currentTurn === player && !alreadyPlayed) actions.push(Action.Discard);
+    if (canPlay) actions.push(Action.Play);
+    if (isOwnTurn) actions.push(Action.Discard);
     return actions;
-  });
+  }
 
   constructor() {
     super();

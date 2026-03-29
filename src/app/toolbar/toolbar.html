@@ -51,13 +51,6 @@
     }
 
     <button type="button"
-      class="btn btn-outline-warning m-1"
-      (click)="undoLastAction()"
-      [disabled]="!canUndo()">
-      ANNULER DERNIER COUP
-    </button>
-
-    <button type="button"
       class="btn btn-outline-success m-1"
       (click)="endTurn()"
       [disabled]="!gameStarted() || currentTurn() !== localPlayer().number">

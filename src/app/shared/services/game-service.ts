@@ -46,12 +46,7 @@ export class GameService {
   currentTurn = signal<'player1' | 'player2'>('player1');
   player1PlayedThisTurn = signal<boolean>(false);
   player2PlayedThisTurn = signal<boolean>(false);
-  canUndoPlayer1 = signal<boolean>(false);
-  canUndoPlayer2 = signal<boolean>(false);
   pendingAction = signal<PendingAction | null>(null);
-
-  private snapshotPlayer1: GameSnapshot | null = null;
-  private snapshotPlayer2: GameSnapshot | null = null;
 
   public cardsPerHand = 5;
   public gameStarted = false;
@@ -103,7 +98,6 @@ export class GameService {
     this.currentTurn.set(this.currentTurn() === 'player1' ? 'player2' : 'player1');
     this.player1PlayedThisTurn.set(false);
     this.player2PlayedThisTurn.set(false);
-    this.clearSnapshots();
     this.syncGameState();
   }
 
@@ -149,10 +143,7 @@ export class GameService {
     const pending = this.pendingAction();
     if (!pending) return;
 
-    const { player, snapshot } = pending;
-
-    // Enregistre le snapshot pour l'undo post-confirmation
-    this.setUndoSnapshot(player, snapshot);
+    const { player } = pending;
 
     this.drawCard(player);
 
@@ -171,25 +162,6 @@ export class GameService {
     if (!pending) return;
     this.restoreSnapshot(pending.snapshot);
     this.pendingAction.set(null);
-  }
-
-  // --- Undo post-confirmation ---
-
-  undoLastAction(player: 'player1' | 'player2'): void {
-    const snapshot = player === 'player1' ? this.snapshotPlayer1 : this.snapshotPlayer2;
-    if (!snapshot) return;
-
-    this.restoreSnapshot(snapshot);
-
-    if (player === 'player1') {
-      // L'annulation de player1 invalide aussi la réaction de player2
-      this.clearSnapshots();
-    } else {
-      this.snapshotPlayer2 = null;
-      this.canUndoPlayer2.set(false);
-    }
-
-    this.syncGameState();
   }
 
   // --- Défausse depuis la zone de jeu (sans pioche, sans confirmation) ---
@@ -297,7 +269,6 @@ export class GameService {
     this.player1PlayedThisTurn.set(false);
     this.player2PlayedThisTurn.set(false);
     this.pendingAction.set(null);
-    this.clearSnapshots();
     this.gameStarted = false;
   }
 
@@ -323,23 +294,6 @@ export class GameService {
     this.player2.set(snapshot.player2);
     this.player1PlayedThisTurn.set(snapshot.player1PlayedThisTurn);
     this.player2PlayedThisTurn.set(snapshot.player2PlayedThisTurn);
-  }
-
-  private setUndoSnapshot(player: 'player1' | 'player2', snapshot: GameSnapshot): void {
-    if (player === 'player1') {
-      this.snapshotPlayer1 = snapshot;
-      this.canUndoPlayer1.set(true);
-    } else {
-      this.snapshotPlayer2 = snapshot;
-      this.canUndoPlayer2.set(true);
-    }
-  }
-
-  private clearSnapshots(): void {
-    this.snapshotPlayer1 = null;
-    this.snapshotPlayer2 = null;
-    this.canUndoPlayer1.set(false);
-    this.canUndoPlayer2.set(false);
   }
 
   // --- Sync & utils ---
