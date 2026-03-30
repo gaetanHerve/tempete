@@ -162,7 +162,7 @@
       "moment": "Jouez cette carte après votre coup.",
       "permanent": false
     },
-    "innondation": {
+    "inondation": {
       "title": "Innnondation",
       "description": "L'échiquier est désormais réduit au plus petit rectangle possible contenant toutes les pièces encore en jeu au moment où cette carte est jouée.",
       "moment": "Jouez cette carte après votre coup.",

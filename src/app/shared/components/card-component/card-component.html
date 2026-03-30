@@ -1,15 +1,15 @@
 <div class="card-wrapper">
   <div class="card" (click)="toggleExpanded()">
     <div class="card-header">
-      <h5 class="card-title mt-1">{{ card().title }}</h5>
+      <h5 class="card-title mt-1">{{ ('cards.' + card()._id + '.title') | translate }}</h5>
       <img class="card-img-top"
            [src]="getImageSrc()"
            (error)="onImgError($event)"
-           [alt]="card().title || 'card image'">
+           [alt]="('cards.' + card()._id + '.title') | translate">
     </div>
 
     <div class="card-body">
-      <p class="card-text">{{ card().description }}</p>
+      <p class="card-text">{{ ('cards.' + card()._id + '.description') | translate }}</p>
     </div>
 
     <div class="actions-overlay" role="group" aria-label="card actions">
@@ -40,7 +40,7 @@
     </div>
 
     <div class="card-footer">
-      <small>{{ card().moment }}</small>
+      <small>{{ ('cards.' + card()._id + '.moment') | translate }}</small>
     </div>
   </div>
 
@@ -52,7 +52,7 @@
           <img class="card-expanded-img"
                [src]="getImageSrc()"
                (error)="onImgError($event)"
-               [alt]="card().title || 'card image'">
+               [alt]="('cards.' + card()._id + '.title') | translate">
           @if(actions()?.includes(action.Play) || actions()?.includes(action.Discard)) {
             <div class="card-expanded-actions">
               @if(actions()?.includes(action.Play)) {
@@ -67,11 +67,11 @@
           }
         </div>
         <div class="card-expanded-info">
-          <h5>{{ card().title }}</h5>
-          <p>{{ card().description }}</p>
+          <h5>{{ ('cards.' + card()._id + '.title') | translate }}</h5>
+          <p>{{ ('cards.' + card()._id + '.description') | translate }}</p>
         </div>
         <div class="card-expanded-footer">
-          <small>{{ card().moment }}</small>
+          <small>{{ ('cards.' + card()._id + '.moment') | translate }}</small>
         </div>
       </div>
     </div>
