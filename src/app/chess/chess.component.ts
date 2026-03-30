@@ -4,6 +4,9 @@ import { ChessService } from '../shared/services/chess-service';
 import { GameService } from '../shared/services/game-service';
 import { ChessPiece, PieceColor, PIECE_SYMBOLS } from '../shared/models/chess';
 
+/** Taille fixe (px) des étiquettes de coordonnées (rangs / colonnes). */
+const COORD_SIZE = 18;
+
 @Component({
   selector: 'app-chess',
   imports: [TranslatePipe],
@@ -16,6 +19,12 @@ export class ChessComponent implements OnInit {
   popupMode = input<boolean>(false);
   /** Couleur imposée (utilisée en mode popup via les params URL). */
   overrideColor = input<PieceColor | null>(null);
+  /**
+   * Largeur (px) du conteneur parent.
+   * L'échiquier occupe ~90 % de cette largeur.
+   * Valeur par défaut : 450 (fenêtre popup ou panneau initial).
+   */
+  containerWidth = input<number>(450);
 
   private readonly chessService = inject(ChessService);
   private readonly gameService = inject(GameService);
@@ -25,6 +34,20 @@ export class ChessComponent implements OnInit {
 
   protected readonly rows = [0, 1, 2, 3, 4, 5, 6, 7];
   protected readonly cols = [0, 1, 2, 3, 4, 5, 6, 7];
+
+  /** Taille d'une cellule en px, calculée pour que l'échiquier occupe ~90 % de containerWidth. */
+  protected readonly cellSize = computed<number>(() => {
+    const available = this.containerWidth() * 0.9 - 2 * COORD_SIZE;
+    return Math.max(28, Math.min(80, Math.floor(available / 8)));
+  });
+
+  /** Taille de police des pièces, proportionnelle à la cellule. */
+  protected readonly pieceFont = computed<number>(() =>
+    Math.floor(this.cellSize() * 0.68)
+  );
+
+  /** Exposé au template pour les dimensions des étiquettes. */
+  protected readonly coordSize = COORD_SIZE;
 
   protected readonly playerColor = computed<PieceColor>(() =>
     this.overrideColor() ?? this.gameService.player().color

@@ -1,33 +1,73 @@
-<div class="board">
+<div class="board-layout">
 
-  <div class="logo">
-    <img class="logo" src="assets/logo.jpg" alt="Game Logo" style="max-width: 100%; max-height: 100%; object-fit: contain;" />
+  <!-- ── Zone de jeu (grille desktop / flex colonne mobile) ────────────────── -->
+  <div class="board">
+
+    <div class="logo">
+      <img class="logo" src="assets/logo.jpg" alt="Game Logo"
+           style="max-width: 100%; max-height: 100%; object-fit: contain;" />
+    </div>
+
+    <div class="toolbar">
+      <app-toolbar></app-toolbar>
+    </div>
+
+    <!-- MOBILE UNIQUEMENT : bouton bascule entre toolbar et middle-zone -->
+    <button class="chess-mobile-toggle"
+            [class.open]="chessService.chessVisible()"
+            (click)="toggleChess()">
+      ♟ &nbsp; Échiquier &nbsp; {{ chessService.chessVisible() ? '▲' : '▼' }}
+    </button>
+
+    <!-- MOBILE UNIQUEMENT : panneau en flux (max-height animée) -->
+    <div class="chess-mobile-panel" [class.open]="chessService.chessVisible()">
+      <div class="chess-mobile-inner">
+        <app-chess></app-chess>
+      </div>
+    </div>
+
+    <div class="middle-zone">
+      <div class="stack"><app-stack></app-stack></div>
+      <div class="play-area"><app-play-area></app-play-area></div>
+      <div class="discard"><app-discard></app-discard></div>
+    </div>
+
+    <div class="player">
+      <app-hand [player]="player"></app-hand>
+    </div>
+
   </div>
 
-  <div class="toolbar">
-    <app-toolbar></app-toolbar>
+  <!-- ── Spacer flex (réserve l'espace → effet push) ───────────────────────── -->
+  <!-- Visible uniquement sur desktop ; caché sur mobile -->
+  <div class="chess-spacer"
+       [style.width.px]="spacerWidth()"
+       [class.no-transition]="resizing()">
   </div>
 
-  <div class="middle-zone">
-    <div class="stack">
-      <app-stack></app-stack>
-    </div>
-    <div class="play-area">
-      <app-play-area></app-play-area>
-    </div>
-    <div class="discard">
-      <app-discard></app-discard>
-    </div>
-  </div>
+  <!-- ── Panneau échiquier desktop (position: fixed, hauteur 100vh) ─────────── -->
+  <!-- position: fixed → hauteur 100 % de la viewport, indépendant du flux flex  -->
+  <div class="chess-side"
+       [class.open]="chessService.chessVisible()"
+       [style.right.px]="panelRight()"
+       [style.width.px]="chessWidth()"
+       [class.no-transition]="resizing()">
 
-  <div class="player">
-    <app-hand [player]="player"></app-hand>
-  </div>
+    <!-- Languette fixe, suit le bord gauche du panneau -->
+    <button class="chess-tab"
+            (click)="toggleChess()"
+            [style.right.px]="tabRight()"
+            [class.no-transition]="resizing()"
+            title="Échiquier">♟</button>
 
-  @if (chessService.chessVisible()) {
-    <div class="chess-section">
-      <app-chess></app-chess>
+    <!-- Poignée de redimensionnement horizontal -->
+    <div class="chess-resize-handle" (mousedown)="onResizeStart($event)"></div>
+
+    <div class="chess-side-content">
+      <!-- containerWidth permet à l'échiquier d'occuper ~90 % de la largeur du panneau -->
+      <app-chess [containerWidth]="chessWidth()"></app-chess>
     </div>
-  }
+
+  </div>
 
 </div>

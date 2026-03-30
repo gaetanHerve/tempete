@@ -70,12 +70,6 @@
           {{ 'toolbar.end_turn' | translate }}
         </button>
       }
-
-      @if (gameStarted()) {
-        <button type="button" class="btn btn-outline-secondary btn-sm m-1" (click)="toggleChess()" title="{{ 'chess.toggle_title' | translate }}">
-          ♟ {{ (chessVisible() ? 'chess.hide' : 'chess.show') | translate }}
-        </button>
-      }
     }
 
   </div>

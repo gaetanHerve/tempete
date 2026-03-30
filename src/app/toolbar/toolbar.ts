@@ -2,7 +2,6 @@ import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { TranslatePipe } from '@ngx-translate/core';
 import { GameService } from '../shared/services/game-service';
-import { ChessService } from '../shared/services/chess-service';
 import { TranslationService } from '../shared/services/translation-service';
 import { ErrorComponent } from '../shared/components/error-component/error-component';
 
@@ -15,9 +14,7 @@ import { ErrorComponent } from '../shared/components/error-component/error-compo
 export class Toolbar {
 
   private readonly gameService = inject(GameService);
-  private readonly chessService = inject(ChessService);
   protected readonly translationService = inject(TranslationService);
-  protected readonly chessVisible = this.chessService.chessVisible;
 
   protected gameStarted = signal<boolean>(false);
   protected roomCode = this.gameService.roomCode;
@@ -77,10 +74,6 @@ export class Toolbar {
 
   protected endTurn() {
     this.gameService.endTurn();
-  }
-
-  protected toggleChess() {
-    this.chessService.chessVisible.update(v => !v);
   }
 
   protected shufflePile() {

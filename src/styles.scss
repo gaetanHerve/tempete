@@ -124,6 +124,14 @@ main {
   }
 }
 
+// Sur desktop, la main se répartit sur plusieurs lignes quand la zone rétrécit
+// (ex : quand le panneau échiquier est ouvert / élargi)
+app-hand .cards-container {
+  flex-wrap: wrap;
+  overflow-x: hidden;
+  justify-content: center;
+}
+
 .card {
   position: relative; /* required for absolute overlay positioning */
   overflow: hidden;

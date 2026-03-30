@@ -32,42 +32,54 @@
 
     <!-- Labels colonnes (haut) -->
     <div class="coord-row">
-      <div class="coord-offset"></div>
+      <div class="coord-offset" [style.width.px]="coordSize"></div>
       @for (col of cols; track col) {
-        <div class="coord-cell">{{ colLabel(col) }}</div>
+        <div class="coord-cell"
+             [style.width.px]="cellSize()"
+             [style.height.px]="coordSize">{{ colLabel(col) }}</div>
       }
-      <div class="coord-offset"></div>
+      <div class="coord-offset" [style.width.px]="coordSize"></div>
     </div>
 
     <!-- Rangées -->
     @for (row of rows; track row) {
       <div class="board-row">
-        <div class="coord-label">{{ rowLabel(row) }}</div>
+        <div class="coord-label"
+             [style.width.px]="coordSize"
+             [style.height.px]="cellSize()">{{ rowLabel(row) }}</div>
         @for (col of cols; track col) {
           <div
             class="cell"
+            [style.width.px]="cellSize()"
+            [style.height.px]="cellSize()"
             [class.light]="isLightSquare(row, col)"
             [class.dark]="!isLightSquare(row, col)"
             [class.selected]="isSelected(row, col)"
             (click)="onCellClick(row, col)">
             @if (board()[row][col]; as piece) {
-              <span class="piece" [class.white-piece]="piece.color === 'white'">
+              <span class="piece"
+                    [style.font-size.px]="pieceFont()"
+                    [class.white-piece]="piece.color === 'white'">
                 {{ getPieceSymbol(piece) }}
               </span>
             }
           </div>
         }
-        <div class="coord-label">{{ rowLabel(row) }}</div>
+        <div class="coord-label"
+             [style.width.px]="coordSize"
+             [style.height.px]="cellSize()">{{ rowLabel(row) }}</div>
       </div>
     }
 
     <!-- Labels colonnes (bas) -->
     <div class="coord-row">
-      <div class="coord-offset"></div>
+      <div class="coord-offset" [style.width.px]="coordSize"></div>
       @for (col of cols; track col) {
-        <div class="coord-cell">{{ colLabel(col) }}</div>
+        <div class="coord-cell"
+             [style.width.px]="cellSize()"
+             [style.height.px]="coordSize">{{ colLabel(col) }}</div>
       }
-      <div class="coord-offset"></div>
+      <div class="coord-offset" [style.width.px]="coordSize"></div>
     </div>
 
   </div>
