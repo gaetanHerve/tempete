@@ -30,7 +30,17 @@
     "hand": "main",
     "no_card_play_area": "Aucune carte en jeu.",
     "no_card_discard": "Aucune carte dans la défausse.",
-    "no_card_stack": "Aucune carte dans la pioche."
+    "no_card_stack": "Aucune carte dans la pioche.",
+    "view_all": "Voir toutes",
+    "empty": "Aucune carte dans cette zone."
+  },
+  "godmode": {
+    "enable": "God mode",
+    "password_placeholder": "Mot de passe",
+    "unlock": "Déverrouiller",
+    "wrong_password": "Mot de passe incorrect.",
+    "active": "God mode actif",
+    "disable": "Désactiver"
   },
   "card": {
     "play": "Jouer",

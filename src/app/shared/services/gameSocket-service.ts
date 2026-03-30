@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Socket, io } from 'socket.io-client';
-import { Observable, fromEvent } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { Observable, Subject } from 'rxjs';
 import { Game } from '../models/game';
 import { environment } from '../../../environments/environment';
 
@@ -14,29 +13,67 @@ export interface GameRoomPayload {
   providedIn: 'root'
 })
 export class GameSocketService {
-  private socket: Socket;
+
+  private socket!: Socket;
+  private fallbackUsed = false;
+
+  private connect$ = new Subject<void>();
+  private disconnect$ = new Subject<void>();
+  private gameState$ = new Subject<Game>();
+  private joinError$ = new Subject<{ message: string }>();
+  private opponentJoined$ = new Subject<void>();
+  private opponentDisconnected$ = new Subject<void>();
 
   constructor() {
-    this.socket = io(environment.socketUrl, {
+    this.initSocket(environment.socketUrl);
+  }
+
+  private initSocket(url: string): void {
+    if (this.socket) {
+      this.socket.removeAllListeners();
+      this.socket.disconnect();
+    }
+
+    this.socket = io(url, {
       reconnection: true,
       reconnectionDelay: 1000,
-      reconnectionAttempts: 5,
-      extraHeaders: { 'ngrok-skip-browser-warning': 'true' }
+      reconnectionAttempts: 5
     });
+
+    this.socket.on('connect', () => this.connect$.next());
+    this.socket.on('disconnect', () => this.disconnect$.next());
+    this.socket.on('new-game', (game: Game) => this.gameState$.next(game));
+    this.socket.on('join-error', (data: { message: string }) => this.joinError$.next(data));
+    this.socket.on('opponent-joined', () => this.opponentJoined$.next());
+    this.socket.on('opponent-disconnected', () => this.opponentDisconnected$.next());
+
+    const fallback = (environment as any).fallbackSocketUrl as string | undefined;
+    if (!this.fallbackUsed && fallback) {
+      this.socket.once('connect_error', () => {
+        this.fallbackUsed = true;
+        this.initSocket(fallback);
+      });
+    }
   }
 
   createGame(): Observable<GameRoomPayload> {
     this.socket.emit('create-game');
-    return (fromEvent(this.socket, 'game-created') as Observable<GameRoomPayload>).pipe(take(1));
+    return new Observable<GameRoomPayload>(observer => {
+      this.socket.once('game-created', (payload: GameRoomPayload) => {
+        observer.next(payload);
+        observer.complete();
+      });
+    });
   }
 
   joinGame(roomCode: string): Observable<GameRoomPayload> {
     this.socket.emit('join-game', roomCode);
-    return (fromEvent(this.socket, 'game-joined') as Observable<GameRoomPayload>).pipe(take(1));
-  }
-
-  onJoinError(): Observable<{ message: string }> {
-    return fromEvent(this.socket, 'join-error') as Observable<{ message: string }>;
+    return new Observable<GameRoomPayload>(observer => {
+      this.socket.once('game-joined', (payload: GameRoomPayload) => {
+        observer.next(payload);
+        observer.complete();
+      });
+    });
   }
 
   sendGameState(roomCode: string, game: Game): void {
@@ -44,22 +81,26 @@ export class GameSocketService {
   }
 
   onGameState(): Observable<Game> {
-    return fromEvent(this.socket, 'new-game') as Observable<Game>;
+    return this.gameState$.asObservable();
+  }
+
+  onJoinError(): Observable<{ message: string }> {
+    return this.joinError$.asObservable();
   }
 
   onOpponentJoined(): Observable<void> {
-    return fromEvent(this.socket, 'opponent-joined') as Observable<void>;
+    return this.opponentJoined$.asObservable();
   }
 
   onOpponentDisconnected(): Observable<void> {
-    return fromEvent(this.socket, 'opponent-disconnected') as Observable<void>;
+    return this.opponentDisconnected$.asObservable();
   }
 
   onConnect(): Observable<void> {
-    return fromEvent(this.socket, 'connect') as Observable<void>;
+    return this.connect$.asObservable();
   }
 
   onDisconnect(): Observable<void> {
-    return fromEvent(this.socket, 'disconnect') as Observable<void>;
+    return this.disconnect$.asObservable();
   }
 }

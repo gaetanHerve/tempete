@@ -178,6 +178,17 @@ export class GameService {
     this.pendingAction.set(null);
   }
 
+  // --- Action god mode (déplace n'importe quelle carte sans contrainte) ---
+
+  godModeAction(cardId: string, type: 'play' | 'discard'): void {
+    if (type === 'play') {
+      this.moveToPlayArea(cardId);
+    } else {
+      this.moveToDiscard(cardId);
+    }
+    this.syncGameState();
+  }
+
   // --- Défausse depuis la zone de jeu (sans pioche, sans confirmation) ---
 
   discardAction(cardId: string): void {

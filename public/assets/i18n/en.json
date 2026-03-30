@@ -30,7 +30,17 @@
     "hand": "hand",
     "no_card_play_area": "No card in play area.",
     "no_card_discard": "No cards in discard pile.",
-    "no_card_stack": "No cards in stack."
+    "no_card_stack": "No cards in stack.",
+    "view_all": "View all",
+    "empty": "No cards in this zone."
+  },
+  "godmode": {
+    "enable": "God mode",
+    "password_placeholder": "Password",
+    "unlock": "Unlock",
+    "wrong_password": "Wrong password.",
+    "active": "God mode active",
+    "disable": "Disable"
   },
   "card": {
     "play": "Play",

@@ -1,0 +1,69 @@
+<div class="zone-browser-backdrop" (click)="closed.emit()">
+  <div class="zone-browser" (click)="$event.stopPropagation()">
+
+    <div class="zone-browser-header">
+      <h5 class="zone-browser-title">
+        {{ zoneKey() | translate }} ({{ cards().length }})
+      </h5>
+
+      <div class="zone-browser-controls">
+        @if (!godModeService.enabled()) {
+          @if (!showPasswordInput()) {
+            <button class="btn btn-sm btn-outline-warning"
+                    (click)="showPasswordInput.set(true)">
+              🔐 {{ 'godmode.enable' | translate }}
+            </button>
+          } @else {
+            <div class="god-mode-unlock d-flex align-items-center gap-2">
+              <input
+                class="form-control form-control-sm"
+                type="password"
+                [placeholder]="'godmode.password_placeholder' | translate"
+                [(ngModel)]="passwordInput"
+                (keydown.enter)="tryUnlock()"
+                style="width: 10rem" />
+              <button class="btn btn-sm btn-warning" (click)="tryUnlock()">
+                {{ 'godmode.unlock' | translate }}
+              </button>
+              <button class="btn btn-sm btn-outline-secondary"
+                      (click)="showPasswordInput.set(false); wrongPassword.set(false)">
+                ✕
+              </button>
+              @if (wrongPassword()) {
+                <small class="text-danger">{{ 'godmode.wrong_password' | translate }}</small>
+              }
+            </div>
+          }
+        } @else {
+          <span class="badge bg-warning text-dark">
+            ⚡ {{ 'godmode.active' | translate }}
+          </span>
+          <button class="btn btn-sm btn-outline-secondary ms-2"
+                  (click)="godModeService.disable()">
+            {{ 'godmode.disable' | translate }}
+          </button>
+        }
+      </div>
+
+      <button class="btn-close zone-browser-close" (click)="closed.emit()"></button>
+    </div>
+
+    @if (cards().length === 0) {
+      <p class="zone-browser-empty text-muted fst-italic">
+        {{ 'zones.empty' | translate }}
+      </p>
+    } @else {
+      <div class="zone-browser-grid">
+        @for (card of cards(); track card._id) {
+          <app-card-component
+            [card]="card"
+            [actions]="godModeService.enabled() ? godModeActions : []"
+            (play)="onPlay($event)"
+            (discard)="onDiscard($event)">
+          </app-card-component>
+        }
+      </div>
+    }
+
+  </div>
+</div>
