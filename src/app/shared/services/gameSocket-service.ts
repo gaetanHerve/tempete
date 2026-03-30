@@ -3,7 +3,7 @@ import { Socket, io } from 'socket.io-client';
 import { Observable, fromEvent } from 'rxjs';
 import { take } from 'rxjs/operators';
 import { Game } from '../models/game';
-import { socket_URL } from '../../env.json';
+import { environment } from '../../../environments/environment';
 
 export interface GameRoomPayload {
   roomCode: string;
@@ -17,7 +17,7 @@ export class GameSocketService {
   private socket: Socket;
 
   constructor() {
-    this.socket = io(socket_URL, {
+    this.socket = io(environment.socketUrl, {
       reconnection: true,
       reconnectionDelay: 1000,
       reconnectionAttempts: 5,
