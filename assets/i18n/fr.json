@@ -1,0 +1,410 @@
+{
+  "toolbar": {
+    "your_turn": "C'est votre tour",
+    "opponent_turn": "Tour de l'adversaire",
+    "confirm_move": "Confirmer ce coup ?",
+    "confirm": "CONFIRMER",
+    "cancel": "ANNULER",
+    "create_game": "CRÉER UNE PARTIE",
+    "join_game": "REJOINDRE UNE PARTIE",
+    "game_code_placeholder": "Code de la partie",
+    "join": "REJOINDRE",
+    "end_turn": "FIN DE MON TOUR",
+    "game_label": "Partie",
+    "leave": "QUITTER",
+    "leave_confirm": "Quitter la partie ?",
+    "yes": "Oui",
+    "no": "Non",
+    "reset": "RESET",
+    "reset_confirm": "Réinitialiser ? Les données seront perdues.",
+    "choose_color": "Choisissez votre couleur",
+    "white": "Blancs",
+    "black": "Noirs",
+    "playing_white": "Blancs ♔",
+    "playing_black": "Noirs ♚"
+  },
+  "zones": {
+    "play_area": "Effets permanents",
+    "discard": "défausse",
+    "stack": "pioche",
+    "hand": "main",
+    "no_card_play_area": "Aucune carte en jeu.",
+    "no_card_discard": "Aucune carte dans la défausse.",
+    "no_card_stack": "Aucune carte dans la pioche.",
+    "view_all": "Voir toutes",
+    "empty": "Aucune carte dans cette zone."
+  },
+  "godmode": {
+    "enable": "God mode",
+    "password_placeholder": "Mot de passe",
+    "unlock": "Déverrouiller",
+    "wrong_password": "Mot de passe incorrect.",
+    "active": "God mode actif",
+    "disable": "Désactiver"
+  },
+  "card": {
+    "play": "Jouer",
+    "discard": "Défausser",
+    "close": "Fermer",
+    "previous": "précédent",
+    "next": "suivant"
+  },
+  "errors": {
+    "already_played": "Vous avez déjà joué une carte ce tour.",
+    "card_not_found": "Carte introuvable dans la main.",
+    "stack_empty": "La pioche et la défausse sont vides, impossible de piocher.",
+    "hand_full": "La main est pleine, impossible de piocher."
+  },
+  "cards": {
+    "amourCourtois": {
+      "title": "Amour Courtois",
+      "description": "Amenez l'un de vos cavaliers sur une case libre adjacente à votre Dame.",
+      "moment": "Jouez cette carte à votre tour de jeu. Ce coup remplace votre déplacement normal."
+    },
+    "angeGardien": {
+      "title": "Ange Gardien",
+      "description": "Jouez cette carte lorsque vous êtes en échec, même mat. Vous reprenez alors l'une des pièces que vous a pris votre adversaire, pour l'intercaler sur une case libre entre votre Roi et la pièce qui le menace.",
+      "moment": "Jouez cette carte à votre tour de jeu. Ce coup remplace votre déplacement normal."
+    },
+    "attentat": {
+      "title": "Attentat",
+      "description": "En jouant cette carte, notez sur un papier les coordonnées d'une case de l'échiquier, vide ou occupée par l'une de vos pièces. Dès qu'une pièce adverse s'arrête sur cette case, une bombe explose et la pièce est retirée du jeu. S'il s'agit du Roi, la bombe explose, mais le Roi reste sur la case.",
+      "moment": "Jouez cette carte après votre coup."
+    },
+    "appartheid": {
+      "title": "Appartheid",
+      "description": "Retirez immédiatement de l'échiquier tous les pions noirs qui se trouvent sur des cases blanches, et tous les pions blancs qui se trouvent sur des cases noires.",
+      "moment": "Jouez cette carte après votre coup."
+    },
+    "badaboum": {
+      "title": "Badaboum",
+      "description": "Si vous parvenez à faire tenir cette carte pendant au moins cinq secondes en équilibre au sommet de votre Roi, vous pouvez soit récupérer une pièce que vous a précédemment pris votre adversaire et la placer sur la case libre de votre choix, soit rejouer.",
+      "moment": "Jouez cette carte après votre coup."
+    },
+    "barricade": {
+      "title": "Barricade",
+      "description": "Placez une barrière de deux cases de long, rectiligne ou à angle droit, entre n'importe quelles cases de l'échiquier. Cette barrière ne peut être franchie par aucune pièce, excepté les Cavaliers ou toute autre pièce ayant acquis la capacité de « sauter » d'une manière similaire.",
+      "moment": "Jouez cette carte après votre coup."
+    },
+    "bonnesCopines": {
+      "title": "Bonnes Copines",
+      "description": "Sur l'échiquier, permutez votre Dame avec celle de l'adversaire.",
+      "moment": "Jouez cette carte à votre tour de jeu, ce coup remplace votre déplacement normal."
+    },
+    "BoucheDEgout": {
+      "title": "Bouche d'égout",
+      "description": "Placez des bouches d'égout (pièces de monnaie) sur deux cases de l'échiquier. Une pièce se trouvant sur une bouche d'égout peut désormais, à la place de son déplacement normal, se rendre sur n'importe quelle autre bouche d'égout, occupée ou non.",
+      "moment": "Jouez cette carte après votre coup."
+    },
+    "brouillard": {
+      "title": "Brouillard",
+      "description": "Jouez cette carte lorsque votre adversaire vient de jouer un Fou, une Tour ou une Dame. Sa pièce ne peut effectuer le mouvement prévu, et s'immobilise après avoir avancé d'une case dans la direction voulue.",
+      "moment": "Jouez cette carte après le coup de votre adversaire."
+    },
+    "cohabitation": {
+      "title": "Cohabitation",
+      "description": "Déplacez l'une de vos pièces pour l'amener sur une case où se trouve déjà une autre de vos pièces. Vous pourrez par la suite déplacer normalement l'une ou l'autre, mais pas les deux à la fois. Si votre adversaire amène une pièce sur cette case, il prend vos deux pièces.",
+      "moment": "Jouez cette carte à votre tour de jeu, ce coup remplace votre déplacement normal."
+    },
+    "cessezLeFeu": {
+      "title": "Cessez le feu",
+      "description": "Il est désormais interdit aux deux joueurs de prendre des pièces adverses. Tous les déplacements doivent aboutir sur une case vide. L'effet de cette carte dure jusqu'à ce que l'un des Rois soit mis en échec.",
+      "moment": "Jouez cette carte après votre coup."
+    },
+    "coupDeBalai": {
+      "title": "Coup de balai",
+      "description": "Rejetez cette carte avec les quatre autres de votre jeu, et faites-vous immédiatement une nouvelle main de cinq cartes.",
+      "moment": "Cette carte peut être jouée à tout moment."
+    },
+    "coupDouble": {
+      "title": "Coup double",
+      "description": "Déplacez simultanément deux pièces de même type (deux Fous, deux Cavaliers, deux Tours ou deux Pions).",
+      "moment": "Jouez cette carte à votre tour de jeu, ce coup remplace votre déplacement normal."
+    },
+    "contrordre": {
+      "title": "Contrordre",
+      "description": "Le déplacement de votre adversaire est annulé. Il doit rejouer un autre coup, avec la même pièce ou une autre.",
+      "moment": "Jouez cette carte après le coup de votre adversaire."
+    },
+    "crabe": {
+      "title": "Crabe",
+      "description": "Transformez l'un de vos pions en Crabe, et cela définitivement. Le Crabe se déplace en diagonale, comme un Fou, mais d'une case seulement. Parvenu sur la dernière rangée, il est promu comme un pion ordinaire.",
+      "moment": "Jouez cette carte après votre coup."
+    },
+    "chasseNeige": {
+      "title": "Chasse-neige",
+      "description": "Déplacez une Tour, une Dame ou un Fou sur l'une de ses lignes de déplacement en prenant toutes les pièces qui s'y trouvent. Votre pièce n'arrête son déplacement que lorsqu'elle rencontre une pièce amie, ou le bord de l'échiquier.",
+      "moment": "Jouez cette carte à votre tour de jeu, ce coup remplace votre déplacement normal."
+    },
+    "dalaiLama": {
+      "title": "Dalai-Lama",
+      "description": "La pièce que votre adversaire vient de prendre se réincarne immédiatement en une autre pièce identique, qui apparaît sur une case libre où elle pouvait se trouver en début de partie.",
+      "moment": "Jouez cette carte après le coup de votre adversaire."
+    },
+    "droitsDAuteur": {
+      "title": "Droits d'Auteur",
+      "description": "À partir du moment où cette carte est jouée, tout joueur faisant une remarque désobligeante au sujet du jeu Tempête sur l'échiquier devra perdre un pion, choisi par son adversaire.",
+      "moment": "Jouez cette carte après votre coup."
+    },
+    "doubleJeu": {
+      "title": "Double jeu",
+      "description": "Pendant trois tours, échangez votre place avec celle de votre adversaire, chacun gardant son jeu de cartes. Durant ces trois tours, il est tout à fait possible de gagner avec sa nouvelle couleur.",
+      "moment": "Jouez cette carte après votre coup."
+    },
+    "douane": {
+      "title": "Douane",
+      "description": "Jouez cette carte lorsque votre adversaire vient de faire franchir à l'une de ses pièces la « frontière » séparant votre moitié de l'échiquier de la sienne. Il doit alors payer en perdant un de ses pions, de son choix, ou renoncer à son coup.",
+      "moment": "Jouez cette carte après le coup de votre adversaire."
+    },
+    "duel": {
+      "title": "Duel",
+      "description": "Jouez cette carte lorsque votre adversaire veut prendre l'une de vos pièces. Le combat est résolu au 421. Si vous n'avez pas de dés sous la main, jouez-le à pile ou face, ou à pierre/feuille/ciseaux, en trois manches gagnantes.",
+      "moment": "Jouez cette carte après le coup de votre adversaire."
+    },
+    "doublure": {
+      "title": "Doublure",
+      "description": "Si la case de départ de votre Roi est libre, vous pouvez y faire apparaître un second Roi. Désormais, vous pouvez laisser l'un de vos Rois en échec, et même vous le faire prendre. Vous ne perdrez la partie que lorsque votre dernier Roi sera mat.",
+      "moment": "Jouez cette carte après votre coup."
+    },
+    "elementIncontrole": {
+      "title": "Élément incontrôlé",
+      "description": "Déplacez une pièce adverse au lieu de l'une de vos propres pièces. Vous ne pouvez pas ainsi prendre une pièce adverse.",
+      "moment": "Jouez cette carte à votre tour de jeu, ce coup remplace votre déplacement normal."
+    },
+    "encephalopathieSpongiformeEquine": {
+      "title": "Encéphalopathie spongiforme équine",
+      "description": "L'un de vos Cavaliers, ou un Cavalier adverse, devient Fou. Il se déplacera désormais uniquement comme un Fou.",
+      "moment": "Jouez cette carte après votre coup."
+    },
+    "electrochoc": {
+      "title": "Électrochoc",
+      "description": "Tous les Fous qui peuvent l'être doivent être déplacés horizontalement ou verticalement d'une case, sans prendre de pièce. Votre adversaire déplace ses Fous en premier.",
+      "moment": "Jouez cette carte après votre coup."
+    },
+    "fringale": {
+      "title": "Fringale",
+      "description": "Les deux adversaires sont désormais obligés de prendre une pièce adverse à chaque coup. L'effet de cette carte dure jusqu'à ce que l'un des joueurs soit dans l'impossibilité de prendre.",
+      "moment": "Jouez cette carte après votre coup."
+    },
+    "grosseDeprime": {
+      "title": "Grosse déprime",
+      "description": "Enlevez de l'échiquier un pion adverse dont toutes les cases voisines sont vides.",
+      "moment": "Jouez cette carte après votre coup."
+    },
+    "innondation": {
+      "title": "Inondation",
+      "description": "L'échiquier est désormais réduit au plus petit rectangle possible contenant toutes les pièces encore en jeu au moment où cette carte est jouée.",
+      "moment": "Jouez cette carte après votre coup."
+    },
+    "ingerence": {
+      "title": "Ingérence",
+      "description": "Demandez à la tierce personne la plus proche de l'échiquier de déplacer deux pièces de son choix, sauf les Rois, une de chaque joueur.",
+      "moment": "Jouez cette carte avant votre coup."
+    },
+    "jePasse": {
+      "title": "Je passe",
+      "description": "Lorsque vous jouez cette carte, vous passez votre tour, et gardez cette carte visible devant vous. Vous pourrez l'utiliser plus tard, une seule fois, pour rejouer après votre tour.",
+      "moment": "Jouez cette carte avant votre coup. Utilisez-la ultérieurement après votre premier coup."
+    },
+    "kangourou": {
+      "title": "Kangourou",
+      "description": "Transformez l'un de vos Cavaliers, ou un Cavalier adverse, en Kangourou, et cela définitivement. Le Kangourou se déplace en faisant deux sauts de Cavalier consécutifs, le premier devant obligatoirement aboutir sur une case libre. Le Kangourou ne peut pas s'arrêter après le premier saut.",
+      "moment": "Jouez cette carte après votre coup."
+    },
+    "laCaseQuiRendFou": {
+      "title": "La case qui rend fou",
+      "description": "Désignez une case inoccupée de l'échiquier que vous repérez d'un marqueur quelconque. Jusqu'à la fin de la partie, toute pièce qui quitte cette case peut le faire en se déplaçant comme un Fou.",
+      "moment": "Jouez cette carte après votre coup."
+    },
+    "laser": {
+      "title": "Laser",
+      "description": "L'une de vos pièces (Tour, Fou ou Dame) envoie un rayon laser dans l'une de ses directions possibles de déplacement. Toutes les pièces, amies ou ennemies, qui se trouvent dans cette direction entre la pièce concernée et le bord de l'échiquier sont désintégrées. Les Rois ne sont pas touchés par le rayon laser, mais ne l'arrêtent pas.",
+      "moment": "Jouez cette carte après votre coup."
+    },
+    "maison": {
+      "title": "Maison",
+      "description": "Ramenez l'une de vos pièces (pas un pion) sur l'une des cases où elle pouvait se trouver en début de partie. Vous pouvez même prendre ainsi une pièce adverse.",
+      "moment": "Jouez cette carte à votre tour de jeu, ce coup remplace votre déplacement normal."
+    },
+    "modestie": {
+      "title": "Modestie",
+      "description": "Déplacez n'importe laquelle de vos pièces à la manière d'un pion. Si vous amenez ainsi une pièce sur la dernière rangée, vous pouvez la promouvoir en toute autre pièce de votre choix.",
+      "moment": "Jouez cette carte à votre tour de jeu, ce coup remplace votre déplacement normal."
+    },
+    "majorettes": {
+      "title": "Majorettes",
+      "description": "Déplacez deux de vos pions latéralement d'une case, sans effectuer de prise.",
+      "moment": "Jouez cette carte après votre coup."
+    },
+    "non": {
+      "title": "Non",
+      "description": "Cette carte annule toute autre carte.",
+      "moment": "Jouez-la juste après la carte de votre adversaire que vous voulez annuler."
+    },
+    "niet": {
+      "title": "Niet",
+      "description": "Cette carte annule toute autre carte.",
+      "moment": "Jouez-la juste après la carte de votre adversaire que vous voulez annuler."
+    },
+    "nonViolent": {
+      "title": "Non-violent",
+      "description": "L'une de vos pièces, excepté le Roi, devient non-violente jusqu'à la fin de la partie. Repérez-la à l'aide d'un marqueur. Cette pièce ne peut plus prendre de pièce adverse, ni être prise, jusqu'à la fin du jeu, mais elle peut toujours donner échec.",
+      "moment": "Jouez cette carte avant votre coup."
+    },
+    "origines": {
+      "title": "Origines",
+      "description": "Tant qu'aucun Roi n'aura été mis en échec, personne ne peut plus jouer de cartes de Tempête sur l'échiquier.",
+      "moment": "Jouez cette carte après votre coup."
+    },
+    "ohDarling": {
+      "title": "Oh, darling",
+      "description": "Amenez directement votre Roi sur une case libre adjacente à votre Dame, ou votre Dame sur une case libre adjacente à votre Roi.",
+      "moment": "Jouez cette carte à votre tour de jeu, ce coup remplace votre déplacement normal."
+    },
+    "omerta": {
+      "title": "Omerta",
+      "description": "Le prochain joueur à prononcer le nom d'une pièce, excepté le Roi, devra perdre une pièce de ce type. S'il ne possède pas la pièce correspondante, cette carte continue à faire effet.",
+      "moment": "Jouez cette carte après votre coup."
+    },
+    "ole": {
+      "title": "Olé",
+      "description": "Jouez cette carte lorsque votre adversaire veut prendre l'une de vos pièces avec un Fou, une Tour ou une Dame. La pièce attaquée reste sur place, la pièce attaquante passe au travers et doit poursuivre son déplacement jusqu'à ce qu'elle capture une autre de vos pièces, s'immobilise devant une autre pièce de votre adversaire, ou tombe au delà du bord de l'échiquier.",
+      "moment": "Jouez cette carte pendant le coup de votre adversaire."
+    },
+    "promotionALAnciennete": {
+      "title": "Promotion à l'ancienneté",
+      "description": "S'il ne vous reste plus qu'un ou deux pions sur l'échiquier, vous pouvez immédiatement les promouvoir en d'autres pièces de votre choix, Dame exceptée.",
+      "moment": "Jouez cette carte après votre coup."
+    },
+    "pasDeDeux": {
+      "title": "Pas de deux",
+      "description": "Vous pouvez déplacer n'importe laquelle de vos pièces en lui faisant effectuer, à partir de la case où elle se trouve, exactement le même mouvement que la pièce que vous venez de jouer (même direction, même distance) à condition qu'elle ne soit pas gênée par une autre pièce pour le faire. Cette seconde pièce peut prendre.",
+      "moment": "Jouez cette carte après votre coup."
+    },
+    "paranoia": {
+      "title": "Paranoia",
+      "description": "Au lieu de déplacer l'une de vos pièces, déplacez un Fou de votre adversaire de manière à prendre l'une de ses propres pièces.",
+      "moment": "Jouez cette carte à votre tour de jeu, ce coup remplace votre déplacement normal."
+    },
+    "princesse": {
+      "title": "Princesse",
+      "description": "Si vous n'avez plus de Dame et si la case de départ de celle-ci est libre, faites-y apparaître une Princesse. La Princesse se déplace dans les huit directions, comme la Dame, mais d'une ou deux cases seulement.",
+      "moment": "Jouez cette carte après votre coup."
+    },
+    "promotionAuMerite": {
+      "title": "Promotion au mérite",
+      "description": "L'un de vos pions est promu en une pièce de votre choix alors qu'il ne se trouve que sur la sixième rangée.",
+      "moment": "Jouez cette carte après votre coup, lorsque votre pion atteint la sixième rangée."
+    },
+    "planque": {
+      "title": "Planque",
+      "description": "Une pièce adverse de votre choix est « endormie ». Elle ne peut plus bouger, et ne se réveillera que lorsque le Roi de votre adversaire sera mis en échec.",
+      "moment": "Jouez cette carte après votre coup."
+    },
+    "pegase": {
+      "title": "Pégase",
+      "description": "Déplacez l'un de vos Cavaliers en l'amenant directement sur n'importe quelle case libre de couleur opposée à celle sur laquelle il se trouve.",
+      "moment": "Jouez cette carte à votre tour de jeu, ce coup remplace votre déplacement normal."
+    },
+    "provocation": {
+      "title": "Provocation",
+      "description": "Votre adversaire doit capturer une de vos pièces. S'il ne peut ou ne veut pas, il passe son tour.",
+      "moment": "Jouez cette carte après votre coup."
+    },
+    "poubelle": {
+      "title": "Poubelle",
+      "description": "Cette carte annule une carte à effet continu ou retardé (repérée par un sceptre) jouée plus tôt dans la partie.",
+      "moment": "Jouez cette carte après votre tour de jeu."
+    },
+    "pitie": {
+      "title": "Pitié !",
+      "description": "Lorsqu'une pièce adverse (Tour, Fou ou Dame) se rue sauvagement sur l'un de vos pions, ce dernier l'implore à genoux. La pièce adverse, émue, s'immobilise alors juste devant votre pion.",
+      "moment": "Jouez cette carte pendant le coup de votre adversaire."
+    },
+    "psychopathe": {
+      "title": "Psychopathe",
+      "description": "Jouez cette carte lorsque l'un de vos Fous a la possibilité de prendre plusieurs pièces adverses. Vous le faites alors éclater en plusieurs éléments qui vont prendre chacun l'une des pièces adverses se trouvant à sa portée. Le Fou ainsi « éclaté » est retiré du jeu.",
+      "moment": "Jouez cette carte à votre tour de jeu, ce coup remplace votre déplacement normal."
+    },
+    "poison": {
+      "title": "Poison",
+      "description": "Désignez l'une de vos pièces, dont la chair est, définitivement, empoisonnée. Si une pièce adverse prend la pièce empoisonnée, elles sont toutes deux retirées de l'échiquier.",
+      "moment": "Jouez cette carte après votre coup."
+    },
+    "quadrille": {
+      "title": "Quadrille",
+      "description": "Toutes les pièces se trouvant dans l'un des quatre coins de l'échiquier se déplacent d'un quart de tour dans le sens de votre choix. Les mouvements sont simultanés, il n'y a donc pas de prise.",
+      "moment": "Jouez cette carte après votre coup."
+    },
+    "rebeloteEtDixDeDer": {
+      "title": "Rebelote et dix de der",
+      "description": "Cette carte vous permet de jouer deux autres cartes à ce trait.",
+      "moment": "Jouez cette carte après votre première carte."
+    },
+    "remorque": {
+      "title": "Remorque",
+      "description": "Le pion que vous déplacez (sans prise) « tire » la pièce qui se trouve juste derrière lui, de manière à ce qu'elle reste immédiatement derrière lui.",
+      "moment": "Jouez cette carte à votre tour de jeu, ce coup remplace votre déplacement normal."
+    },
+    "ratonLaveur": {
+      "title": "Raton laveur",
+      "description": "Sur l'échiquier, vous permutez l'un de vos pions avec l'un de vos Fous, ou l'un de vos Cavaliers, ou l'une de vos Tours.",
+      "moment": "Jouez cette carte à votre tour de jeu, ce coup remplace votre déplacement normal."
+    },
+    "ruade": {
+      "title": "Ruade",
+      "description": "Annulez le coup que vient de jouer votre adversaire avec l'un de ses Cavaliers. Déplacez vous-même, à sa place, ce même Cavalier. Vous pouvez même prendre ainsi une pièce adverse... ou l'une de vos pièces.",
+      "moment": "Jouez cette carte après le coup de votre adversaire."
+    },
+    "roqueEtRolle": {
+      "title": "Roque et rolle",
+      "description": "Si aucune pièce adverse ne se trouve sur la première rangée, vous pouvez réarranger comme vous le souhaitez toutes vos pièces qui s'y trouvent.",
+      "moment": "Jouez cette carte à votre tour de jeu, ce coup remplace votre déplacement normal."
+    },
+    "serialKiller": {
+      "title": "Serial killer",
+      "description": "L'un de vos pions, qui vient de prendre une pièce adverse, est pris d'une frénésie destructrice. Continuez à déplacer le même pion en prenant à chaque mouvement une pièce adverse, tant que cela est possible.",
+      "moment": "Jouez cette carte après le premier déplacement de votre pion."
+    },
+    "toiAussiMonFils": {
+      "title": "Toi aussi, mon fils",
+      "description": "Jouez cette carte lorsque votre adversaire vous annonce un échec, même mat. La pièce qui vous met en échec change alors de couleur et passe dans votre camp.",
+      "moment": "Jouez cette carte après le coup de votre adversaire."
+    },
+    "tournezManege": {
+      "title": "Tournez manège",
+      "description": "Faites pivoter l'échiquier d'un quart de tour, dans le sens de votre choix. Les pions se déplacent toujours vers l'adversaire. Tous les pions se retrouvant sur la dernière rangée sont immédiatement promus, et ceux se retrouvant sur leur rangée de départ peuvent se déplacer de deux cases.",
+      "moment": "Jouez cette carte après votre coup."
+    },
+    "vampirisme": {
+      "title": "Vampirisme",
+      "description": "L'une de vos pièces, qui vient de prendre une pièce adverse, se transforme en une pièce de même type que celle qu'elle vient de prendre. Ainsi, par exemple, si l'un de vos pions a pris un Cavalier, il devient un Cavalier.",
+      "moment": "Jouez cette carte après votre coup."
+    },
+    "voyance": {
+      "title": "Voyance",
+      "description": "Notez sur un bout de papier la pièce que votre adversaire, selon vous, devrait jouer ce tour-ci. S'il déplace effectivement cette pièce, ce déplacement est annulé et votre adversaire ne peut rien faire d'autre à ce tour.",
+      "moment": "Jouez cette carte après votre coup."
+    },
+    "verglas": {
+      "title": "Verglas",
+      "description": "Jouez cette carte lorsque votre adversaire vient de jouer un Fou, une Tour ou une Dame sans effectuer de capture. Cette pièce doit poursuivre son déplacement au-delà, jusqu'à ce qu'elle capture une de vos pièces, s'immobilise devant une pièce de votre adversaire, ou tombe au-delà du bord de l'échiquier.",
+      "moment": "Jouez cette carte pendant le tour de votre adversaire."
+    },
+    "voyageAstral": {
+      "title": "Voyage astral",
+      "description": "Enlevez de l'échiquier l'une de vos pièces, ou une pièce adverse, que vous remettez à sa place après votre déplacement. Vous pouvez donc franchir librement cette case, mais vous ne pouvez pas y arrêter la pièce que vous déplacez.",
+      "moment": "Jouez cette carte avant votre coup."
+    },
+    "zombies": {
+      "title": "Zombies",
+      "description": "Cette carte remet en jeu deux pions de chaque joueur. Chacun à son tour, en commençant par votre adversaire, replace l'un de ses pions perdus sur l'une des cases libres de la seconde rangée.",
+      "moment": "Jouez cette carte avant votre coup."
+    },
+    "donneMoiTaMain": {
+      "title": "Donne moi ta main...",
+      "description": "Vous échangez votre jeu de cartes avec celui de votre adversaire (il reprend immédiatement une carte pour remplacer celle-ci).",
+      "moment": "Jouez cette carte avant votre coup."
+    }
+  }
+}

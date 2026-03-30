@@ -1,0 +1,410 @@
+{
+  "toolbar": {
+    "your_turn": "Your turn",
+    "opponent_turn": "Opponent's turn",
+    "confirm_move": "Confirm this move?",
+    "confirm": "CONFIRM",
+    "cancel": "CANCEL",
+    "create_game": "CREATE A GAME",
+    "join_game": "JOIN A GAME",
+    "game_code_placeholder": "Game code",
+    "join": "JOIN",
+    "end_turn": "END MY TURN",
+    "game_label": "Game",
+    "leave": "LEAVE",
+    "leave_confirm": "Leave the game?",
+    "yes": "Yes",
+    "no": "No",
+    "reset": "RESET",
+    "reset_confirm": "Reset? All data will be lost.",
+    "choose_color": "Choose your color",
+    "white": "White",
+    "black": "Black",
+    "playing_white": "White ♔",
+    "playing_black": "Black ♚"
+  },
+  "zones": {
+    "play_area": "permanent effects",
+    "discard": "discard",
+    "stack": "stack",
+    "hand": "hand",
+    "no_card_play_area": "No card in play area.",
+    "no_card_discard": "No cards in discard pile.",
+    "no_card_stack": "No cards in stack.",
+    "view_all": "View all",
+    "empty": "No cards in this zone."
+  },
+  "godmode": {
+    "enable": "God mode",
+    "password_placeholder": "Password",
+    "unlock": "Unlock",
+    "wrong_password": "Wrong password.",
+    "active": "God mode active",
+    "disable": "Disable"
+  },
+  "card": {
+    "play": "Play",
+    "discard": "Discard",
+    "close": "Close",
+    "previous": "previous",
+    "next": "next"
+  },
+  "errors": {
+    "already_played": "You already played a card this turn.",
+    "card_not_found": "Card not found in hand.",
+    "stack_empty": "Stack and discard are empty, cannot draw more cards.",
+    "hand_full": "Hand is full, cannot draw more cards."
+  },
+  "cards": {
+    "amourCourtois": {
+      "title": "Courtly Love",
+      "description": "Move one of your knights to an empty square adjacent to your Queen.",
+      "moment": "Play this card on your turn. This move replaces your normal move."
+    },
+    "angeGardien": {
+      "title": "Guardian Angel",
+      "description": "Play this card when you are in check, even checkmate. Take back one of the pieces your opponent previously captured and place it on any empty square between your King and the threatening piece.",
+      "moment": "Play this card on your turn. This move replaces your normal move."
+    },
+    "attentat": {
+      "title": "Bomb Threat",
+      "description": "When playing this card, secretly write down the coordinates of any square on the board — empty or occupied by one of your pieces. As soon as an opponent's piece stops on that square, a bomb explodes and the piece is removed from the game. If it is the King, the bomb explodes but the King remains on the square.",
+      "moment": "Play this card after your move."
+    },
+    "appartheid": {
+      "title": "Apartheid",
+      "description": "Immediately remove from the board all black pawns standing on white squares, and all white pawns standing on black squares.",
+      "moment": "Play this card after your move."
+    },
+    "badaboum": {
+      "title": "Kaboom!",
+      "description": "If you can balance this card on top of your King for at least five seconds, you may either retrieve a piece your opponent previously captured and place it on any empty square, or take another turn.",
+      "moment": "Play this card after your move."
+    },
+    "barricade": {
+      "title": "Barricade",
+      "description": "Place a two-square barrier — straight or at a right angle — between any squares on the board. No piece may cross this barrier, except Knights or any piece that has gained a similar ability to \"jump\".",
+      "moment": "Play this card after your move."
+    },
+    "bonnesCopines": {
+      "title": "Best Friends",
+      "description": "On the board, swap your Queen with your opponent's Queen.",
+      "moment": "Play this card on your turn. This move replaces your normal move."
+    },
+    "BoucheDEgout": {
+      "title": "Manhole",
+      "description": "Place manholes (coins) on two squares of the board. A piece standing on a manhole may, instead of its normal move, teleport to any other manhole, whether occupied or not.",
+      "moment": "Play this card after your move."
+    },
+    "brouillard": {
+      "title": "Fog",
+      "description": "Play this card when your opponent has just moved a Bishop, Rook, or Queen. The piece cannot complete its intended move and stops after advancing only one square in the intended direction.",
+      "moment": "Play this card after your opponent's move."
+    },
+    "cohabitation": {
+      "title": "Cohabitation",
+      "description": "Move one of your pieces onto a square already occupied by another of your pieces. You may later move either piece normally, but not both at once. If your opponent moves a piece onto that square, they capture both of your pieces.",
+      "moment": "Play this card on your turn. This move replaces your normal move."
+    },
+    "cessezLeFeu": {
+      "title": "Ceasefire",
+      "description": "Both players are now forbidden from capturing opponent pieces. All moves must end on an empty square. This effect lasts until one of the Kings is put in check.",
+      "moment": "Play this card after your move."
+    },
+    "coupDeBalai": {
+      "title": "Clean Sweep",
+      "description": "Discard this card along with the other four in your hand and immediately draw a new hand of five cards.",
+      "moment": "This card may be played at any time."
+    },
+    "coupDouble": {
+      "title": "Double Move",
+      "description": "Simultaneously move two pieces of the same type (two Bishops, two Knights, two Rooks, or two Pawns).",
+      "moment": "Play this card on your turn. This move replaces your normal move."
+    },
+    "contrordre": {
+      "title": "Counter-Order",
+      "description": "Your opponent's move is cancelled. They must make a different move, with the same piece or another.",
+      "moment": "Play this card after your opponent's move."
+    },
+    "crabe": {
+      "title": "Crab",
+      "description": "Permanently transform one of your pawns into a Crab. The Crab moves diagonally, like a Bishop, but only one square at a time. When it reaches the last rank, it is promoted like a regular pawn.",
+      "moment": "Play this card after your move."
+    },
+    "chasseNeige": {
+      "title": "Snowplow",
+      "description": "Move a Rook, Queen, or Bishop along one of its movement lines, capturing every piece in its path. Your piece stops only when it meets a friendly piece or the edge of the board.",
+      "moment": "Play this card on your turn. This move replaces your normal move."
+    },
+    "dalaiLama": {
+      "title": "Dalai Lama",
+      "description": "The piece your opponent just captured is immediately reincarnated as an identical piece, which appears on any empty square where it could have been at the start of the game.",
+      "moment": "Play this card after your opponent's move."
+    },
+    "droitsDAuteur": {
+      "title": "Copyright",
+      "description": "From now on, any player who makes a disparaging remark about the game Storm on the Chessboard must lose a pawn, chosen by their opponent.",
+      "moment": "Play this card after your move."
+    },
+    "doubleJeu": {
+      "title": "Double Game",
+      "description": "For three turns, swap sides with your opponent, each keeping your own hand of cards. During these three turns, it is entirely possible to win with your new color.",
+      "moment": "Play this card after your move."
+    },
+    "douane": {
+      "title": "Customs",
+      "description": "Play this card when your opponent has just moved a piece across the \"border\" separating their half of the board from yours. They must pay a toll by losing one of their pawns of their choice, or forfeit their move.",
+      "moment": "Play this card after your opponent's move."
+    },
+    "duel": {
+      "title": "Duel",
+      "description": "Play this card when your opponent wants to capture one of your pieces. Settle the fight by rolling dice (421). If you have no dice, use a coin flip or rock/paper/scissors in a best-of-three.",
+      "moment": "Play this card after your opponent's move."
+    },
+    "doublure": {
+      "title": "Body Double",
+      "description": "If your King's starting square is empty, you may place a second King on it. You may now leave one of your Kings in check and even let it be captured. You only lose when your last King is checkmated.",
+      "moment": "Play this card after your move."
+    },
+    "elementIncontrole": {
+      "title": "Uncontrolled Element",
+      "description": "Move an opponent's piece instead of one of your own. You cannot capture an opponent's piece this way.",
+      "moment": "Play this card on your turn. This move replaces your normal move."
+    },
+    "encephalopathieSpongiformeEquine": {
+      "title": "Equine Spongiform Encephalopathy",
+      "description": "One of your Knights, or one of your opponent's Knights, becomes a Bishop. It will henceforth move only like a Bishop.",
+      "moment": "Play this card after your move."
+    },
+    "electrochoc": {
+      "title": "Electroshock",
+      "description": "Every Bishop that can be moved must be shifted one square horizontally or vertically, without capturing. Your opponent moves their Bishops first.",
+      "moment": "Play this card after your move."
+    },
+    "fringale": {
+      "title": "Feeding Frenzy",
+      "description": "Both players are now forced to capture an opponent's piece on every move. This effect lasts until one player is unable to make a capture.",
+      "moment": "Play this card after your move."
+    },
+    "grosseDeprime": {
+      "title": "Deep Depression",
+      "description": "Remove from the board one of your opponent's pawns whose neighboring squares are all empty.",
+      "moment": "Play this card after your move."
+    },
+    "innondation": {
+      "title": "Flood",
+      "description": "The board is immediately reduced to the smallest possible rectangle containing all pieces still in play at the moment this card is played.",
+      "moment": "Play this card after your move."
+    },
+    "ingerence": {
+      "title": "Interference",
+      "description": "Ask the nearest bystander to move two pieces of their choice — not the Kings — one from each player.",
+      "moment": "Play this card before your move."
+    },
+    "jePasse": {
+      "title": "I Pass",
+      "description": "When you play this card, you skip your turn and keep the card face-up in front of you. You may use it later, once only, to take an extra turn after your regular move.",
+      "moment": "Play this card before your move. Use it later, after your regular move."
+    },
+    "kangourou": {
+      "title": "Kangaroo",
+      "description": "Permanently transform one of your Knights, or one of your opponent's Knights, into a Kangaroo. The Kangaroo moves by making two consecutive Knight jumps; the first must land on an empty square. The Kangaroo cannot stop after the first jump.",
+      "moment": "Play this card after your move."
+    },
+    "laCaseQuiRendFou": {
+      "title": "The Maddening Square",
+      "description": "Mark an unoccupied square on the board with a token. Until the end of the game, any piece leaving that square may move as if it were a Bishop.",
+      "moment": "Play this card after your move."
+    },
+    "laser": {
+      "title": "Laser",
+      "description": "One of your pieces (Rook, Bishop, or Queen) fires a laser beam in one of its possible movement directions. All pieces — friendly or enemy — between that piece and the edge of the board in that direction are disintegrated. Kings are not affected by the laser but do not block it.",
+      "moment": "Play this card after your move."
+    },
+    "maison": {
+      "title": "Home",
+      "description": "Return one of your pieces (not a pawn) to any square it could have occupied at the start of the game. You may even capture an opponent's piece this way.",
+      "moment": "Play this card on your turn. This move replaces your normal move."
+    },
+    "modestie": {
+      "title": "Modesty",
+      "description": "Move any of your pieces as if it were a pawn. If you bring a piece to the last rank this way, you may promote it to any other piece of your choice.",
+      "moment": "Play this card on your turn. This move replaces your normal move."
+    },
+    "majorettes": {
+      "title": "Majorettes",
+      "description": "Move two of your pawns sideways by one square each, without capturing.",
+      "moment": "Play this card after your move."
+    },
+    "non": {
+      "title": "No",
+      "description": "This card cancels any other card.",
+      "moment": "Play it immediately after the opponent's card you wish to cancel."
+    },
+    "niet": {
+      "title": "Nyet",
+      "description": "This card cancels any other card.",
+      "moment": "Play it immediately after the opponent's card you wish to cancel."
+    },
+    "nonViolent": {
+      "title": "Non-violent",
+      "description": "One of your pieces, except the King, becomes non-violent for the rest of the game. Mark it with a token. This piece can no longer capture opponent pieces or be captured, but it can still give check.",
+      "moment": "Play this card before your move."
+    },
+    "origines": {
+      "title": "Origins",
+      "description": "As long as neither King has been put in check, no Storm cards may be played.",
+      "moment": "Play this card after your move."
+    },
+    "ohDarling": {
+      "title": "Oh, Darling",
+      "description": "Move your King directly to an empty square adjacent to your Queen, or your Queen directly to an empty square adjacent to your King.",
+      "moment": "Play this card on your turn. This move replaces your normal move."
+    },
+    "omerta": {
+      "title": "Omerta",
+      "description": "The next player to name any piece — except the King — must lose a piece of that type. If they no longer have that piece, the effect continues.",
+      "moment": "Play this card after your move."
+    },
+    "ole": {
+      "title": "Olé",
+      "description": "Play this card when your opponent wants to capture one of your pieces with a Bishop, Rook, or Queen. The attacked piece stays put; the attacker passes through and must continue moving until it captures another of your pieces, stops in front of one of your opponent's pieces, or falls off the board.",
+      "moment": "Play this card during your opponent's move."
+    },
+    "promotionALAnciennete": {
+      "title": "Promotion by Seniority",
+      "description": "If you have only one or two pawns left on the board, you may immediately promote them to any piece of your choice, except the Queen.",
+      "moment": "Play this card after your move."
+    },
+    "pasDeDeux": {
+      "title": "Pas de Deux",
+      "description": "You may move any of your pieces by having it perform the exact same movement as the piece you just moved (same direction, same distance), provided no other piece blocks its path. This second piece may capture.",
+      "moment": "Play this card after your move."
+    },
+    "paranoia": {
+      "title": "Paranoia",
+      "description": "Instead of moving one of your pieces, move one of your opponent's Bishops so that it captures one of their own pieces.",
+      "moment": "Play this card on your turn. This move replaces your normal move."
+    },
+    "princesse": {
+      "title": "Princess",
+      "description": "If you have no Queen and her starting square is empty, place a Princess there. The Princess moves in all eight directions like the Queen, but only one or two squares at a time.",
+      "moment": "Play this card after your move."
+    },
+    "promotionAuMerite": {
+      "title": "Promotion by Merit",
+      "description": "One of your pawns is promoted to a piece of your choice when it reaches only the sixth rank.",
+      "moment": "Play this card after your move, when your pawn reaches the sixth rank."
+    },
+    "planque": {
+      "title": "Hideout",
+      "description": "An opponent's piece of your choice is \"put to sleep\". It can no longer move, and will only wake up when your opponent's King is put in check.",
+      "moment": "Play this card after your move."
+    },
+    "pegase": {
+      "title": "Pegasus",
+      "description": "Move one of your Knights directly to any empty square of the opposite color from the one it currently occupies.",
+      "moment": "Play this card on your turn. This move replaces your normal move."
+    },
+    "provocation": {
+      "title": "Provocation",
+      "description": "Your opponent must capture one of your pieces. If they cannot or will not, they forfeit their turn.",
+      "moment": "Play this card after your move."
+    },
+    "poubelle": {
+      "title": "Trash",
+      "description": "This card cancels a continuous or delayed-effect card (marked with a scepter) played earlier in the game.",
+      "moment": "Play this card after your turn."
+    },
+    "pitie": {
+      "title": "Mercy!",
+      "description": "When an opponent's piece (Rook, Bishop, or Queen) charges savagely at one of your pawns, the pawn drops to its knees and begs for mercy. The opponent's piece, moved by the plea, stops just in front of your pawn.",
+      "moment": "Play this card during your opponent's move."
+    },
+    "psychopathe": {
+      "title": "Psychopath",
+      "description": "Play this card when one of your Bishops can capture multiple opponent pieces. It explodes into several fragments, each capturing one of the opponent's pieces within its reach. The exploded Bishop is removed from the game.",
+      "moment": "Play this card on your turn. This move replaces your normal move."
+    },
+    "poison": {
+      "title": "Poison",
+      "description": "Designate one of your pieces whose flesh is permanently poisoned. If an opponent's piece captures the poisoned piece, both are removed from the board.",
+      "moment": "Play this card after your move."
+    },
+    "quadrille": {
+      "title": "Quadrille",
+      "description": "All pieces standing in any one of the four corners of the board rotate a quarter-turn in the direction of your choice. All moves happen simultaneously, so no captures occur.",
+      "moment": "Play this card after your move."
+    },
+    "rebeloteEtDixDeDer": {
+      "title": "Double Down",
+      "description": "This card allows you to play two more cards this turn.",
+      "moment": "Play this card after your first card."
+    },
+    "remorque": {
+      "title": "Tow",
+      "description": "The pawn you move (without capturing) \"tows\" the piece directly behind it, keeping it immediately behind the pawn after the move.",
+      "moment": "Play this card on your turn. This move replaces your normal move."
+    },
+    "ratonLaveur": {
+      "title": "Raccoon",
+      "description": "On the board, swap one of your pawns with one of your Bishops, one of your Knights, or one of your Rooks.",
+      "moment": "Play this card on your turn. This move replaces your normal move."
+    },
+    "ruade": {
+      "title": "Kick",
+      "description": "Cancel the move your opponent just made with one of their Knights. You then move that same Knight yourself in their place. You may even capture one of their pieces — or one of your own.",
+      "moment": "Play this card after your opponent's move."
+    },
+    "roqueEtRolle": {
+      "title": "Castle and Roll",
+      "description": "If no opponent piece stands on the first rank, you may rearrange all of your pieces currently on the first rank however you like.",
+      "moment": "Play this card on your turn. This move replaces your normal move."
+    },
+    "serialKiller": {
+      "title": "Serial Killer",
+      "description": "One of your pawns, having just captured an opponent's piece, is seized by a destructive frenzy. Continue moving the same pawn, capturing an opponent's piece with each move, for as long as possible.",
+      "moment": "Play this card after your pawn's first capture."
+    },
+    "toiAussiMonFils": {
+      "title": "Et tu, My Son?",
+      "description": "Play this card when your opponent announces check, even checkmate. The piece giving check changes color and joins your side.",
+      "moment": "Play this card after your opponent's move."
+    },
+    "tournezManege": {
+      "title": "Spin the Board",
+      "description": "Rotate the board a quarter-turn in the direction of your choice. Pawns always move toward the opponent. Any pawn that ends up on the last rank is immediately promoted, and any pawn on its own starting rank may again move two squares.",
+      "moment": "Play this card after your move."
+    },
+    "vampirisme": {
+      "title": "Vampirism",
+      "description": "One of your pieces, having just captured an opponent's piece, transforms into a piece of the same type as the one it just captured. For example, if one of your pawns captures a Knight, it becomes a Knight.",
+      "moment": "Play this card after your move."
+    },
+    "voyance": {
+      "title": "Clairvoyance",
+      "description": "Write on a piece of paper the piece you think your opponent will move this turn. If they do move that piece, the move is cancelled and your opponent cannot do anything else this turn.",
+      "moment": "Play this card after your move."
+    },
+    "verglas": {
+      "title": "Black Ice",
+      "description": "Play this card when your opponent has just moved a Bishop, Rook, or Queen without capturing. That piece must continue sliding beyond its destination until it captures one of your pieces, stops in front of one of your opponent's pieces, or falls off the board.",
+      "moment": "Play this card during your opponent's turn."
+    },
+    "voyageAstral": {
+      "title": "Astral Journey",
+      "description": "Remove one of your pieces — or one of your opponent's pieces — from the board, then put it back in its square after your move. You may freely pass through that square, but you cannot stop your piece there.",
+      "moment": "Play this card before your move."
+    },
+    "zombies": {
+      "title": "Zombies",
+      "description": "This card brings back two pawns for each player. Each player, starting with your opponent, places one of their lost pawns on any empty square on the second rank.",
+      "moment": "Play this card before your move."
+    },
+    "donneMoiTaMain": {
+      "title": "Give Me Your Hand...",
+      "description": "You swap your hand of cards with your opponent's (they immediately draw a new card to replace this one).",
+      "moment": "Play this card before your move."
+    }
+  }
+}
