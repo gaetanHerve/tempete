@@ -1,4 +1,5 @@
 import { Component, effect, signal } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Zone } from '../zone/zone';
 import { CardComponent } from '../shared/components/card-component/card-component';
 import { Action } from '../shared/models/action';
@@ -6,7 +7,7 @@ import { Card } from '../shared/models/card';
 
 @Component({
   selector: 'app-play-area',
-  imports: [CardComponent],
+  imports: [CardComponent, TranslatePipe],
   templateUrl: './play-area.html',
   styleUrl: './play-area.scss'
 })

@@ -1,0 +1,42 @@
+{
+  "toolbar": {
+    "your_turn": "Your turn",
+    "opponent_turn": "Opponent's turn",
+    "confirm_move": "Confirm this move?",
+    "confirm": "CONFIRM",
+    "cancel": "CANCEL",
+    "create_game": "CREATE A GAME",
+    "join_game": "JOIN A GAME",
+    "game_code_placeholder": "Game code",
+    "join": "JOIN",
+    "end_turn": "END MY TURN",
+    "game_label": "Game",
+    "leave": "LEAVE",
+    "leave_confirm": "Leave the game?",
+    "yes": "Yes",
+    "no": "No",
+    "reset": "RESET",
+    "reset_confirm": "Reset? All data will be lost."
+  },
+  "zones": {
+    "play_area": "PLAY AREA",
+    "discard": "DISCARD",
+    "stack": "STACK",
+    "no_card_play_area": "No card in play area.",
+    "no_card_discard": "No cards in discard pile.",
+    "no_card_stack": "No cards in Stack."
+  },
+  "card": {
+    "play": "Play",
+    "discard": "Discard",
+    "close": "Close",
+    "previous": "previous",
+    "next": "next"
+  },
+  "errors": {
+    "already_played": "You already played a card this turn.",
+    "card_not_found": "Card not found in hand.",
+    "stack_empty": "Stack and discard are empty, cannot draw more cards.",
+    "hand_full": "Hand is full, cannot draw more cards."
+  }
+}

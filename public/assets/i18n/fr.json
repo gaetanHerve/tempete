@@ -1,0 +1,42 @@
+{
+  "toolbar": {
+    "your_turn": "C'est votre tour",
+    "opponent_turn": "Tour de l'adversaire",
+    "confirm_move": "Confirmer ce coup ?",
+    "confirm": "CONFIRMER",
+    "cancel": "ANNULER",
+    "create_game": "CRÉER UNE PARTIE",
+    "join_game": "REJOINDRE UNE PARTIE",
+    "game_code_placeholder": "Code de la partie",
+    "join": "REJOINDRE",
+    "end_turn": "FIN DE MON TOUR",
+    "game_label": "Partie",
+    "leave": "QUITTER",
+    "leave_confirm": "Quitter la partie ?",
+    "yes": "Oui",
+    "no": "Non",
+    "reset": "RESET",
+    "reset_confirm": "Réinitialiser ? Les données seront perdues."
+  },
+  "zones": {
+    "play_area": "ZONE DE JEU",
+    "discard": "DÉFAUSSE",
+    "stack": "PIOCHE",
+    "no_card_play_area": "Aucune carte en jeu.",
+    "no_card_discard": "Aucune carte dans la défausse.",
+    "no_card_stack": "Aucune carte dans la pioche."
+  },
+  "card": {
+    "play": "Jouer",
+    "discard": "Défausser",
+    "close": "Fermer",
+    "previous": "précédent",
+    "next": "suivant"
+  },
+  "errors": {
+    "already_played": "Vous avez déjà joué une carte ce tour.",
+    "card_not_found": "Carte introuvable dans la main.",
+    "stack_empty": "La pioche et la défausse sont vides, impossible de piocher.",
+    "hand_full": "La main est pleine, impossible de piocher."
+  }
+}

@@ -1,9 +1,9 @@
-<h2>PLAY AREA ({{ cards().length }})</h2>
+<h2>{{ 'zones.play_area' | translate }} ({{ cards().length }})</h2>
 
 <div class="cards-container">
 
   <div class="card" id="playAreaDropList">
-    
+
     @if (cards().length > 0 && card() != undefined) {
       <app-card-component [card]="card()!"
         [actions]="actions()"
@@ -11,8 +11,7 @@
         (browse)="browse($event)">
       </app-card-component>
     } @else {
-      <p class="no-card">No card in play area.</p>
+      <p class="no-card">{{ 'zones.no_card_play_area' | translate }}</p>
     }
   </div>
 </div>
-

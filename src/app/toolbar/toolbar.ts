@@ -1,17 +1,20 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { TranslatePipe } from '@ngx-translate/core';
 import { GameService } from '../shared/services/game-service';
+import { TranslationService } from '../shared/services/translation-service';
 import { ErrorComponent } from '../shared/components/error-component/error-component';
 
 @Component({
   selector: 'app-toolbar',
-  imports: [ErrorComponent, FormsModule],
+  imports: [ErrorComponent, FormsModule, TranslatePipe],
   templateUrl: './toolbar.html',
   styleUrl: './toolbar.scss'
 })
 export class Toolbar {
 
   private readonly gameService = inject(GameService);
+  protected readonly translationService = inject(TranslationService);
 
   protected gameStarted = signal<boolean>(false);
   protected roomCode = this.gameService.roomCode;

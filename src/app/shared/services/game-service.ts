@@ -6,6 +6,7 @@ import cardListData from '../card-list.json';
 import { Game } from '../models/game';
 import { GameSocketService } from './gameSocket-service';
 import { Player } from '../models/player';
+import { TranslateService } from '@ngx-translate/core';
 
 
 export interface Pile {
@@ -34,6 +35,7 @@ export class GameService {
 
   private readonly errorService = inject(ErrorService);
   private readonly gameSocketService = inject(GameSocketService);
+  private readonly translate = inject(TranslateService);
 
   player = signal<Player>(new Player('Player 1', 'player1'));
   roomCode = signal<string | null>(null);
@@ -113,7 +115,7 @@ export class GameService {
 
     const alreadyPlayed = player === 'player1' ? this.player1PlayedThisTurn() : this.player2PlayedThisTurn();
     if (alreadyPlayed) {
-      this.errorService.addError('Vous avez déjà joué une carte ce tour.');
+      this.errorService.addError(this.translate.instant('errors.already_played'));
       return;
     }
 
@@ -122,7 +124,7 @@ export class GameService {
     if (type === 'play') {
       const card = this.getPile(player).find(c => c._id === cardId);
       if (!card) {
-        this.errorService.addError('Carte introuvable dans la main.');
+        this.errorService.addError(this.translate.instant('errors.card_not_found'));
         return;
       }
       if (card.permanent) {
@@ -205,13 +207,13 @@ export class GameService {
           this.stack.set(this.shuffleArray(this.discard()));
           this.discard.set([]);
         } else {
-          this.errorService.addError('Stack and discard are empty, cannot draw more cards.');
+          this.errorService.addError(this.translate.instant('errors.stack_empty'));
           return;
         }
       }
       const hand = player === 'player1' ? this.player1() : this.player2();
       if (hand.length >= this.cardsPerHand) {
-        this.errorService.addError('Hand is full, cannot draw more cards.');
+        this.errorService.addError(this.translate.instant('errors.hand_full'));
         return;
       }
       this.moveToHand(this.stack()[0]._id, player);

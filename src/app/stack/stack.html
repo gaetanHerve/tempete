@@ -1,10 +1,10 @@
-<h2>STACK ({{ cards().length }})</h2>
+<h2>{{ 'zones.stack' | translate }} ({{ cards().length }})</h2>
 
 <div class="cards-container">
   <div class="card">
     @if (cards().length === 0) {
       <div class="no-card-bg">
-            <p class="no-card">No cards in Stack.</p>
+            <p class="no-card">{{ 'zones.no_card_stack' | translate }}</p>
       </div>
     } @else {
       <img class="card-img-top"

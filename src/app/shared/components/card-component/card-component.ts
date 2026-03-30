@@ -1,10 +1,11 @@
 import { Component, input, output, signal } from '@angular/core';
+import { TranslatePipe } from '@ngx-translate/core';
 import { Card } from '../../models/card';
 import { Action } from '../../models/action';
 
 @Component({
   selector: 'app-card-component',
-  imports: [],
+  imports: [TranslatePipe],
   templateUrl: './card-component.html',
   styleUrl: './card-component.scss'
 })

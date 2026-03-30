@@ -1,4 +1,4 @@
-<h2>DISCARD ({{ cards().length }})</h2>
+<h2>{{ 'zones.discard' | translate }} ({{ cards().length }})</h2>
 
 <div class="cards-container">
   <div class="card" id="discardDropList">
@@ -8,7 +8,7 @@
       <app-card-component [card]="card"></app-card-component>
     } @else {
       <div class="no-card-bg">
-        <p class="no-card">No cards in discard pile.</p>
+        <p class="no-card">{{ 'zones.no_card_discard' | translate }}</p>
       </div>
     }
   </div>

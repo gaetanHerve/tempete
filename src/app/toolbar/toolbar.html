@@ -6,73 +6,84 @@
     @if (gameStarted()) {
       <div class="mb-2">
         @if (currentTurn() === localPlayer().number) {
-          <span class="badge bg-success fs-6">C'est votre tour</span>
+          <span class="badge bg-success fs-6">{{ 'toolbar.your_turn' | translate }}</span>
         } @else {
-          <span class="badge bg-secondary fs-6">Tour de l'adversaire</span>
+          <span class="badge bg-secondary fs-6">{{ 'toolbar.opponent_turn' | translate }}</span>
         }
       </div>
     }
 
     @if (pendingAction()) {
-      <span class="text-muted me-2">Confirmer ce coup ?</span>
-      <button type="button" class="btn btn-success m-1" (click)="confirmAction()">CONFIRMER</button>
-      <button type="button" class="btn btn-warning m-1" (click)="cancelAction()">ANNULER</button>
+      <span class="text-muted me-2">{{ 'toolbar.confirm_move' | translate }}</span>
+      <button type="button" class="btn btn-success m-1" (click)="confirmAction()">{{ 'toolbar.confirm' | translate }}</button>
+      <button type="button" class="btn btn-warning m-1" (click)="cancelAction()">{{ 'toolbar.cancel' | translate }}</button>
     } @else {
       @if (!gameStarted()) {
         <button type="button" class="btn btn-outline-primary m-1" (click)="startGame()">
-          CRÉER UNE PARTIE
+          {{ 'toolbar.create_game' | translate }}
         </button>
 
         @if (!showJoinInput()) {
           <button type="button" class="btn btn-outline-primary m-1" (click)="showJoinForm()">
-            REJOINDRE UNE PARTIE
+            {{ 'toolbar.join_game' | translate }}
           </button>
         } @else {
           <input
             class="form-control d-inline-block w-auto m-1"
             type="text"
-            placeholder="Code de la partie"
+            [placeholder]="'toolbar.game_code_placeholder' | translate"
             [(ngModel)]="joinCodeInput"
             maxlength="6" />
           <button type="button" class="btn btn-outline-success m-1" (click)="confirmJoin()">
-            REJOINDRE
+            {{ 'toolbar.join' | translate }}
           </button>
         }
       }
 
       @if (gameStarted() && currentTurn() === localPlayer().number) {
         <button type="button" class="btn btn-outline-success m-1" (click)="endTurn()">
-          FIN DE MON TOUR
+          {{ 'toolbar.end_turn' | translate }}
         </button>
       }
-
-      <!-- <button type="button" class="btn btn-outline-secondary m-1" (click)="shufflePile()">
-        SHUFFLE PILE
-      </button> -->
     }
 
   </div>
 
   <!-- Zone droite : gestion de la partie -->
-  @if (gameStarted() || roomCode()) {
-    <div class="toolbar-session">
+  <div class="toolbar-session">
+
+    <!-- Sélecteur de langue -->
+    <div class="lang-switcher mb-2">
+      <button
+        class="btn btn-sm"
+        [class.btn-primary]="translationService.currentLang() === 'fr'"
+        [class.btn-outline-primary]="translationService.currentLang() !== 'fr'"
+        (click)="translationService.switchLanguage('fr')">FR</button>
+      <button
+        class="btn btn-sm ms-1"
+        [class.btn-primary]="translationService.currentLang() === 'en'"
+        [class.btn-outline-primary]="translationService.currentLang() !== 'en'"
+        (click)="translationService.switchLanguage('en')">EN</button>
+    </div>
+
+    @if (gameStarted() || roomCode()) {
 
       @if (roomCode()) {
         <div class="mb-2 text-end">
-          <span class="text-muted small">Partie <strong>{{ roomCode() }}</strong></span>
+          <span class="text-muted small">{{ 'toolbar.game_label' | translate }} <strong>{{ roomCode() }}</strong></span>
         </div>
       }
 
       @if (gameStarted() && localPlayer().number !== 'player1') {
         @if (!confirmingLeave()) {
           <button type="button" class="btn btn-outline-danger btn-sm" (click)="confirmingLeave.set(true)">
-            QUITTER
+            {{ 'toolbar.leave' | translate }}
           </button>
         } @else {
           <div class="text-end">
-            <div class="text-danger small mb-1">Quitter la partie ?</div>
-            <button type="button" class="btn btn-danger btn-sm me-1" (click)="leaveGame()">Oui</button>
-            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="confirmingLeave.set(false)">Non</button>
+            <div class="text-danger small mb-1">{{ 'toolbar.leave_confirm' | translate }}</div>
+            <button type="button" class="btn btn-danger btn-sm me-1" (click)="leaveGame()">{{ 'toolbar.yes' | translate }}</button>
+            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="confirmingLeave.set(false)">{{ 'toolbar.no' | translate }}</button>
           </div>
         }
       }
@@ -80,19 +91,19 @@
       @if (gameStarted() && localPlayer().number === 'player1') {
         @if (!confirmingReset()) {
           <button type="button" class="btn btn-outline-danger btn-sm" (click)="confirmingReset.set(true)">
-            RESET
+            {{ 'toolbar.reset' | translate }}
           </button>
         } @else {
           <div class="text-end">
-            <div class="text-danger small mb-1">Réinitialiser ? Les données seront perdues.</div>
-            <button type="button" class="btn btn-danger btn-sm me-1" (click)="resetGame()">Oui</button>
-            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="confirmingReset.set(false)">Non</button>
+            <div class="text-danger small mb-1">{{ 'toolbar.reset_confirm' | translate }}</div>
+            <button type="button" class="btn btn-danger btn-sm me-1" (click)="resetGame()">{{ 'toolbar.yes' | translate }}</button>
+            <button type="button" class="btn btn-outline-secondary btn-sm" (click)="confirmingReset.set(false)">{{ 'toolbar.no' | translate }}</button>
           </div>
         }
       }
 
-    </div>
-  }
+    }
+  </div>
 
 </div>
 
