@@ -23,6 +23,7 @@ export class GameSocketService {
   private joinError$ = new Subject<{ message: string }>();
   private opponentJoined$ = new Subject<void>();
   private opponentDisconnected$ = new Subject<void>();
+  private chessMove$ = new Subject<any>();
 
   constructor() {
     this.initSocket(environment.socketUrl);
@@ -46,6 +47,7 @@ export class GameSocketService {
     this.socket.on('join-error', (data: { message: string }) => this.joinError$.next(data));
     this.socket.on('opponent-joined', () => this.opponentJoined$.next());
     this.socket.on('opponent-disconnected', () => this.opponentDisconnected$.next());
+    this.socket.on('chess-move', (board: any) => this.chessMove$.next(board));
 
     const fallback = (environment as any).fallbackSocketUrl as string | undefined;
     if (!this.fallbackUsed && fallback) {
@@ -102,5 +104,13 @@ export class GameSocketService {
 
   onDisconnect(): Observable<void> {
     return this.disconnect$.asObservable();
+  }
+
+  sendChessMove(roomCode: string, board: any): void {
+    this.socket.emit('chess-move', { roomCode, board });
+  }
+
+  onChessMove(): Observable<any> {
+    return this.chessMove$.asObservable();
   }
 }

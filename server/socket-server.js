@@ -59,6 +59,10 @@ io.on('connection', (socket) => {
     socket.to(roomCode).emit('new-game', game);
   });
 
+  socket.on('chess-move', ({ roomCode, board }) => {
+    socket.to(roomCode).emit('chess-move', board);
+  });
+
   socket.on('disconnect', (reason) => {
     console.log('client disconnected', socket.id, reason);
     for (const [code, room] of rooms.entries()) {

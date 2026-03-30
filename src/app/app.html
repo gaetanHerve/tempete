@@ -1,10 +1,12 @@
-<main class="main">
-  <div class="content">
-
-    <app-board></app-board>
-
+@if (isChessPopup) {
+  <div class="chess-popup-root">
+    <app-chess [popupMode]="true" [overrideColor]="popupColor"></app-chess>
   </div>
-</main>
-
-
-<router-outlet />
+} @else {
+  <main class="main">
+    <div class="content">
+      <app-board></app-board>
+    </div>
+  </main>
+  <router-outlet />
+}

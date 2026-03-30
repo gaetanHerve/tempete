@@ -34,6 +34,16 @@
     "view_all": "Voir toutes",
     "empty": "Aucune carte dans cette zone."
   },
+  "chess": {
+    "title": "Échiquier",
+    "show": "Échiquier",
+    "hide": "Masquer l'échiquier",
+    "toggle_title": "Afficher / masquer l'échiquier",
+    "open_window": "Ouvrir dans une fenêtre séparée",
+    "close": "Fermer l'échiquier",
+    "reset": "Réinitialiser la position",
+    "free_move_hint": "Déplacements libres — les effets des cartes s'appliqueront ici."
+  },
   "godmode": {
     "enable": "God mode",
     "password_placeholder": "Mot de passe",

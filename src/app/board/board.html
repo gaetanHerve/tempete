@@ -24,4 +24,10 @@
     <app-hand [player]="player"></app-hand>
   </div>
 
+  @if (chessService.chessVisible()) {
+    <div class="chess-section">
+      <app-chess></app-chess>
+    </div>
+  }
+
 </div>

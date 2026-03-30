@@ -1,0 +1,79 @@
+<div class="chess-wrapper">
+
+  <!-- En-tête -->
+  <div class="chess-header">
+    <span class="chess-title">{{ 'chess.title' | translate }}</span>
+    <div class="chess-controls">
+      <button class="btn btn-sm btn-outline-secondary me-1" (click)="resetBoard()" title="{{ 'chess.reset' | translate }}">
+        ↺
+      </button>
+      @if (!popupMode()) {
+        <button class="btn btn-sm btn-outline-info me-1" (click)="openInWindow()" title="{{ 'chess.open_window' | translate }}">
+          ⧉
+        </button>
+        <button class="btn btn-sm btn-outline-danger" (click)="closeChess()" title="{{ 'chess.close' | translate }}">
+          ✕
+        </button>
+      }
+    </div>
+  </div>
+
+  <!-- Indication de couleur -->
+  <div class="color-badge">
+    @if (playerColor() === 'white') {
+      <span class="badge bg-light text-dark border">{{ 'toolbar.playing_white' | translate }}</span>
+    } @else {
+      <span class="badge bg-dark">{{ 'toolbar.playing_black' | translate }}</span>
+    }
+  </div>
+
+  <!-- Plateau -->
+  <div class="board-container">
+
+    <!-- Labels colonnes (haut) -->
+    <div class="coord-row">
+      <div class="coord-offset"></div>
+      @for (col of cols; track col) {
+        <div class="coord-cell">{{ colLabel(col) }}</div>
+      }
+      <div class="coord-offset"></div>
+    </div>
+
+    <!-- Rangées -->
+    @for (row of rows; track row) {
+      <div class="board-row">
+        <div class="coord-label">{{ rowLabel(row) }}</div>
+        @for (col of cols; track col) {
+          <div
+            class="cell"
+            [class.light]="isLightSquare(row, col)"
+            [class.dark]="!isLightSquare(row, col)"
+            [class.selected]="isSelected(row, col)"
+            (click)="onCellClick(row, col)">
+            @if (board()[row][col]; as piece) {
+              <span class="piece" [class.white-piece]="piece.color === 'white'">
+                {{ getPieceSymbol(piece) }}
+              </span>
+            }
+          </div>
+        }
+        <div class="coord-label">{{ rowLabel(row) }}</div>
+      </div>
+    }
+
+    <!-- Labels colonnes (bas) -->
+    <div class="coord-row">
+      <div class="coord-offset"></div>
+      @for (col of cols; track col) {
+        <div class="coord-cell">{{ colLabel(col) }}</div>
+      }
+      <div class="coord-offset"></div>
+    </div>
+
+  </div>
+
+  @if (popupMode()) {
+    <p class="chess-hint small text-muted">{{ 'chess.free_move_hint' | translate }}</p>
+  }
+
+</div>

@@ -34,6 +34,16 @@
     "view_all": "View all",
     "empty": "No cards in this zone."
   },
+  "chess": {
+    "title": "Chessboard",
+    "show": "Chessboard",
+    "hide": "Hide chessboard",
+    "toggle_title": "Show / hide chessboard",
+    "open_window": "Open in a separate window",
+    "close": "Close chessboard",
+    "reset": "Reset position",
+    "free_move_hint": "Free moves — card effects will be applied here later."
+  },
   "godmode": {
     "enable": "God mode",
     "password_placeholder": "Password",

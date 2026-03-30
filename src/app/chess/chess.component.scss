@@ -1,0 +1,123 @@
+$cell-size: 40px;
+$coord-size: 18px;
+
+.chess-wrapper {
+  user-select: none;
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.6rem 0.8rem;
+  background: #2a2a2a;
+  border-radius: 8px;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+}
+
+.chess-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 0.5rem;
+
+  .chess-title {
+    color: #ddd;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .chess-controls {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.color-badge {
+  width: 100%;
+  text-align: center;
+}
+
+.board-container {
+  display: flex;
+  flex-direction: column;
+}
+
+.coord-row {
+  display: flex;
+  align-items: center;
+
+  .coord-offset {
+    width: $coord-size;
+    flex-shrink: 0;
+  }
+
+  .coord-cell {
+    width: $cell-size;
+    height: $coord-size;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #888;
+    font-size: 0.65rem;
+    font-family: monospace;
+  }
+}
+
+.board-row {
+  display: flex;
+  align-items: center;
+
+  .coord-label {
+    width: $coord-size;
+    height: $cell-size;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #888;
+    font-size: 0.65rem;
+    font-family: monospace;
+    flex-shrink: 0;
+  }
+}
+
+.cell {
+  width: $cell-size;
+  height: $cell-size;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  position: relative;
+  transition: opacity 0.1s;
+
+  &.light { background: #f0d9b5; }
+  &.dark  { background: #b58863; }
+
+  &.selected {
+    background: #f6f669 !important;
+    box-shadow: inset 0 0 0 2px rgba(0, 0, 0, 0.3);
+  }
+
+  &:hover:not(.selected) {
+    opacity: 0.8;
+  }
+
+  .piece {
+    font-size: 1.6rem;
+    line-height: 1;
+    pointer-events: none;
+
+    &.white-piece {
+      filter: drop-shadow(0 1px 1px rgba(0, 0, 0, 0.6));
+    }
+  }
+}
+
+.chess-hint {
+  font-size: 0.72rem;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+}
