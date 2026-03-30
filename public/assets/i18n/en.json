@@ -16,12 +16,18 @@
     "yes": "Yes",
     "no": "No",
     "reset": "RESET",
-    "reset_confirm": "Reset? All data will be lost."
+    "reset_confirm": "Reset? All data will be lost.",
+    "choose_color": "Choose your color",
+    "white": "White",
+    "black": "Black",
+    "playing_white": "White ♔",
+    "playing_black": "Black ♚"
   },
   "zones": {
-    "play_area": "PLAY AREA",
-    "discard": "DISCARD",
-    "stack": "STACK",
+    "play_area": "permanent effects",
+    "discard": "discard",
+    "stack": "stack",
+    "hand": "hand",
     "no_card_play_area": "No card in play area.",
     "no_card_discard": "No cards in discard pile.",
     "no_card_stack": "No cards in stack."

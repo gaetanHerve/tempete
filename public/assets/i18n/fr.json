@@ -16,12 +16,18 @@
     "yes": "Oui",
     "no": "Non",
     "reset": "RESET",
-    "reset_confirm": "Réinitialiser ? Les données seront perdues."
+    "reset_confirm": "Réinitialiser ? Les données seront perdues.",
+    "choose_color": "Choisissez votre couleur",
+    "white": "Blancs",
+    "black": "Noirs",
+    "playing_white": "Blancs ♔",
+    "playing_black": "Noirs ♚"
   },
   "zones": {
-    "play_area": "ZONE DE JEU",
-    "discard": "DÉFAUSSE",
-    "stack": "PIOCHE",
+    "play_area": "Effets permanents",
+    "discard": "défausse",
+    "stack": "pioche",
+    "hand": "main",
     "no_card_play_area": "Aucune carte en jeu.",
     "no_card_discard": "Aucune carte dans la défausse.",
     "no_card_stack": "Aucune carte dans la pioche."

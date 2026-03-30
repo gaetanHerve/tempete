@@ -12,6 +12,7 @@ export class Game {
     public stack: Card[],
     public currentTurn: 'player1' | 'player2' = 'player1',
     public player1PlayedThisTurn: boolean = false,
-    public player2PlayedThisTurn: boolean = false
+    public player2PlayedThisTurn: boolean = false,
+    public player1Color: 'white' | 'black' = 'white'
   ) {}
 }

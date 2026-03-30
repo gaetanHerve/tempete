@@ -4,13 +4,26 @@
   <div class="toolbar-game-actions">
 
     @if (gameStarted()) {
-      <div class="mb-2">
-        @if (currentTurn() === localPlayer().number) {
-          <span class="badge bg-success fs-6">{{ 'toolbar.your_turn' | translate }}</span>
-        } @else {
-          <span class="badge bg-secondary fs-6">{{ 'toolbar.opponent_turn' | translate }}</span>
-        }
+      <div>
+        <!-- Couleur du joueur -->
+        <div class="mb-1">
+          @if (localPlayer().color === 'white') {
+            <span class="badge bg-light text-dark border">{{ 'toolbar.playing_white' | translate }}</span>
+          } @else {
+            <span class="badge bg-dark">{{ 'toolbar.playing_black' | translate }}</span>
+          }
+        </div>
+
+        <!-- Tour -->
+        <div class="mb-2">
+          @if (currentTurn() === localPlayer().number) {
+            <span class="badge bg-success fs-6">{{ 'toolbar.your_turn' | translate }}</span>
+          } @else {
+            <span class="badge bg-secondary fs-6">{{ 'toolbar.opponent_turn' | translate }}</span>
+          }
+        </div>  
       </div>
+      
     }
 
     @if (pendingAction()) {
@@ -19,9 +32,21 @@
       <button type="button" class="btn btn-warning m-1" (click)="cancelAction()">{{ 'toolbar.cancel' | translate }}</button>
     } @else {
       @if (!gameStarted()) {
-        <button type="button" class="btn btn-outline-primary m-1" (click)="startGame()">
-          {{ 'toolbar.create_game' | translate }}
-        </button>
+
+        @if (showColorPicker()) {
+          <!-- Sélecteur de couleur -->
+          <span class="text-muted me-2 small">{{ 'toolbar.choose_color' | translate }}</span>
+          <button type="button" class="btn btn-outline-secondary m-1" (click)="createWithColor('white')">
+            ♔ {{ 'toolbar.white' | translate }}
+          </button>
+          <button type="button" class="btn btn-outline-dark m-1" (click)="createWithColor('black')">
+            ♚ {{ 'toolbar.black' | translate }}
+          </button>
+        } @else {
+          <button type="button" class="btn btn-outline-primary m-1" (click)="openColorPicker()">
+            {{ 'toolbar.create_game' | translate }}
+          </button>
+        }
 
         @if (!showJoinInput()) {
           <button type="button" class="btn btn-outline-primary m-1" (click)="showJoinForm()">

@@ -19,6 +19,7 @@ export class Toolbar {
   protected gameStarted = signal<boolean>(false);
   protected roomCode = this.gameService.roomCode;
   protected showJoinInput = signal<boolean>(false);
+  protected showColorPicker = signal<boolean>(false);
   protected joinCodeInput = '';
   protected currentTurn = this.gameService.currentTurn;
   protected localPlayer = this.gameService.player;
@@ -26,10 +27,13 @@ export class Toolbar {
   protected confirmingReset = signal<boolean>(false);
   protected confirmingLeave = signal<boolean>(false);
 
-  protected startGame() {
-    if (!this.gameService.gameStarted) {
-      this.gameService.createGame(() => this.gameStarted.set(true));
-    }
+  protected openColorPicker() {
+    this.showColorPicker.set(true);
+  }
+
+  protected createWithColor(color: 'white' | 'black') {
+    this.showColorPicker.set(false);
+    this.gameService.createGame(color, () => this.gameStarted.set(true));
   }
 
   protected showJoinForm() {
@@ -49,6 +53,7 @@ export class Toolbar {
     this.gameService.resetGame();
     this.gameStarted.set(false);
     this.showJoinInput.set(false);
+    this.showColorPicker.set(false);
     this.joinCodeInput = '';
     this.confirmingReset.set(false);
   }

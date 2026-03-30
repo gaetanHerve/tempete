@@ -37,8 +37,9 @@ export class GameService {
   private readonly gameSocketService = inject(GameSocketService);
   private readonly translate = inject(TranslateService);
 
-  player = signal<Player>(new Player('Player 1', 'player1'));
+  player = signal<Player>(new Player('Player 1', 'player1', 'white'));
   roomCode = signal<string | null>(null);
+  player1Color = signal<'white' | 'black'>('white');
   isConnected = signal<boolean>(false);
   stack = signal<Card[]>([]);
   playArea = signal<Card[]>([]);
@@ -71,14 +72,24 @@ export class GameService {
       this.currentTurn.set(game.currentTurn ?? 'player1');
       this.player1PlayedThisTurn.set(game.player1PlayedThisTurn ?? false);
       this.player2PlayedThisTurn.set(game.player2PlayedThisTurn ?? false);
+      if (game.player1Color) {
+        this.player1Color.set(game.player1Color);
+        const myNumber = this.player().number;
+        const myColor = myNumber === 'player1' ? game.player1Color : (game.player1Color === 'white' ? 'black' : 'white');
+        this.player.update(p => new Player(p.name, p.number, myColor));
+      }
       this.gameStarted = true;
     });
   }
 
-  createGame(onSuccess?: () => void): void {
+  createGame(color: 'white' | 'black', onSuccess?: () => void): void {
     this.gameSocketService.createGame().subscribe(({ roomCode, playerNumber }) => {
       this.roomCode.set(roomCode);
-      this.player.set(new Player('Player 1', playerNumber));
+      this.player1Color.set(color);
+      this.player.set(new Player('Player 1', playerNumber, color));
+      if (color === 'black') {
+        this.currentTurn.set('player2');
+      }
       this.initStack();
       this.initHands();
       this.gameStarted = true;
@@ -272,6 +283,8 @@ export class GameService {
     this.player1PlayedThisTurn.set(false);
     this.player2PlayedThisTurn.set(false);
     this.pendingAction.set(null);
+    this.player1Color.set('white');
+    this.player.set(new Player('Player 1', 'player1', 'white'));
     this.gameStarted = false;
   }
 
@@ -317,7 +330,8 @@ export class GameService {
       stack: this.stack(),
       currentTurn: this.currentTurn(),
       player1PlayedThisTurn: this.player1PlayedThisTurn(),
-      player2PlayedThisTurn: this.player2PlayedThisTurn()
+      player2PlayedThisTurn: this.player2PlayedThisTurn(),
+      player1Color: this.player1Color()
     };
     this.gameSocketService.sendGameState(code, game);
   }

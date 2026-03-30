@@ -4,10 +4,11 @@ import { CardComponent } from "../shared/components/card-component/card-componen
 import { Action } from '../shared/models/action';
 import { Card } from '../shared/models/card';
 import { getMomentCategory, MomentCategory } from '../shared/models/moment-category';
+import { TranslatePipe } from '@ngx-translate/core';
 
 @Component({
   selector: 'app-hand',
-  imports: [CardComponent],
+  imports: [CardComponent, TranslatePipe],
   templateUrl: './hand.html',
   styleUrl: './hand.scss'
 })
