@@ -191,7 +191,7 @@
       "description": "Remove from the board one of your opponent's pawns whose neighboring squares are all empty.",
       "moment": "Play this card after your move."
     },
-    "innondation": {
+    "inondation": {
       "title": "Flood",
       "description": "The board is immediately reduced to the smallest possible rectangle containing all pieces still in play at the moment this card is played.",
       "moment": "Play this card after your move."

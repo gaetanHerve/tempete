@@ -191,7 +191,7 @@
       "description": "Enlevez de l'échiquier un pion adverse dont toutes les cases voisines sont vides.",
       "moment": "Jouez cette carte après votre coup."
     },
-    "innondation": {
+    "inondation": {
       "title": "Inondation",
       "description": "L'échiquier est désormais réduit au plus petit rectangle possible contenant toutes les pièces encore en jeu au moment où cette carte est jouée.",
       "moment": "Jouez cette carte après votre coup."
