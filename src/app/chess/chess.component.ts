@@ -31,14 +31,37 @@ export class ChessComponent implements OnInit {
 
   protected readonly board = this.chessService.board;
   protected readonly selectedSquare = this.chessService.selectedSquare;
+  protected readonly legalMoves = this.chessService.legalMoves;
+  protected readonly captureSquares = this.chessService.captureSquares;
+  protected readonly freeMode = this.chessService.freeMode;
+  protected readonly currentTurn = this.chessService.currentTurn;
+  protected readonly capturedWhite = this.chessService.capturedWhite;
+  protected readonly capturedBlack = this.chessService.capturedBlack;
 
-  protected readonly rows = [0, 1, 2, 3, 4, 5, 6, 7];
-  protected readonly cols = [0, 1, 2, 3, 4, 5, 6, 7];
+  /** Ordre d'affichage des rangées : inversé pour les noirs (noir joue depuis le bas). */
+  protected readonly displayRows = computed<number[]>(() =>
+    this.playerColor() === 'black' ? [7, 6, 5, 4, 3, 2, 1, 0] : [0, 1, 2, 3, 4, 5, 6, 7]
+  );
+
+  /** Ordre d'affichage des colonnes : inversé pour les noirs. */
+  protected readonly displayCols = computed<number[]>(() =>
+    this.playerColor() === 'black' ? [7, 6, 5, 4, 3, 2, 1, 0] : [0, 1, 2, 3, 4, 5, 6, 7]
+  );
+
+  /** Pièces capturées affichées en haut (côté adverse du joueur). */
+  protected readonly topCaptured = computed<ChessPiece[]>(() =>
+    this.playerColor() === 'white' ? this.capturedWhite() : this.capturedBlack()
+  );
+
+  /** Pièces capturées affichées en bas (côté du joueur). */
+  protected readonly bottomCaptured = computed<ChessPiece[]>(() =>
+    this.playerColor() === 'white' ? this.capturedBlack() : this.capturedWhite()
+  );
 
   /** Taille d'une cellule en px, calculée pour que l'échiquier occupe ~90 % de containerWidth. */
   protected readonly cellSize = computed<number>(() => {
     const available = this.containerWidth() * 0.9 - 2 * COORD_SIZE;
-    return Math.max(28, Math.min(80, Math.floor(available / 8)));
+    return Math.max(24, Math.min(80, Math.floor(available / 8)));
   });
 
   /** Taille de police des pièces, proportionnelle à la cellule. */
@@ -74,6 +97,19 @@ export class ChessComponent implements OnInit {
   protected isSelected(row: number, col: number): boolean {
     const sel = this.selectedSquare();
     return sel !== null && sel.row === row && sel.col === col;
+  }
+
+  protected isLegalMove(row: number, col: number): boolean {
+    return this.legalMoves().some(m => m.row === row && m.col === col);
+  }
+
+  protected isCaptureSquare(row: number, col: number): boolean {
+    return this.captureSquares().some(c => c.row === row && c.col === col);
+  }
+
+  protected toggleFreeMode(): void {
+    this.chessService.freeMode.update(v => !v);
+    this.chessService.selectedSquare.set(null);
   }
 
   protected colLabel(col: number): string {

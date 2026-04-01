@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, OnDestroy, OnInit, signal } from '@angular/core';
+import { Component, computed, effect, HostListener, inject, OnDestroy, OnInit, signal } from '@angular/core';
 import { Toolbar } from "../toolbar/toolbar";
 import { Hand } from '../hand/hand';
 import { Stack } from '../stack/stack';
@@ -20,10 +20,21 @@ export class Board implements OnInit, OnDestroy {
   protected readonly chessService = inject(ChessService);
   protected player: 'player1' | 'player2' = 'player1';
 
-  /** Largeur courante du panneau (px), modifiable par drag. */
+  /** Largeur courante du panneau desktop (px), modifiable par drag. */
   protected readonly chessWidth = signal<number>(450);
   /** Désactive les transitions CSS pendant le redimensionnement. */
   protected readonly resizing = signal<boolean>(false);
+
+  /** Largeur du viewport, mise à jour au resize pour le panneau mobile. */
+  private readonly _viewportWidth = signal<number>(window.innerWidth);
+
+  @HostListener('window:resize')
+  onWindowResize(): void { this._viewportWidth.set(window.innerWidth); }
+
+  /** containerWidth passé à app-chess en mode mobile (viewport - marges). */
+  protected readonly mobileChessWidth = computed(() =>
+    Math.max(280, this._viewportWidth() - 16)
+  );
 
   /**
    * Position `right` du panneau fixe :

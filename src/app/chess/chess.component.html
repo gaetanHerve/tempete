@@ -7,6 +7,14 @@
       <button class="btn btn-sm btn-outline-secondary me-1" (click)="resetBoard()" title="{{ 'chess.reset' | translate }}">
         ↺
       </button>
+      <button
+        class="btn btn-sm me-1"
+        [class.btn-outline-warning]="!freeMode()"
+        [class.btn-warning]="freeMode()"
+        (click)="toggleFreeMode()"
+        title="{{ 'chess.free_mode' | translate }}">
+        {{ freeMode() ? '⚠' : '⚖' }}
+      </button>
       @if (!popupMode()) {
         <button class="btn btn-sm btn-outline-info me-1" (click)="openInWindow()" title="{{ 'chess.open_window' | translate }}">
           ⧉
@@ -18,12 +26,29 @@
     </div>
   </div>
 
-  <!-- Indication de couleur -->
-  <div class="color-badge">
+  <!-- Indication de couleur + tour -->
+  <div class="status-row">
     @if (playerColor() === 'white') {
       <span class="badge bg-light text-dark border">{{ 'toolbar.playing_white' | translate }}</span>
     } @else {
       <span class="badge bg-dark">{{ 'toolbar.playing_black' | translate }}</span>
+    }
+    @if (!freeMode()) {
+      <span class="turn-badge" [class.my-turn]="currentTurn() === playerColor()">
+        {{ (currentTurn() === playerColor() ? 'toolbar.your_turn' : 'toolbar.opponent_turn') | translate }}
+      </span>
+    }
+  </div>
+
+  <!-- Pièces capturées (côté adverse = en haut) -->
+  <div class="captured-zone">
+    @for (piece of topCaptured(); track $index) {
+      <span class="captured-piece" [class.white-piece]="piece.color === 'white'">
+        {{ getPieceSymbol(piece) }}
+      </span>
+    }
+    @if (topCaptured().length === 0) {
+      <span class="captured-empty">—</span>
     }
   </div>
 
@@ -33,7 +58,7 @@
     <!-- Labels colonnes (haut) -->
     <div class="coord-row">
       <div class="coord-offset" [style.width.px]="coordSize"></div>
-      @for (col of cols; track col) {
+      @for (col of displayCols(); track col) {
         <div class="coord-cell"
              [style.width.px]="cellSize()"
              [style.height.px]="coordSize">{{ colLabel(col) }}</div>
@@ -42,12 +67,12 @@
     </div>
 
     <!-- Rangées -->
-    @for (row of rows; track row) {
+    @for (row of displayRows(); track row) {
       <div class="board-row">
         <div class="coord-label"
              [style.width.px]="coordSize"
              [style.height.px]="cellSize()">{{ rowLabel(row) }}</div>
-        @for (col of cols; track col) {
+        @for (col of displayCols(); track col) {
           <div
             class="cell"
             [style.width.px]="cellSize()"
@@ -55,6 +80,8 @@
             [class.light]="isLightSquare(row, col)"
             [class.dark]="!isLightSquare(row, col)"
             [class.selected]="isSelected(row, col)"
+            [class.legal-move]="isLegalMove(row, col)"
+            [class.capture-square]="isCaptureSquare(row, col)"
             (click)="onCellClick(row, col)">
             @if (board()[row][col]; as piece) {
               <span class="piece"
@@ -74,7 +101,7 @@
     <!-- Labels colonnes (bas) -->
     <div class="coord-row">
       <div class="coord-offset" [style.width.px]="coordSize"></div>
-      @for (col of cols; track col) {
+      @for (col of displayCols(); track col) {
         <div class="coord-cell"
              [style.width.px]="cellSize()"
              [style.height.px]="coordSize">{{ colLabel(col) }}</div>
@@ -82,6 +109,18 @@
       <div class="coord-offset" [style.width.px]="coordSize"></div>
     </div>
 
+  </div>
+
+  <!-- Pièces capturées (côté joueur = en bas) -->
+  <div class="captured-zone">
+    @for (piece of bottomCaptured(); track $index) {
+      <span class="captured-piece" [class.white-piece]="piece.color === 'white'">
+        {{ getPieceSymbol(piece) }}
+      </span>
+    }
+    @if (bottomCaptured().length === 0) {
+      <span class="captured-empty">—</span>
+    }
   </div>
 
   @if (popupMode()) {

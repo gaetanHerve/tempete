@@ -22,7 +22,7 @@
     <!-- MOBILE UNIQUEMENT : panneau en flux (max-height animée) -->
     <div class="chess-mobile-panel" [class.open]="chessService.chessVisible()">
       <div class="chess-mobile-inner">
-        <app-chess></app-chess>
+        <app-chess [containerWidth]="mobileChessWidth()"></app-chess>
       </div>
     </div>
 

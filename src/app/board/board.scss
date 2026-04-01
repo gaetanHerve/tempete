@@ -185,10 +185,11 @@
 
     .middle-zone {
       flex-direction: row;
-      overflow-x: auto;
-      gap: 0.5rem;
-      padding: 0.5rem 0;
-      .stack, .play-area, .discard { flex: 0 0 auto; min-width: 0; }
+      gap: 0.25rem;
+      padding: 0.25rem 0;
+      .stack   { flex: 1 1 0; min-width: 0; }
+      .play-area { flex: 2 1 0; min-width: 0; }
+      .discard { flex: 1 1 0; min-width: 0; }
     }
 
     .player { width: 100%; min-width: 0; align-items: stretch; }
@@ -223,12 +224,12 @@
       background: #111;
       transition: max-height 1s ease-out;
 
-      &.open { max-height: 560px; }
+      &.open { max-height: 780px; }
 
       .chess-mobile-inner {
         display: flex;
         justify-content: center;
-        padding: 0.5rem;
+        padding: 0.25rem;
       }
     }
   }
