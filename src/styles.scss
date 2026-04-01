@@ -105,6 +105,25 @@ main {
 }
 
 
+// ── Zone header (label sous la pile) ─────────────────────────────────────────
+.zone-header {
+  width: 100%;
+  overflow: hidden;
+
+  span {
+    display: block;
+    font-size: 0.7rem;
+    font-weight: 500;
+    color: #999;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+  }
+}
+
 // // Styles for card containers (hand, stack, discard, play area)
 
 .cards-container {
@@ -229,15 +248,35 @@ app-hand .cards-container {
 }
 
 // ── Tailles des cartes par zone sur mobile ────────────────────────────────────
-// !important nécessaire pour passer au-dessus des règles scopées de card-component
 @media (max-width: 768px) {
-  // Cartes de la main et du plateau : format portrait réduit
-  app-hand .card,
-  app-stack .card,
-  app-play-area .card,
-  app-discard .card {
+  // Main : format fixe (zone avec scroll vertical)
+  app-hand .card {
     width: 8rem !important;
     height: 12rem !important;
+  }
+
+  // Stack, défausse, actif : les cartes remplissent leur zone flex
+  // padding réduit pour maximiser l'espace carte ; 1fr = prend toute la largeur dispo
+  app-stack .cards-container,
+  app-play-area .cards-container,
+  app-discard .cards-container {
+    padding: 4px !important;
+    gap: 4px !important;
+    grid-template-columns: 1fr !important;
+  }
+
+  app-stack .card,
+  app-discard .card {
+    width: 100% !important;
+    height: auto !important;
+    aspect-ratio: 2 / 3;
+  }
+
+  // Actif : plafond à 8rem pour ne pas être trop grande sur écrans larges
+  app-play-area .card {
+    width: min(8rem, 100%) !important;
+    height: auto !important;
+    aspect-ratio: 2 / 3;
   }
 }
 

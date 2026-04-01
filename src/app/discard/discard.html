@@ -1,7 +1,3 @@
-<div class="zone-header centered">
-  <h2>{{ 'zones.discard' | translate }} ({{ cards().length }})</h2>
-</div>
-
 <div class="cards-container">
   <div class="card" id="discardDropList">
     @if (cards().length > 0) {
@@ -15,14 +11,17 @@
   </div>
 </div>
 
-<div class="centered">
-  @if (cards().length > 0) {
-    <button class="btn btn-sm btn-outline-secondary" (click)="showBrowser.set(true)">
-      {{ 'zones.view_all' | translate }}
-    </button>
-  }
+<div class="zone-header centered">
+  <span>{{ 'zones.discard' | translate }} ({{ cards().length }})</span>
 </div>
 
+<div class="centered">
+  <button class="btn btn-sm btn-outline-secondary"
+          [disabled]="cards().length === 0"
+          (click)="showBrowser.set(true)">
+    {{ 'zones.view_all' | translate }}
+  </button>
+</div>
 
 @if (showBrowser()) {
   <app-zone-browser
