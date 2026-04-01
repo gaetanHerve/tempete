@@ -24,11 +24,11 @@
     "playing_black": "Noirs ♚"
   },
   "zones": {
-    "play_area": "Effets permanents",
+    "play_area": "Actif",
     "discard": "défausse",
     "stack": "pioche",
     "hand": "main",
-    "no_card_play_area": "Aucune carte en jeu.",
+    "no_card_play_area": "Aucune carte active.",
     "no_card_discard": "Aucune carte dans la défausse.",
     "no_card_stack": "Aucune carte dans la pioche.",
     "view_all": "Voir toutes",
@@ -42,7 +42,8 @@
     "open_window": "Ouvrir dans une fenêtre séparée",
     "close": "Fermer l'échiquier",
     "reset": "Réinitialiser la position",
-    "free_move_hint": "Déplacements libres — les effets des cartes s'appliqueront ici."
+    "free_move_hint": "Déplacements libres — les effets des cartes s'appliqueront ici.",
+    "free_mode": "Mode libre (ignorer les règles)"
   },
   "godmode": {
     "enable": "God mode",
